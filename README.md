@@ -94,11 +94,33 @@ A Substitution Event has one or more players going out.
 A Substitution Event has one or more players coming in.
 A Substitution Event has a timestamp.
 
-## Injury
+### Injury
 The user generates an injury event.  The application displays the list of players currently on the field allowing the
 user to select the player that appears to be injured.
 
-The Injury Event has a 
+The Injury Event has a potential player assignment.
+The Injury Event has a timestamp.
+
+### Corner Kick
+The user generates a corner kick event.  The application displays the list of players currently on the field allowing
+the user to select the player that appears to be taking the corner kick.
+
+The Corner Kick Event has a player assignment.
+The Corner Kick Event has a timestamp.
+
+### Free Kick
+The user generates a freek kick event.  The application displays the list of players currently on the field allowing
+the user to select the player that appears to be taking the free kick.
+
+The Free Kick Event has a player assignment.
+The Free Kick Event has a timestamp.
+
+### Throw In Event
+The user generates a throw in event.  The application displays the list of players currently on the field allowing
+the user to select the player that appears to be taking the throw in.
+
+The Throw in event has a player assignment.
+The Throw in event has a timestamp.
 
 ### General
 
@@ -146,3 +168,29 @@ The Injury Event has a
 | Tie | Tie | The tie is credited to the goalie on the field when the goal to tie was made. |
 | Saves Per Match | S/G | The average number of saves per game. |
 | Saves Percentage | Save % | The percentage of saves (Sa/SOG = Save%) |
+
+
+## Use Cases
+
+Users must be able to log in.
+
+Each user must be able to create a team.
+
+Each user must be able to add a roster to the team.
+
+Each roster consists of players.
+
+A player has a set of positions.
+
+
+Once a team is selected, the user must be able to create match.
+
+A match has an opponent.
+
+A user must be able to setup the starting lineup.
+
+
+
+## References
+
+* [Node Express Typescript](https://developer.okta.com/blog/2018/11/15/node-express-typescript)
