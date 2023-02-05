@@ -31,6 +31,8 @@ jobs:
       - name: Report Coverage
         uses: coverallsapp/github-action@master
         with:
+          flag-name: "Futbol-Means Server"
+          path-to-lcov: "./server/coverage/lcov.info"
           github-token: ${{ secrets.github_token }}
 
       - name: Run lint
