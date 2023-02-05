@@ -1,11 +1,11 @@
 export class Player {
     private name: string;
-    private jersey_number: number;
+    private jerseyNumber: number;
     private position: string;
 
     constructor() {
         this.name = null;
-        this.jersey_number = null;
+        this.jerseyNumber = null;
         this.position = null;
     }
 
@@ -18,11 +18,11 @@ export class Player {
     }
 
     getJerseyNumber(): number {
-        return this.jersey_number;
+        return this.jerseyNumber;
     }
 
-    setJerseyNumber(jersey_number: number): void {
-        this.jersey_number = jersey_number;
+    setJerseyNumber(jerseyNumber: number): void {
+        this.jerseyNumber = jerseyNumber;
     }
 
     getPosition(): string {
@@ -34,6 +34,6 @@ export class Player {
     }
 
     toString(): string {
-        return this.name + " " + this.jersey_number + " " + this.position;
+        return this.name + " " + this.jerseyNumber + " " + this.position;
     }
 }

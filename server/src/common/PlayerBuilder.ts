@@ -19,8 +19,8 @@ export class PlayerBuilder {
         return this;
     }
 
-    buildJerseyNumber(jersey_number: number): PlayerBuilder {
-        this.instance.setJerseyNumber(jersey_number);
+    buildJerseyNumber(jerseyNumber: number): PlayerBuilder {
+        this.instance.setJerseyNumber(jerseyNumber);
 
         return this;
     }

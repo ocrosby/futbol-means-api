@@ -41,7 +41,7 @@ export class Goal implements IEvent {
     }
 
     removeAssistedBy(player: Player): void {
-        let index = this.assistedBy.indexOf(player);
+        const index = this.assistedBy.indexOf(player);
         if (index > -1) {
             this.assistedBy.splice(index, 1);
         }
