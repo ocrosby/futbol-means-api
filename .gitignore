@@ -1,4 +1,4 @@
-/client/.vscode
+.vscode
 /client/node_modules/
 /server/.env
 /server/dist/
