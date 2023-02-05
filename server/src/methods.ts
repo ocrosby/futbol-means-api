@@ -1,6 +1,8 @@
 import * as jwt from "jsonwebtoken";
 
-module.exports.ensureToken = (req, res, next) => {
+import {Request, Response, NextFunction} from "express";
+
+export function ensureToken(req: Request, res: Response, next: NextFunction): void {
     const bearerHeader = req.headers.authorization;
 
     if (typeof bearerHeader !== 'undefined') {
