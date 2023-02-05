@@ -1,6 +1,6 @@
 import {afterEach, beforeEach, describe, expect, test} from '@jest/globals';
 
-import {Player, PlayerBuilder} from '../../src/models/player';
+import {Player, PlayerBuilder} from '../../src/common/Player';
 
 describe('player module', () => {
     describe('Player', () => {

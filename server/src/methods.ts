@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 
 module.exports.ensureToken = (req, res, next) => {
-    const bearerHeader = req.headers["authorization"];
+    const bearerHeader = req.headers.authorization;
 
     if (typeof bearerHeader !== 'undefined') {
         const bearer = bearerHeader.split(" ");
