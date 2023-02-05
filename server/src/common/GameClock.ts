@@ -25,24 +25,12 @@ export class GameClock {
         return this.kickOff;
     }
 
-    private setKickOff(kickOff: Date): void {
-        this.kickOff = kickOff;
-    }
-
     getHalfTime(): Date {
         return this.halfTime;
     }
 
-    private setHalfTime(halfTime: Date): void {
-        this.halfTime = halfTime;
-    }
-
     getEndOfMatch(): Date {
         return this.endOfMatch;
-    }
-
-    private setEndOfMatch(endOfMatch: Date): void {
-        this.endOfMatch = endOfMatch;
     }
 
     startGame(): void {
