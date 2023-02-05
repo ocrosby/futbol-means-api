@@ -3,11 +3,8 @@ import { Player } from "./Player";
 export class Roster {
     players: Player[];
 
-    constructor(players: Player[]) {
-        if (players === undefined)
-            this.players = [];
-        else
-            this.players = players;
+    constructor() {
+        this.players = [];
     }
 
     getPlayers(): Player[] {
@@ -24,5 +21,15 @@ export class Roster {
 
     removePlayer(player: Player): void {
         this.players = this.players.filter(p => p !== player);
+    }
+
+    static create(players: Player[]): Roster {
+        const roster: Roster = new Roster();
+
+        players.forEach((player: Player) => {
+            roster.addPlayer(player);
+        });
+
+        return roster;
     }
 }
