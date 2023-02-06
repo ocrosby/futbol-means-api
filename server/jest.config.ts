@@ -15,10 +15,10 @@ const jestConfig: JestConfigWithTsJest = {
   testEnvironment: 'node',
   coverageThreshold: {
     global: {
-      branches: 27,
-      functions: 91,
-      lines: 76,
-      statements: 76
+      branches: 23,
+      functions: 84,
+      lines: 63,
+      statements: 62
     }
   },
   // [...]

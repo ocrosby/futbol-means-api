@@ -46,10 +46,12 @@ describe('CardIssued', () => {
         const player = new Player();
         const card = CardTypes.Red;
 
+        player.setName('Player 1');
+
         cardIssued.setTimestamp(timestamp);
         cardIssued.setPlayer(player);
         cardIssued.setCardType(card);
 
-        expect(cardIssued.toString()).toBe('CardIssued: ' + player.toString() + ' ' + card + ' ' + timestamp);
+        expect(cardIssued.toString()).toBe('Card Issued: ' + player.getName() + ' ' + card + ' ' + timestamp);
     });
 });

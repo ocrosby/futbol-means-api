@@ -38,6 +38,6 @@ export class CardIssued implements IEvent {
     }
 
     toString(): string {
-        return "Card Issued: " + this.player.toString() + " " + this.timestamp;
+        return "Card Issued: " + this.player.getName() + " " + this.cardType + " " + this.timestamp;
     }
 }
