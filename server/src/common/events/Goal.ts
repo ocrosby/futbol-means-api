@@ -3,12 +3,12 @@ import { Player } from "../Player";
 
 export class Goal implements IEvent {
     private timestamp: Date;
-    private scorer: Player;
+    private player: Player;
     private assistedBy: Player[];
 
     constructor() {
         this.timestamp = null;
-        this.scorer = null;
+        this.player = null;
         this.assistedBy = [];
     }
 
@@ -20,12 +20,12 @@ export class Goal implements IEvent {
         this.timestamp = timestamp;
     }
 
-    getScorer(): Player {
-        return this.scorer;
+    getPlayer(): Player {
+        return this.player;
     }
 
-    setScorer(scorer: Player): void {
-        this.scorer = scorer;
+    setPlayer(scorer: Player): void {
+        this.player = scorer;
     }
 
     getAssistedBy(): Player[] {
@@ -36,7 +36,15 @@ export class Goal implements IEvent {
         this.assistedBy = assistedBy;
     }
 
+    wasAssistedBy(player: Player): boolean {
+        return this.assistedBy.indexOf(player) > -1;
+    }
+
     addAssistedBy(player: Player): void {
+        if (this.wasAssistedBy(player)) {
+            return;
+        }
+
         this.assistedBy.push(player);
     }
 
@@ -48,6 +56,6 @@ export class Goal implements IEvent {
     }
 
     toString(): string {
-        return "Goal: " + this.scorer.toString() + " " + this.timestamp;
+        return "Goal: " + this.player.toString() + " " + this.timestamp;
     }
 }

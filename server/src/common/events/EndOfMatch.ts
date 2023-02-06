@@ -19,4 +19,10 @@ export class EndOfMatch implements IEvent {
     toString(): string {
         return "End of Match: " + this.timestamp;
     }
+
+    static create(timestamp: Date): EndOfMatch {
+        const endOfMatch = new EndOfMatch();
+        endOfMatch.setTimestamp(timestamp);
+        return endOfMatch;
+    }
 }
