@@ -1,13 +1,13 @@
 import {beforeEach, describe, expect, test} from '@jest/globals';
 
 import {Player} from '../../../src/common/Player';
-import {Foul} from '../../../src/common/events/Foul';
+import {FoulOn} from '../../../src/common/events/FoulOn';
 
-describe('Foul', () => {
-    let foul: Foul;
+describe('FoulOn', () => {
+    let foul: FoulOn;
 
     beforeEach(() => {
-        foul = new Foul();
+        foul = new FoulOn();
     });
 
     test('default constructor', () => {

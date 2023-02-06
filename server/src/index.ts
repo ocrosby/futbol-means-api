@@ -1,31 +1,52 @@
+import settings from "../package.json";
 import dotenv from "dotenv";
-import express from "express";
+import express, { Application } from "express";
+import morgan from "morgan";
 import path from "path";
 import bodyParser from "body-parser";
+import Logger from "./common/logger";
+import morganMiddleware from "./config/morganMiddleware";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express"
+import Router from "./routes";
 
-import * as routes from "./routes";
+const port: string = process.env.SERVER_PORT || "8000";
 
-// initialize configuration
-dotenv.config();
+dotenv.config(); // initialize configuration
 
-// port is now available to the Node.js runtime
-// as if it were an environment variable
+const app: Application = express();
 
-const port = process.env.SERVER_PORT; // default port to listen
+// app.use(express.json());
+app.use(bodyParser.json()); // configures body parser to parse JSON
+app.use(bodyParser.urlencoded({ extended: false })); // configures body parser to parse url encoded data
+app.use(express.static("public")); // configures express to serve static files from public folder
+app.use(morganMiddleware); // configures morgan to log HTTP requests
 
-const app = express();
+app.use(
+    "/docs",
+    swaggerUi.serve,
+    swaggerUi.setup(undefined, {
+        explorer: false,
+        swaggerOptions: {
+            url: "/swagger.json"
+        },
+    })
+);
 
-// configures body parser to parse JSON
-app.use(bodyParser.json());
+app.get('/favicon.ico', (_req, res) => res.status(204).end()); // ignore favicon requests
 
-// configures body parser to parse url encoded data
-app.use(bodyParser.urlencoded({extended: false}));
+app.get("/logger", (_, res) => {
+    Logger.error("This is an error log");
+    Logger.warn("This is a warn log");
+    Logger.info("This is a info log");
+    Logger.http("This is a http log");
+    Logger.debug("This is a debug log");
 
-// Configure routes
-routes.register(app);
+    res.send("Hello world");
+});
 
-// start the Express server
+app.use("/api", Router);
+
 app.listen(port, () => {
-    // tslint:disable-next-line:no-console
-    console.log(`server started at http://localhost:${port}`);
+    Logger.debug(`server started at http://localhost:${port}`);
 });
