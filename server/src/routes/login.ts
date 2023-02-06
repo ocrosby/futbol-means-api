@@ -1,22 +1,25 @@
-import * as express from "express";
+import { RoutesConfig } from "../common/RoutesConfig";
+import { Application } from "express";
 
-const router = express.Router();
+import { LoginController } from "../controllers/login";
 
-router.post("/", (req, res, next) => {
-    const username: string = req.body.username;
-    const password: string = req.body.password;
-
-    if (username === "user" && password === "pass") {
-        res.send({
-            ok: true,
-            message: "Login successful"
-        });
-    } else {
-        res.send({
-            ok: false,
-            message: "Username or password incorrect"
-        });
+export class LoginRoutes extends RoutesConfig {
+    constructor(app: Application) {
+        super(app, "LoginRoutes");
     }
-})
 
-module.exports = router;
+    configureRoutes() {
+        this.app.route(`/api/login`)
+            .post(async (req: any, res: any) => {
+                const username: string = req.body.username;
+                const password: string = req.body.password;
+                const controller = new LoginController();
+
+                const response = await controller.login(username, password);
+
+                return res.send(response);
+            });
+
+        return this.app;
+    }
+}

@@ -1,13 +1,21 @@
-import express from "express";
+import { RoutesConfig } from "../common/RoutesConfig";
+import { Application } from "express";
 import { PingController } from "../controllers/ping";
 
-const router = express.Router();
+export class PingRoutes extends RoutesConfig {
+    constructor(app: Application) {
+        super(app, "PingRoutes");
+    }
 
-router.get("/ping", async (_req, res) => {
-    const controller = new PingController();
-    const response = await controller.getMessage();
+    configureRoutes() {
+        this.app.route(`/api/ping`)
+            .get(async (req: any, res: any) => {
+                const controller = new PingController();
+                const response = await controller.getMessage();
 
-    return res.send(response);
-});
+                return res.send(response);
+            });
 
-export default router;
+        return this.app;
+    }
+}

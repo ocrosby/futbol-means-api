@@ -8,11 +8,11 @@ played, player statistics, statistics for keepers and the like.
 It's just too difficult to keep up with this using notes so I figured
 it would be easier in an app to setup a team, add a match, start a match
 and let the app track the clock.  Easily setup the starting lineup and
-swap players in and out (while tracking the times) to automate the 
-minutes played calculations so I don't have to worry about that.  I 
+swap players in and out (while tracking the times) to automate the
+minutes played calculations so I don't have to worry about that.  I
 also figured it would be easy to tap to create an event like a goal
 for example and have the app show me the roster to select who scored
-the goal and which player/players assisted it.  Keeper saves would 
+the goal and which player/players assisted it.  Keeper saves would
 also represent an event.
 
 ## Statistics
@@ -58,8 +58,8 @@ The user generates a Goal event.  The application then displays the roster and a
 The user selects the player from the roster that appears to have scored the goal and records the current time
 from the game clock.  The application then allows the user to award one or more players with an assist.
 
-A Goal Event has an assigned player.  
-A Goal Event can have zero or more awarded assists.  
+A Goal Event has an assigned player.
+A Goal Event can have zero or more awarded assists.
 A Goal Event has a timestamp.
 
 ### Save
@@ -189,6 +189,13 @@ A match has an opponent.
 
 A user must be able to setup the starting lineup.
 
+## Running Docker Compose
+
+Note: This command must be run from the repository root.
+
+```bash
+docker-compose up
+```
 
 
 ## References
