@@ -171,3 +171,14 @@
 2023-02-06 01:41:16:4116 [37mdebug[39m: [37mserver started at http://localhost:8000[39m
 2023-02-06 01:41:21:4121 [35mhttp[39m: [35mGET /api/ping 304 - - 3.024 ms[39m
 [35m[39m
+2023-02-06 23:40:46:4046 [37mdebug[39m: [37mserver started at http://localhost:8000[39m
+2023-02-06 23:40:48:4048 [35mhttp[39m: [35mGET /docs/ 304 - - 2.701 ms[39m
+[35m[39m
+2023-02-06 23:40:48:4048 [35mhttp[39m: [35mGET /docs/swagger-ui.css 200 144966 - 3.801 ms[39m
+[35m[39m
+2023-02-06 23:40:48:4048 [35mhttp[39m: [35mGET /docs/swagger-ui-init.js 304 - - 0.581 ms[39m
+[35m[39m
+2023-02-06 23:40:48:4048 [35mhttp[39m: [35mGET /docs/swagger-ui-standalone-preset.js 200 312217 - 6.844 ms[39m
+[35m[39m
+2023-02-06 23:40:48:4048 [35mhttp[39m: [35mGET /docs/swagger-ui-bundle.js 200 1061579 - 6.574 ms[39m
+[35m[39m

@@ -1,13 +1,13 @@
-FROM node:12-alpine AS builder
+FROM node:18.14.0-alpine AS builder
 WORKDIR /app
-COPY package*.json ./
+COPY package.json ./
 RUN npm install
 COPY . .
 RUN npm run build
 
-FROM node:12-alpine AS runner
+FROM node:18.14.0-alpine AS runner
 WORKDIR /app
-COPY package* ./
+COPY package.json ./
 RUN npm install --production
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/dist ./dist

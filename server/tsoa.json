@@ -1,8 +1,14 @@
 {
     "entryFile": "src/index.ts",
     "noImplicitAdditionalProperties": "throw-on-extras",
+    "controllerPathGlobs": ["src/**/*.controller.ts"],
     "spec": {
-      "outputDirectory": "public",
+      "outputDirectory": "src",
       "specVersion": 3
+    },
+    "routes": {
+      "basePath": "/api",
+      "routesDir": "src/routes",
+      "controllers": ["src/**/*.controller.ts"]
     }
 }

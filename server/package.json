@@ -17,8 +17,9 @@
     "test": "jest",
     "predev": "npm run swagger",
     "prebuild": "npm run swagger",
-    "docker:build": "docker build -t means-api .",
-    "docker:images": "docker images"
+    "dbuild": "docker build -t means-api .",
+    "dimages": "docker images",
+    "dlist": "docker container ls -a -s"
   },
   "repository": {
     "type": "git",

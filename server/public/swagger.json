@@ -22,7 +22,7 @@
 		"securitySchemes": {}
 	},
 	"info": {
-		"title": "futbol-means-api",
+		"title": "means-api",
 		"version": "1.0.0",
 		"description": "An API allowing users to efficiently enter match data.",
 		"license": {
