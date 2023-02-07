@@ -1,37 +1,23 @@
 version: '3'
 services:
-    db:
-      image: postgres:14.1-alpine
-      restart: always
-      environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
+    mongodb:
+      image: mongo:5.0.2
+      restart: unless-stopped
+      env_file: ./server/.env
       ports:
-        - '5432:5432'
+        - $MOGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
       volumes:
-        - db:/var/lib/postgresql/data
-        - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
-    api:
-      container_name: means-api
-      build:
-        context: ./
-        target: production
-      image: means-api
+        - db:/data/db
+    app:
       depends_on:
-        - db
+        - mongodb
+      build: ./server
+      restart: unless-stopped
+      env_file: ./server/.env
       ports:
-        - 8000:8000
-      environment:
-        NODE_ENV: production
-        DB_HOST: db
-        DB_PORT: 5432
-        DB_USER: postgres
-        DB_PASSWORD: postgres
-        DB_NAME: postgres
-      links:
-        - db
-      volumes:
-        - './:/src'
+        - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      stdin_open: true
+      tty: true
 
 volumes:
   db:
