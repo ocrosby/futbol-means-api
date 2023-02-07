@@ -1,14 +1,22 @@
 import express from "express";
-import { PingController } from "../controllers/ping";
+import { Application } from "express";
+import { EventRoutes } from "./event.routes";
+import { LoginRoutes } from "./login.routes";
+import { PingRoutes } from "./ping.routes";
+import { PlayersRoutes } from "./player.routes";
+import { TeamRoutes } from "./team.routes";
+import { UserRoutes } from "./user.routes";
 
 const router = express.Router();
 
-router.get("/ping", async (_req, res) => {
-    const controller = new PingController();
-    const response = await controller.getMessage();
+const app: Application = express.application;
 
-    return res.send(response);
-});
+(new EventRoutes(app)).configureRoutes();
+(new LoginRoutes(app)).configureRoutes();
+(new PingRoutes(app)).configureRoutes();
+(new PlayersRoutes(app)).configureRoutes();
+(new TeamRoutes(app)).configureRoutes();
+(new UserRoutes(app)).configureRoutes();
 
 export default router;
 

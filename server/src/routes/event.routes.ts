@@ -1,7 +1,7 @@
-import { RoutesConfig } from "../common/RoutesConfig";
+import { RoutesConfig } from "../models/RoutesConfig";
 import { Application } from "express";
 
-export class EventsRoutes extends RoutesConfig {
+export class EventRoutes extends RoutesConfig {
     constructor(app: Application) {
         super(app, "EventsRoutes");
     }

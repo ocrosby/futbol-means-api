@@ -13,6 +13,12 @@ export class PlayerBuilder {
         return this;
     }
 
+    buildId(id: string): PlayerBuilder {
+        this.instance.setId(id);
+
+        return this;
+    }
+
     buildName(name: string): PlayerBuilder {
         this.instance.setName(name);
 

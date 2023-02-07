@@ -4,7 +4,7 @@ import express, { Application } from "express";
 import morgan from "morgan";
 import path from "path";
 import bodyParser from "body-parser";
-import Logger from "./common/logger";
+import Logger from "./lib/logger";
 import morganMiddleware from "./config/morganMiddleware";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express"

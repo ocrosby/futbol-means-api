@@ -1,4 +1,4 @@
-import { Post, Route } from "tsoa";
+import { Controller, Post, Route, SuccessResponse } from "tsoa";
 
 export interface LoginResponse {
     ok: boolean;
@@ -6,8 +6,13 @@ export interface LoginResponse {
 }
 
 @Route("api/login")
-export class LoginController {
-    @Post("/")
+export class LoginController extends Controller {
+    /**
+     * Logs in a user.
+     */
+    @Post()
+    @SuccessResponse("200", "OK")
+    
     public async login(username: string, password: string): Promise<LoginResponse> {
         if (username === "user" && password === "pass") {
             return {

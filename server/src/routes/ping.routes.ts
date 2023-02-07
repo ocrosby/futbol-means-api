@@ -1,4 +1,4 @@
-import { RoutesConfig } from "../common/RoutesConfig";
+import { RoutesConfig } from "../models/RoutesConfig";
 import { Application } from "express";
 import { PingController } from "../controllers/ping";
 
