@@ -1,3 +1,4 @@
+.env
 coverage
 .vscode
 /client/node_modules/
