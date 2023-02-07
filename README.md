@@ -199,5 +199,5 @@ docker-compose up
 
 
 ## References
-
+* [Docker Notes](./docs/Docker.md)
 * [Node Express Typescript](https://developer.okta.com/blog/2018/11/15/node-express-typescript)
