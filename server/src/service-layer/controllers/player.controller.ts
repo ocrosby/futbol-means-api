@@ -1,25 +1,36 @@
-import { PlayersService } from "../services/PlayersService";
-import { Controller, Example, Get, Route, Path, Post, Body, Response, SuccessResponse } from "tsoa";
-import { IPlayer, PlayerCreationParams } from "../models/Player";
+// import { PlayersService } from '../services/PlayersService';
+import {
+  Controller,
+  Example,
+  Get,
+  Route,
+  Path,
+  Post,
+  Body,
+  Response,
+  SuccessResponse,
+} from 'tsoa';
+import { IPlayer, PlayerCreationParams } from '../../data-layer/models/Player';
 
-@Route("api/players")
+@Route('api/players')
 export class PlayersController extends Controller {
-    /**
-     * Retrieves the list of all players.
-     *
-     * @returns Player[]
-     */
-    @Example<IPlayer>({
-        id: "1",
-        name: "Doe, John",
-        jerseyNumber: 20,
-        positions: ["Forward", "Midfielder"]
-    })
-    @Get("/")
-    public async getPlayers(): Promise<IPlayer[]> {
-        return [];
-    }
+  /**
+   * Retrieves the list of all players.
+   *
+   * @returns Player[]
+   */
+  @Example<IPlayer>({
+    id: '1',
+    name: 'Doe, John',
+    jerseyNumber: 20,
+    positions: ['Forward', 'Midfielder'],
+  })
+  @Get('/')
+  public async getPlayers(): Promise<IPlayer[]> {
+    return [];
+  }
 
+  /*
     @Post()
     @SuccessResponse("201", "Created")  // Custom success response
     @Response<ValidationErrorJSON>(422, "Validation Failed", {
@@ -38,18 +49,20 @@ export class PlayersController extends Controller {
 
         new PlayersService().create(requestBody);
     }
+    */
 
-    /**
-     * Retrieves the details of an existing player.
-     * Supply the unique user ID and receive corresponding user data.
-     *
-     * @param playerId
-     * @returns Player
-     */
-    @Get("{playerId}")
-    public async getPlayer(
-        @Path() playerId: number
-    ): Promise<IPlayer> {
-        return new PlayersService().get(playerId);
-    }
+  /**
+   * Retrieves the details of an existing player.
+   * Supply the unique user ID and receive corresponding user data.
+   *
+   * @param playerId
+   * @returns Player
+   */
+
+  /*
+  @Get('{playerId}')
+  public async getPlayer(@Path() playerId: number): Promise<IPlayer> {
+    return new PlayersService().get(playerId);
+  }
+  */
 }

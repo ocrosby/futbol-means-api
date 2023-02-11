@@ -2,6 +2,12 @@
 
 ## Build from source
 
+0. Installing TypeScript globally
+    ```sh
+    npm install -g typescript
+    tsc --version
+    ```
+
 1. Clone the repo
 
     ```sh
