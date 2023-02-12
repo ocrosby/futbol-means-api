@@ -1,6 +1,6 @@
 import {beforeEach, describe, expect, test} from '@jest/globals';
 
-import {KickOff} from '../../../src/common/events/KickOff';
+import {KickOff} from '../../../../src/data-layer/models/events/KickOff';
 
 describe('KickOff', () => {
     let kickOff: KickOff;

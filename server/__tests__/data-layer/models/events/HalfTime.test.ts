@@ -1,6 +1,6 @@
 import {beforeEach, describe, expect, test} from '@jest/globals';
 
-import {HalfTime} from '../../../src/common/events/HalfTime';
+import {HalfTime} from '../../../../src/data-layer/models/events/HalfTime';
 
 describe('HalfTime', () => {
     let halfTime: HalfTime;

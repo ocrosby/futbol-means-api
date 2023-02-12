@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, test} from '@jest/globals';
 
-import {Player} from '../../../src/common/Player';
-import {Save} from '../../../src/common/events/Save';
+import {Player} from '../../../../src/data-layer/models/Player';
+import {Save} from '../../../../src/data-layer/models/events/Save';
 
 describe('Save', () => {
     let save: Save;

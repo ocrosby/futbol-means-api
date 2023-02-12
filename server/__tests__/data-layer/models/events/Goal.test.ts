@@ -1,8 +1,8 @@
 import {beforeEach, describe, expect, test} from '@jest/globals';
 
-import {Player} from '../../../src/common/Player';
-import {PlayerBuilder} from '../../../src/common/PlayerBuilder';
-import {Goal} from '../../../src/common/events/Goal';
+import {Player} from '../../../../src/data-layer/models/Player';
+import {PlayerBuilder} from '../../../../src/data-layer/models/PlayerBuilder';
+import {Goal} from '../../../../src/data-layer/models/events/Goal';
 
 describe('Goal', () => {
     let goal: Goal;

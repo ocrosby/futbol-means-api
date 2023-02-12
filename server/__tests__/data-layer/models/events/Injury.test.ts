@@ -1,7 +1,7 @@
 import {beforeEach, describe, expect, test} from '@jest/globals';
 
-import {Player} from '../../../src/common/Player';
-import {Injury} from '../../../src/common/events/Injury';
+import {Player} from '../../../../src/data-layer/models/Player';
+import {Injury} from '../../../../src/data-layer/models/events/Injury';
 
 describe('Injury', () => {
     let injury: Injury;
