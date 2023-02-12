@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable prefer-spread */
 /* tslint:disable */
 import {
   Controller,
@@ -7,64 +9,71 @@ import {
   TsoaRoute,
 } from 'tsoa';
 import { AuthorizationsController } from './../../service-layer/controllers/AuthorizationController';
-import { UsersController } from './../../service-layer/controllers/UsersController';
+import { UsersController } from '../../service-layer/controllers/UsersController';
 import { expressAuthentication } from './../../business-layer/security/Authentication';
-import express, {Request, Response, NextFunction} from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 
 const models: TsoaRoute.Models = {
   IUserResponse: {
+    dataType: 'refObject',
     properties: {
       id: { dataType: 'string' },
       username: { dataType: 'string' },
-      firstname: { dataType: 'string' },
-      lastname: { dataType: 'string' },
+      firstName: { dataType: 'string' },
+      lastName: { dataType: 'string' },
       email: { dataType: 'string' },
     },
   },
   IUserLoginRequest: {
+    dataType: 'refObject',
     properties: {
       username: { dataType: 'string', required: true },
       password: { dataType: 'string', required: true },
     },
   },
   IMessageResponse: {
+    dataType: 'refObject',
     properties: {
       success: { dataType: 'boolean', required: true },
       message: { dataType: 'string', required: true },
     },
   },
   IUserCreateRequest: {
+    dataType: 'refObject',
     properties: {
       username: { dataType: 'string', required: true },
-      firstname: { dataType: 'string', required: true },
-      lastname: { dataType: 'string', required: true },
+      firstName: { dataType: 'string', required: true },
+      lastName: { dataType: 'string', required: true },
       password: { dataType: 'string', required: true },
       email: { dataType: 'string', required: true },
     },
   },
   IErrorResponse: {
+    dataType: 'refObject',
     properties: {
       status: { dataType: 'double', required: true },
       message: { dataType: 'string', required: true },
     },
   },
   IUserUpdateRequest: {
+    dataType: 'refObject',
     properties: {
       id: { dataType: 'string' },
       username: { dataType: 'string' },
-      firstname: { dataType: 'string' },
-      lastname: { dataType: 'string' },
+      firstName: { dataType: 'string' },
+      lastName: { dataType: 'string' },
       email: { dataType: 'string' },
       admin: { dataType: 'boolean' },
     },
   },
 };
+
 const validationService = new ValidationService(models);
 
 export function RegisterRoutes(app: express.Application) {
   app.post(
     '/api/Authorizations/Login',
-    function (request: any, response: any, next: any) {
+    function (request: Request, response: Response, next: NextFunction) {
       const args = {
         request: {
           in: 'body',
@@ -87,6 +96,7 @@ export function RegisterRoutes(app: express.Application) {
       promiseHandler(controller, promise, response, next);
     }
   );
+
   app.post(
     '/api/Authorizations/Logout',
     function (request: Request, response: Response, next: NextFunction) {
@@ -112,31 +122,36 @@ export function RegisterRoutes(app: express.Application) {
       promiseHandler(controller, promise, response, next);
     }
   );
-  app.post('/api/Users', function (request: Request, response: Response, next: NextFunction) {
-    const args = {
-      request: {
-        in: 'body',
-        name: 'request',
-        required: true,
-        ref: 'IUserCreateRequest',
-      },
-    };
 
-    let validatedArgs: any[] = [];
-    try {
-      validatedArgs = getValidatedArgs(args, request);
-    } catch (err) {
-      return next(err);
+  app.post(
+    '/api/Users',
+    function (request: Request, response: Response, next: NextFunction) {
+      const args = {
+        request: {
+          in: 'body',
+          name: 'request',
+          required: true,
+          ref: 'IUserCreateRequest',
+        },
+      };
+
+      let validatedArgs: any[] = [];
+      try {
+        validatedArgs = getValidatedArgs(args, request);
+      } catch (err) {
+        return next(err);
+      }
+
+      const controller = new UsersController();
+
+      const promise = controller.RegisterNewUser.apply(
+        controller,
+        validatedArgs as any
+      );
+      promiseHandler(controller, promise, response, next);
     }
+  );
 
-    const controller = new UsersController();
-
-    const promise = controller.RegisterNewUser.apply(
-      controller,
-      validatedArgs as any
-    );
-    promiseHandler(controller, promise, response, next);
-  });
   app.get(
     '/api/Users/:userId',
     authenticateMiddleware([{ api_key: [] }]),
@@ -172,6 +187,7 @@ export function RegisterRoutes(app: express.Application) {
       promiseHandler(controller, promise, response, next);
     }
   );
+
   app.get(
     '/api/Users/username/:username',
     function (request: Request, response: Response, next: NextFunction) {
@@ -200,28 +216,32 @@ export function RegisterRoutes(app: express.Application) {
       promiseHandler(controller, promise, response, next);
     }
   );
-  app.patch('/api/Users', function (request: Request, response: Response, next: NextFunction) {
-    const args = {
-      request: {
-        in: 'body',
-        name: 'request',
-        required: true,
-        ref: 'IUserUpdateRequest',
-      },
-    };
 
-    let validatedArgs: any[] = [];
-    try {
-      validatedArgs = getValidatedArgs(args, request);
-    } catch (err) {
-      return next(err);
+  app.patch(
+    '/api/Users',
+    function (request: Request, response: Response, next: NextFunction) {
+      const args = {
+        request: {
+          in: 'body',
+          name: 'request',
+          required: true,
+          ref: 'IUserUpdateRequest',
+        },
+      };
+
+      let validatedArgs: any[] = [];
+      try {
+        validatedArgs = getValidatedArgs(args, request);
+      } catch (err) {
+        return next(err);
+      }
+
+      const controller = new UsersController();
+
+      const promise = controller.Update.apply(controller, validatedArgs as any);
+      promiseHandler(controller, promise, response, next);
     }
-
-    const controller = new UsersController();
-
-    const promise = controller.Update.apply(controller, validatedArgs as any);
-    promiseHandler(controller, promise, response, next);
-  });
+  );
 
   function authenticateMiddleware(security: TsoaRoute.Security[] = []) {
     return (request: Request, _response: Response, next: NextFunction) => {
@@ -232,7 +252,7 @@ export function RegisterRoutes(app: express.Application) {
         if (!success) {
           success = true;
           responded++;
-          request['user'] = user;
+          request.params['user'] = user;
           next();
         }
       };
@@ -247,7 +267,7 @@ export function RegisterRoutes(app: express.Application) {
 
       for (const secMethod of security) {
         if (Object.keys(secMethod).length > 1) {
-          let promises: Promise<any>[] = [];
+          const promises: Promise<any>[] = [];
 
           for (const name in secMethod) {
             promises.push(
@@ -307,8 +327,11 @@ export function RegisterRoutes(app: express.Application) {
 
   function getValidatedArgs(args: any, request: any): any[] {
     const fieldErrors: FieldErrors = {};
+
     const values = Object.keys(args).map((key) => {
       const name = args[key].name;
+      const additionalProperties = args[key].additionalProperties;
+
       switch (args[key].in) {
         case 'request':
           return request;
@@ -317,21 +340,27 @@ export function RegisterRoutes(app: express.Application) {
             args[key],
             request.query[name],
             name,
-            fieldErrors
+            fieldErrors,
+            'query.',
+            args[key].additionalProperties
           );
         case 'path':
           return validationService.ValidateParam(
             args[key],
             request.params[name],
             name,
-            fieldErrors
+            fieldErrors,
+            'path.',
+            args[key].additionalProperties
           );
         case 'header':
           return validationService.ValidateParam(
             args[key],
             request.header(name),
             name,
-            fieldErrors
+            fieldErrors,
+            'header.',
+            args[key].additionalProperties
           );
         case 'body':
           return validationService.ValidateParam(
@@ -339,7 +368,8 @@ export function RegisterRoutes(app: express.Application) {
             request.body,
             name,
             fieldErrors,
-            name + '.'
+            name + '.',
+            args[key].additionalProperties
           );
         case 'body-prop':
           return validationService.ValidateParam(
@@ -347,13 +377,16 @@ export function RegisterRoutes(app: express.Application) {
             request.body[name],
             name,
             fieldErrors,
-            'body.'
+            'body.',
+            args[key].additionalProperties
           );
       }
     });
+
     if (Object.keys(fieldErrors).length > 0) {
       throw new ValidateError(fieldErrors, '');
     }
+
     return values;
   }
 }

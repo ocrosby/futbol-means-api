@@ -1,19 +1,9 @@
-import {
-  Route,
-  Get,
-  Post,
-  Delete,
-  Response,
-  Header,
-  Body,
-  Controller,
-} from 'tsoa';
+import { Route, Post, Header, Body, Controller } from 'tsoa';
 import { IUserLoginRequest } from '../request/index';
 import { IUserResponse, IMessageResponse } from '../responses/index';
 import { createAuthToken } from '../../business-layer/security/token-helpers';
 import { UserDataAgent } from '../../data-layer/data-agents/UserDataAgent';
-import { UserModel } from '../../data-layer/models/user.model';
-import { logger } from '../../middleware/common/logging';
+import { UserModel } from '../../data-layer/models/UserModel';
 
 @Route('Authorizations')
 export class AuthorizationsController extends Controller {
@@ -49,6 +39,7 @@ export class AuthorizationsController extends Controller {
     const logoutResult = Object.assign({
       general: { message: 'user logged out', success: true },
     });
+    
     return <IMessageResponse>logoutResult;
   }
 }

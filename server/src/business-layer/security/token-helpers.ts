@@ -1,8 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as config from 'config';
-import * as express from 'express';
-import { UserModel } from '../../data-layer/models/user.model';
 import * as jwt from 'jsonwebtoken';
-import { logger } from '../../middleware/common/logging';
 
 const opts = {
   secretOrKey: config.get('auth.jwt_secret').toString(),

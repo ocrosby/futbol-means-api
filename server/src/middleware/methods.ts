@@ -1,21 +1,26 @@
-import * as jwt from "jsonwebtoken";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import * as jwt from 'jsonwebtoken';
 
-import {Request, Response, NextFunction} from "express";
+import { Request, Response, NextFunction } from 'express';
 
-export function ensureToken(req: Request, res: Response, next: NextFunction): void {
-    const bearerHeader = req.headers.authorization;
+export function ensureToken(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void {
+  const bearerHeader = req.headers.authorization;
 
-    if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(" ");
-        const bearerToken = bearer[1];
-        jwt.verify(bearerToken, 'secretkey', (err, result) => {
-            if (err) {
-                res.sendStatus(403);
-            } else {
-                next();
-            }
-        })
-    } else {
+  if (typeof bearerHeader !== 'undefined') {
+    const bearer = bearerHeader.split(' ');
+    const bearerToken = bearer[1];
+    jwt.verify(bearerToken, 'secretkey', (err, _result) => {
+      if (err) {
         res.sendStatus(403);
-    }
+      } else {
+        next();
+      }
+    });
+  } else {
+    res.sendStatus(403);
+  }
 }

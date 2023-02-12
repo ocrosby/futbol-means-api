@@ -1,14 +1,18 @@
 {
-    "entryFile": "src/index.ts",
-    "noImplicitAdditionalProperties": "throw-on-extras",
-    "controllerPathGlobs": ["src/**/*.controller.ts"],
-    "spec": {
-      "outputDirectory": "src",
-      "specVersion": 3
-    },
-    "routes": {
-      "basePath": "/api",
-      "routesDir": "src/routes",
-      "controllers": ["src/**/*.controller.ts"]
-    }
+  "entryFile": "src/server.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": [
+    "src/**/*.controller.ts"
+  ],
+  "spec": {
+    "outputDirectory": "src",
+    "specVersion": 3
+  },
+  "routes": {
+    "basePath": "/api",
+    "routesDir": "src/routes",
+    "controllers": [
+      "src/**/*.controller.ts"
+    ]
+  }
 }
