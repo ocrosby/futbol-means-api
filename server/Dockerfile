@@ -12,4 +12,4 @@ RUN npm install --production
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/dist ./dist
 EXPOSE 8000
-CMD ["npm", "start"]
+CMD ["npm", "start:simple"]
