@@ -6,4 +6,5 @@ coverage
 /client/node_modules/
 /server/.env
 /server/dist/
+/server/logs/
 /server/node_modules/

@@ -1,4 +1,4 @@
-import * as config from 'config';
+import config = require('config');
 
 import express, { Application, NextFunction, Request, Response } from 'express';
 import { ExpressConfig } from './middleware/server-config/Express';

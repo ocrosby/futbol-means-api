@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as config from 'config';
+import config = require("config");
 import * as jwt from 'jsonwebtoken';
 
 const opts = {
