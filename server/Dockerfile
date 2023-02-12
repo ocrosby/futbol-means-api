@@ -1,15 +1,10 @@
 FROM node:18.14.0-alpine AS builder
 WORKDIR /app
-COPY package.json ./
-RUN npm install
 COPY . .
-RUN npm run build
+RUN apk update && apk upgrade && apk add make
+RUN make dist
 
 FROM node:18.14.0-alpine AS runner
-WORKDIR /app
-COPY package.json ./
-RUN npm install --production
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/dist /
 EXPOSE 8000
-CMD ["npm", "start:simple"]
+CMD ["node", "server.js"]

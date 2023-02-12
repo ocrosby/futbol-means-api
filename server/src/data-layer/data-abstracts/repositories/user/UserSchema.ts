@@ -1,7 +1,7 @@
 
 import { MongooseAccess } from '../../../adapters/MongooseAccess';
 import { Schema } from "mongoose";
-import * as Bcrypt from "bcrypt-nodejs"
+import * as Bcrypt from "bcrypt";
 import { IUserDocument} from './IUserDocument';
 
 

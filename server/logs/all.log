@@ -182,3 +182,57 @@
 [35m[39m
 2023-02-06 23:40:48:4048 [35mhttp[39m: [35mGET /docs/swagger-ui-bundle.js 200 1061579 - 6.574 ms[39m
 [35m[39m
+2023-02-12 05:09:31:931 [32minfo[39m: [32m[39m
+[32m    ------------[39m
+[32m    Server Started![39m
+[32m    Express: http://[object Object]:8080[39m
+[32m    Debugger: http:/[object Object]:8080/?ws=[object Object]:8080&port=5858[39m
+
+
+[32m    Health: http://[object Object]:8080/ping[39m
+[32m    Swagger Docs: http://[object Object]:8080/docs[39m
+[32m    Swagger Spec: http://[object Object]:8080/api-docs[39m
+[32m    ------------[39m
+[32m  [39m
+2023-02-12 05:10:01:101 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 05:10:01:101 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 05:10:01:101 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m
+2023-02-12 05:10:41:1041 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 05:10:41:1041 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 05:10:41:1041 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m
+2023-02-12 05:11:21:1121 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 05:11:21:1121 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 05:11:21:1121 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m
+2023-02-12 05:12:01:121 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 05:12:01:121 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 05:12:01:121 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m
+2023-02-12 05:12:41:1241 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 05:12:41:1241 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 05:12:41:1241 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m
+2023-02-12 05:13:21:1321 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 05:13:21:1321 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 05:13:21:1321 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m
+2023-02-12 05:14:01:141 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 05:14:01:141 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 05:14:01:141 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m
+2023-02-12 05:14:41:1441 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 05:14:41:1441 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 05:14:41:1441 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m
+2023-02-12 09:49:23:4923 [32minfo[39m: [32m[39m
+[32m    ------------[39m
+[32m    Server Started![39m
+[32m    Express: http://[object Object]:8080[39m
+[32m    Debugger: http:/[object Object]:8080/?ws=[object Object]:8080&port=5858[39m
+
+
+[32m    Health: http://[object Object]:8080/ping[39m
+[32m    Swagger Docs: http://[object Object]:8080/docs[39m
+[32m    Swagger Spec: http://[object Object]:8080/api-docs[39m
+[32m    ------------[39m
+[32m  [39m
+2023-02-12 09:49:53:4953 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 09:49:53:4953 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 09:49:53:4953 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m
+2023-02-12 09:50:33:5033 [32minfo[39m: [32mMongoose default connection disconnected.[39m
+2023-02-12 09:50:33:5033 [32minfo[39m: [32mMongoose default connection message: getaddrinfo ENOTFOUND mongo[39m
+2023-02-12 09:50:33:5033 [33mwarn[39m: [33mPossibly Unhandled Rejection at: Promise [39m

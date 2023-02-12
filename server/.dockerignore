@@ -1,2 +1,5 @@
+dist
+logs
+public
 node_modules
 npm-debug.log

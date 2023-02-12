@@ -44,3 +44,14 @@ List all docker containers even the stopped ones
 docker ps -a -q
 ```
 
+Deleting a Docker image
+
+```sh
+docker rmi <image id>
+```
+
+Remove all images without a container
+
+```sh
+docker image prune -a -f
+```
