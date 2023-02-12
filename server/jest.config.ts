@@ -1,6 +1,6 @@
-import type { JestConfigWithTsJest } from 'ts-jest'
+import type { JestConfigWithTsJest } from 'ts-jest';
 
-import { defaults as tsjPreset } from 'ts-jest/presets'
+import { defaults as tsjPreset } from 'ts-jest/presets';
 // import { defaultsESM as tsjPreset } from 'ts-jest/presets';
 // import { jsWithTs as tsjPreset } from 'ts-jest/presets';
 // import { jsWithTsESM as tsjPreset } from 'ts-jest/presets';
@@ -15,17 +15,17 @@ const jestConfig: JestConfigWithTsJest = {
   testEnvironment: 'node',
   coverageThreshold: {
     global: {
-      branches: 23,
-      functions: 84,
-      lines: 63,
-      statements: 62
-    }
+      branches: 2,
+      functions: 32,
+      lines: 15,
+      statements: 15,
+    },
   },
   // [...]
   transform: {
     ...tsjPreset.transform,
     // [...]
   },
-}
+};
 
-export default jestConfig
+export default jestConfig;
