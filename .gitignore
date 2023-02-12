@@ -1,3 +1,4 @@
+server/src/swagger.json
 .env
 coverage
 .idea
