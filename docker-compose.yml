@@ -5,7 +5,7 @@ services:
       restart: unless-stopped
       env_file: ./server/.env
       ports:
-        - $MOGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
+        - 7017:27017
       volumes:
         - db:/data/db
     app:
@@ -15,7 +15,7 @@ services:
       restart: unless-stopped
       env_file: ./server/.env
       ports:
-        - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+        - 6868:8000
       stdin_open: true
       tty: true
 

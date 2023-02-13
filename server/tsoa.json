@@ -2,17 +2,15 @@
   "entryFile": "src/server.ts",
   "noImplicitAdditionalProperties": "throw-on-extras",
   "controllerPathGlobs": [
-    "src/**/*.controller.ts"
+    "src/**/*.controller.ts",
+    "src/**/*Controller.ts"
   ],
   "spec": {
-    "outputDirectory": "src",
+    "outputDirectory": "dist",
     "specVersion": 3
   },
   "routes": {
     "basePath": "/api",
-    "routesDir": "src/routes",
-    "controllers": [
-      "src/**/*.controller.ts"
-    ]
+    "routesDir": "src/service-layer/controllers"
   }
 }

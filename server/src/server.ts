@@ -1,16 +1,23 @@
+import * as methodOverride from 'method-override';
+import express, { Application } from 'express';
+import * as bodyParser from 'body-parser';
+import { RegisterRoutes } from './service-layer/controllers/routes';
+
 import config = require('config');
 
-import express, { Application, NextFunction, Request, Response } from 'express';
-import { ExpressConfig } from './middleware/server-config/Express';
-import http = require('http');
+
 import { logger } from './middleware/common/logging';
 
-import './service-layer/controllers/AuthorizationController';
-import './service-layer/controllers/UsersController';
-import { RegisterRoutes } from './middleware/server-config/Routes';
 
-import * as methodOverride from 'method-override';
-import * as bodyParser from 'body-parser';
+
+// ########################################################################
+// controllers need to be referenced in order to get crawled by the generator
+import './service-layer/controllers/ping.controller'
+// ########################################################################
+
+
+
+
 
 import * as cors from 'cors';
 import * as cookieParser from 'cookie-parser';
@@ -22,14 +29,11 @@ const app: Application = express();
 
 let server: any;
 
-// var express = new ExpressConfig();
 const port = config.get('express.port');
-
 const debugPort = config.get('express.debug');
-app.use('/docs', express.static(__dirname + '/swagger-ui'));
-app.use('/swagger.json', (_req: Request, res: Response) => {
-  res.sendFile('./dist/swagger.json');
-});
+
+app.use('/docs', express.static(__dirname + '/presentation-layer/documentation/swagger-ui'));
+
 app.use(cors.default());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -39,24 +43,10 @@ app.use(health.ping());
 
 RegisterRoutes(app);
 
-function clientErrorHandler(
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  if (Object.prototype.hasOwnProperty.call(err, 'thrown') && err.thrown) {
-    res.status(err.status).send({ error: err.message });
-  } else {
-    next(err);
-  }
-}
-
-app.use(clientErrorHandler);
-
 server = app.listen(port, () => {
   const expressHost = server.address();
   const expressPort = server.address().port;
+
   logger.info(`
     ------------
     Server Started!

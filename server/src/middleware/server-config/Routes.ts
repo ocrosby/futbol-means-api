@@ -8,7 +8,7 @@ import {
   ValidateError,
   TsoaRoute,
 } from 'tsoa';
-import { AuthorizationsController } from './../../service-layer/controllers/AuthorizationController';
+import { AuthorizationsController } from './../../service-layer/controllers/authorization.controller';
 import { UsersController } from '../../service-layer/controllers/UsersController';
 import { expressAuthentication } from './../../business-layer/security/Authentication';
 import express, { Request, Response, NextFunction } from 'express';

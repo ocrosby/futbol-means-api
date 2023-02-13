@@ -15,9 +15,8 @@ dist: clean
 	rm -rf dist
 	npm install -g --silent npm@latest
 	npm install --silent tsoa typescript
+	npx tsoa spec-and-routes
 	npx tsc
-	npx tsoa swagger
-	npx tsoa routes
 	cp -rf config dist/
 	cp package.json dist/
 	cp tsoa.json dist/
