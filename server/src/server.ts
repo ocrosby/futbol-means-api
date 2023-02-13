@@ -1,62 +1,50 @@
-import * as methodOverride from 'method-override';
-import express, { Application } from 'express';
-import * as bodyParser from 'body-parser';
-import { RegisterRoutes } from './service-layer/controllers/routes';
-
-import config = require('config');
+// import express, {Router, Application, NextFunction, Request, Response} from "express";
 
 
-import { logger } from './middleware/common/logging';
+import App from "./app";
+import TeamsController from "./teams/teams.controller";
+import PlayersController from "./players/players.controller";
+import IController from "./controller.interface";
 
 
+const controllers: IController[] = [];
+const port: number = 8000;
 
-// ########################################################################
-// controllers need to be referenced in order to get crawled by the generator
-import './service-layer/controllers/ping.controller'
-// ########################################################################
+controllers.push(new TeamsController());
+controllers.push(new PlayersController());
 
+const app = new App(controllers, port);
 
+app.listen();
 
+/*
+const router: Router = express.Router();
 
+function loggerMiddleware(req: Request, res: Response, next: NextFunction) {
+  console.log(`${req.method} ${req.path}`);
+  next();
+}
 
-import * as cors from 'cors';
-import * as cookieParser from 'cookie-parser';
-import * as health from 'express-ping';
+app.use(loggerMiddleware);
+app.use('/api', router);
 
-import './types';
-
-const app: Application = express();
-
-let server: any;
-
-const port = config.get('express.port');
-const debugPort = config.get('express.debug');
-
-app.use('/docs', express.static(__dirname + '/presentation-layer/documentation/swagger-ui'));
-
-app.use(cors.default());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cookieParser.default());
-app.use(methodOverride.default());
-app.use(health.ping());
-
-RegisterRoutes(app);
-
-server = app.listen(port, () => {
-  const expressHost = server.address();
-  const expressPort = server.address().port;
-
-  logger.info(`
-    ------------
-    Server Started!
-    Express: http://${expressHost}:${expressPort}
-    Debugger: http:/${expressHost}:${expressPort}/?ws=${expressHost}:${expressPort}&port=${debugPort}
-
-
-    Health: http://${expressHost}:${expressPort}/ping
-    Swagger Docs: http://${expressHost}:${expressPort}/docs
-    Swagger Spec: http://${expressHost}:${expressPort}/api-docs
-    ------------
-  `);
+app.get('/', (req: Request, res: Response) => {
+  res.send({
+    hostname: req.hostname,
+    path: req.path,
+    method: req.method
+  });
 });
+
+
+router.get('/hello', (req: Request, res: Response) => {
+  res.send('Hello World!');
+});
+
+router.post('/example/post', (req: Request, res: Response) => {
+  res.send(req.body);
+});
+
+
+app.listen(8000);
+*/

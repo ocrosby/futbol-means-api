@@ -108,6 +108,7 @@ tsoa.json: establishes the various locations of files needed to generate the swa
 ## References
 
 * [Another Example](https://github.com/GeekyAnts/express-typescript)
+* [Typescript Expres Tutorial](https://wanago.io/2018/12/03/typescript-express-tutorial-routing-controllers-middleware/)
 * [Rest API with Express TypeScript and Swagger](https://rsbh.dev/blogs/rest-api-with-express-typescript)
 * [Rest API Express TypeScript Docker](https://rsbh.dev/blogs/rest-api-express-typescript-docker)
 * [Swagger Node TypeScript with TSOA](https://medium.com/willsonic/swagger-nodejs-typescript-tsoa-15a3f10fabaf)
