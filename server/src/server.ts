@@ -4,33 +4,19 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-import * as mongoose from 'mongoose';
-import 'dotenv/config';
+// import 'dotenv/config';
 
-// const {
-//   MONGO_USER,
-//   MONGO_PASSWORD,
-//   MONGO_PATH,
-// } = process.env;
-//
-// mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}`);
+
 
 import App from "./app";
-import TeamsController from "./teams/teams.controller";
-import PlayersController from "./players/players.controller";
-import IController from "./controller.interface";
 
 import { validateEnv } from './utils/validateEnv';
 
-const controllers: IController[] = [];
 const port: number = 8000;
-
-controllers.push(new TeamsController());
-controllers.push(new PlayersController());
 
 validateEnv();
 
-const app = new App(controllers, port);
+const app = new App(port);
 
 app.listen();
 

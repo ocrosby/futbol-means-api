@@ -1,49 +1,60 @@
-import express, { Router, Request, Response } from 'express';
-import IPlayer from './player.interface'
-import {Player, PlayerBuilder} from "./player.model";
-import IController from "../controller.interface";
+import {
+  Body,
+  Controller,
+  Get,
+  Delete,
+  Put,
+  Path,
+  Post,
+  Query,
+  Route,
+  SuccessResponse,
+} from "tsoa";
 
-class PlayersController implements IController {
-  public path = '/api/players';
-  public router = Router();
 
-  private players: IPlayer[] = [];
+import {Player, PlayerDoc} from "./players.model";
+import {PlayerCreationParams, PlayersService} from "./players.service";
 
-  constructor() {
-    const builder: PlayerBuilder = new PlayerBuilder();
-
-    builder.build();
-    builder.buildName("player1");
-    builder.buildPosition("Forward");
-    builder.buildJerseyNumber(1);
-
-    this.players.push(builder.getInstance());
-
-    builder.build()
-    builder.buildName("player2");
-    builder.buildPosition("Midfielder");
-    builder.buildJerseyNumber(2);
-
-    this.players.push(builder.getInstance());
-
-    this.initializeRoutes();
+@Route('players')
+export class PlayersController extends Controller {
+  @Get("{playerId}")
+  public async getPlayer(
+    @Path() playerId: number,
+    @Query() name?: string
+  ): Promise<Player> {
+    return await new PlayersService().get(playerId);
   }
 
-  public initializeRoutes() {
-    this.router.get(this.path, this.getPlayers.bind(this));
-    this.router.post(this.path, this.createPlayer.bind(this));
+  @Get("/")
+  public async getAllPlayers(): Promise<Player[]> {
+    return await new PlayersService().getAll();
   }
 
-  public getPlayers(req: Request, res: Response) {
-    res.send(this.players);
+  @SuccessResponse("201", "Created") // Custom success response
+  @Post()
+  public async createPlayer(
+    @Body() requestBody: PlayerCreationParams
+  ): Promise<void> {
+    this.setStatus(201); // set return status 201
+    await new PlayersService().create(requestBody)
+    return;
   }
 
-  public createPlayer(req: Request, res: Response) {
-    const team: IPlayer = req.body;
+  @Put()
+  public async modifyPlayer(
+    @Body() requestBody: PlayerDoc
+  ): Promise<void> {
+    this.setStatus(200);
+    await new PlayersService().update(requestBody)
+    return;
+  }
 
-    this.players.push(team);
-    res.send(team)
+  @Delete("{playerId}")
+  public async deletePlayer(
+    @Path() playerId: number
+  ): Promise<void> {
+    this.setStatus(200);
+    await new PlayersService().deleteById(playerId);
+    return;
   }
 }
-
-export default PlayersController;

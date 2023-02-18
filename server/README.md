@@ -103,6 +103,44 @@ tsoa.json: establishes the various locations of files needed to generate the swa
 
 * the all import route configuration is used to identify the file used to stand up the web-server application, the location of the directory where the routes.ts can be found, and finally where the file(s) reside used in conjunction with our security apparatus are located.
 
+## Setting up MongoDB within a Docker container for local development
+
+Pull the image
+> docker pull mongo
+
+Start the container 
+> docker run
+-d
+--name YOUR_CONTAINER_NAME_HERE
+-p YOUR_LOCALHOST_PORT_HERE:27017
+-e MONGO_INITDB_ROOT_USERNAME=YOUR_USERNAME_HERE
+-e MONGO_INITDB_ROOT_PASSWORD=YOUR_PASSWORD_HERE
+mongo
+
+Check that the container's up and running
+> docker container ls
+
+Connect to the container and access your MongoDB instance
+
+> docker exec -it YOUR_CONTAINER_NAME_HERE bash
+
+Access the MongoDB instance via the mongo command line interface
+
+> mongo --username YOUR_USERNAME_HERE --password YOUR_PASSWORD_HERE
+
+List all databases:
+
+> show dbs
+> 
+
+Connecting to the database from outside of the container
+
+> mongodb://YOUR_USERNAME_HERE:YOUR_PASSWORD_HERE@0.0.0.0:YOUR_LOCALHOST_PORT_HERE
+
+or 
+
+> mongodb://YOUR_USERNAME_HERE:YOUR_PASSWORD_HERE@0.0.0.0:YOUR_LOCALHOST_PORT_HERE/YOUR_DATABASE_NAME_HERE
+
 
 
 ## References

@@ -1,0 +1,437 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Player": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"team": {
+						"type": "string"
+					},
+					"jerseyNumber": {
+						"type": "number",
+						"format": "double"
+					},
+					"grade": {
+						"type": "number",
+						"format": "double"
+					},
+					"height": {
+						"type": "string"
+					},
+					"weight": {
+						"type": "number",
+						"format": "double"
+					},
+					"positions": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"team",
+					"jerseyNumber",
+					"grade",
+					"height",
+					"weight",
+					"positions"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Player.name-or-team-or-jerseyNumber-or-grade-or-height-or-weight-or-positions_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"team": {
+						"type": "string"
+					},
+					"jerseyNumber": {
+						"type": "number",
+						"format": "double"
+					},
+					"grade": {
+						"type": "number",
+						"format": "double"
+					},
+					"height": {
+						"type": "string"
+					},
+					"weight": {
+						"type": "number",
+						"format": "double"
+					},
+					"positions": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"name",
+					"team",
+					"jerseyNumber",
+					"grade",
+					"height",
+					"weight",
+					"positions"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"PlayerCreationParams": {
+				"$ref": "#/components/schemas/Pick_Player.name-or-team-or-jerseyNumber-or-grade-or-height-or-weight-or-positions_"
+			},
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"PlayerDoc": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"Team": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"season": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"season"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Team.name-or-season_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"season": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"season"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"TeamCreationParams": {
+				"$ref": "#/components/schemas/Pick_Team.name-or-season_"
+			},
+			"User": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"email",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_User.email-or-name_": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"email"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"UserCreationParams": {
+				"$ref": "#/components/schemas/Pick_User.email-or-name_"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "means-api",
+		"version": "1.0.0",
+		"description": "An API allowing users to efficiently enter match data.",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {
+			"name": "Omar Crosby"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/players/{playerId}": {
+			"get": {
+				"operationId": "GetPlayer",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Player"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "playerId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "name",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeletePlayer",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "playerId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/players": {
+			"get": {
+				"operationId": "GetAllPlayers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Player"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreatePlayer",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayerCreationParams"
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"operationId": "ModifyPlayer",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/PlayerDoc"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/teams/{teamId}": {
+			"get": {
+				"operationId": "GetTeam",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Team"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "name",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/teams": {
+			"post": {
+				"operationId": "CreateTeam",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TeamCreationParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/{userId}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "name",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/users": {
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserCreationParams"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

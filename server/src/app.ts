@@ -1,38 +1,45 @@
 import express, {Application} from 'express';
 import * as mongoose from 'mongoose';
 import * as bodyParser from 'body-parser';
-import IController from "./controller.interface";
+import errorMiddleware from "./middleware/error.middleware";
 
 class App {
   public app: Application;
   public port: number;
 
-  constructor(controllers: IController[], port: number) {
+  constructor(port: number) {
     this.app = express()
     this.port = port;
 
     this.connectToTheDatabase();
     this.initializeMiddlewares();
-    this.initializeControllers(controllers);
+    this.initializeErrorHandling();
   }
 
   private initializeMiddlewares() {
     this.app.use(bodyParser.json());
   }
 
-  private initializeControllers(controllers: IController[]) {
-    controllers.forEach((controller) => {
-      this.app.use(controller.path, controller.router);
-    });
+  private initializeErrorHandling() {
+    this.app.use(errorMiddleware);
   }
 
   private connectToTheDatabase() {
     const {
       MONGO_USER,
       MONGO_PASSWORD,
-      MONGO_PATH,
+      MONGO_HOST,
+      MONGO_PORT,
+      MONGO_DB
     } = process.env;
-    mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}`);
+    const uri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
+
+    console.log(`Connecting to "${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}" ...`);
+
+    mongoose.set('strictQuery', false);
+    mongoose.connect(uri, () => {
+      console.log('Connected to MongoDB');
+    });
   }
 
   public listen() {
