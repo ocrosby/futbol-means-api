@@ -11,7 +11,6 @@ IMAGE_NAME = local-means-api-dev
 build-clean:
 	rm -rf node_modules
 	rm -rf dist
-	rm -f .DS_Store
 
 clean: build-clean
 
@@ -23,10 +22,11 @@ install:
 transpile: clean install
 	npx tsoa spec-and-routes
 	npx tsc
+	cp tsoa.json dist/
+	cp src/build/swagger.json dist/build/
 
 dist: clean transpile
 	cp package.json dist/
-	cp tsoa.json dist/
 	cd dist/ && npm install --production --silent && cd ..
 
 build:
