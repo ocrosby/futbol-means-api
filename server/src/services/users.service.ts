@@ -1,6 +1,6 @@
 import { injectable } from "inversify";
 
-import { User } from "./users.model";
+import { User } from "../models/users.model";
 
 // A post request should no tcontain an id.
 export type UserCreationParams = Pick<User, "email" | "name">;

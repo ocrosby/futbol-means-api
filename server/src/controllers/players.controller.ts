@@ -14,8 +14,8 @@ import {
 } from "tsoa";
 
 
-import {Player, PlayerDoc} from "./players.model";
-import {PlayerCreationParams, PlayersService} from "./players.service";
+import {Player, PlayerDoc} from "../models/players.model";
+import {PlayerCreationParams, PlayersService} from "../services/players.service";
 
 @Route('api/players')
 @injectable()

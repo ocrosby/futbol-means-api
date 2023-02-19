@@ -3,11 +3,11 @@
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, HttpStatusCodeLiteral, TsoaResponse, fetchMiddlewares } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { PlayersController } from './../players/players.controller';
+import { PlayersController } from './../controllers/players.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { TeamsController } from './../teams/teams.controller';
+import { TeamsController } from './../controllers/teams.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { UsersController } from './../users/users.controller';
+import { UsersController } from './../controllers/users.controller';
 import { iocContainer } from './../ioc';
 import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { RequestHandler, Router } from 'express';

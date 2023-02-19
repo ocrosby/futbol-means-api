@@ -1,4 +1,4 @@
-import TeamModel, { Team, TeamDoc } from "./teams.model";
+import TeamModel, { Team, TeamDoc } from "../models/teams.model";
 import TeamNotFoundException from "../exceptions/TeamNotFoundException";
 import {injectable} from "inversify";
 

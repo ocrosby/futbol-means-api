@@ -1,4 +1,4 @@
-import { PlayerModel, Player, PlayerDoc } from "./players.model";
+import { PlayerModel, Player, PlayerDoc } from "../models/players.model";
 import PlayerNotFoundException from "../exceptions/PlayerNotFoundException";
 import {injectable} from "inversify";
 

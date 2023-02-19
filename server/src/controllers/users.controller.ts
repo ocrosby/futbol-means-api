@@ -11,8 +11,8 @@ import {
   Route,
   SuccessResponse,
 } from "tsoa";
-import { User } from "./users.model";
-import { UsersService, UserCreationParams } from "./users.service";
+import { User } from "../models/users.model";
+import { UsersService, UserCreationParams } from "../services/users.service";
 
 @Route("api/users")
 @injectable()

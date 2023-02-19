@@ -9,8 +9,8 @@ import {
   Route,
   SuccessResponse,
 } from "tsoa";
-import { Team } from "./teams.model";
-import { TeamsService, TeamCreationParams } from "./teams.service";
+import { Team } from "../models/teams.model";
+import { TeamsService, TeamCreationParams } from "../services/teams.service";
 import { inject, injectable } from "inversify";
 
 @Route("api/teams")
