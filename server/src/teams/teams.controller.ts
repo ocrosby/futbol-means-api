@@ -11,15 +11,32 @@ import {
 } from "tsoa";
 import { Team } from "./teams.model";
 import { TeamsService, TeamCreationParams } from "./teams.service";
+import { inject, injectable } from "inversify";
 
-@Route("teams")
+@Route("api/teams")
+@injectable()
 export class TeamsController extends Controller {
+  protected teamsService: TeamsService;
+
+  constructor(
+    @inject(TeamsService) teamsService: TeamsService
+  ) {
+    super();
+
+    this.teamsService = teamsService;
+  }
+
+  @Get()
+  public async getAllTeams(): Promise<Team[]> {
+    return await this.teamsService.getAll();
+  }
+
   @Get("{teamId}")
   public async getTeam(
     @Path() teamId: number,
     @Query() name?: string
   ): Promise<Team> {
-    return await new TeamsService().get(teamId, name);
+    return await this.teamsService.get(teamId, name);
   }
 
   @SuccessResponse("201", "Created") // Custom success response
@@ -28,7 +45,7 @@ export class TeamsController extends Controller {
     @Body() requestBody: TeamCreationParams
   ): Promise<void> {
     this.setStatus(201); // set return status 201
-    await new TeamsService().create(requestBody);
+    await this.teamsService.create(requestBody);
     return;
   }
 }

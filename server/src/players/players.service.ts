@@ -1,9 +1,11 @@
 import { PlayerModel, Player, PlayerDoc } from "./players.model";
 import PlayerNotFoundException from "../exceptions/PlayerNotFoundException";
+import {injectable} from "inversify";
 
 // A post request should not contain an id.
 export type PlayerCreationParams = Pick<Player, "name"|"team"|"jerseyNumber"|"grade"|"height"|"weight"|"positions">
 
+@injectable()
 export class PlayersService {
   public async create(params: PlayerCreationParams): Promise<Player> {
     return new Promise<Player>(async (resolve, reject) => {

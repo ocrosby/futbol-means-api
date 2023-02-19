@@ -8,6 +8,8 @@ import { PlayersController } from './../players/players.controller';
 import { TeamsController } from './../teams/teams.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UsersController } from './../users/users.controller';
+import { iocContainer } from './../ioc';
+import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { RequestHandler, Router } from 'express';
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -96,11 +98,11 @@ export function RegisterRoutes(app: Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/api/players/:playerId',
+        app.get('/api/api/players/:playerId',
             ...(fetchMiddlewares<RequestHandler>(PlayersController)),
             ...(fetchMiddlewares<RequestHandler>(PlayersController.prototype.getPlayer)),
 
-            function PlayersController_getPlayer(request: any, response: any, next: any) {
+            async function PlayersController_getPlayer(request: any, response: any, next: any) {
             const args = {
                     playerId: {"in":"path","name":"playerId","required":true,"dataType":"double"},
                     name: {"in":"query","name":"name","dataType":"string"},
@@ -112,7 +114,12 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new PlayersController();
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<PlayersController>(PlayersController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
 
 
               const promise = controller.getPlayer.apply(controller, validatedArgs as any);
@@ -122,11 +129,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/players',
+        app.get('/api/api/players',
             ...(fetchMiddlewares<RequestHandler>(PlayersController)),
             ...(fetchMiddlewares<RequestHandler>(PlayersController.prototype.getAllPlayers)),
 
-            function PlayersController_getAllPlayers(request: any, response: any, next: any) {
+            async function PlayersController_getAllPlayers(request: any, response: any, next: any) {
             const args = {
             };
 
@@ -136,7 +143,12 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new PlayersController();
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<PlayersController>(PlayersController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
 
 
               const promise = controller.getAllPlayers.apply(controller, validatedArgs as any);
@@ -146,11 +158,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/players',
+        app.post('/api/api/players',
             ...(fetchMiddlewares<RequestHandler>(PlayersController)),
             ...(fetchMiddlewares<RequestHandler>(PlayersController.prototype.createPlayer)),
 
-            function PlayersController_createPlayer(request: any, response: any, next: any) {
+            async function PlayersController_createPlayer(request: any, response: any, next: any) {
             const args = {
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"PlayerCreationParams"},
             };
@@ -161,7 +173,12 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new PlayersController();
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<PlayersController>(PlayersController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
 
 
               const promise = controller.createPlayer.apply(controller, validatedArgs as any);
@@ -171,11 +188,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.put('/api/players',
+        app.put('/api/api/players',
             ...(fetchMiddlewares<RequestHandler>(PlayersController)),
             ...(fetchMiddlewares<RequestHandler>(PlayersController.prototype.modifyPlayer)),
 
-            function PlayersController_modifyPlayer(request: any, response: any, next: any) {
+            async function PlayersController_modifyPlayer(request: any, response: any, next: any) {
             const args = {
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"PlayerDoc"},
             };
@@ -186,7 +203,12 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new PlayersController();
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<PlayersController>(PlayersController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
 
 
               const promise = controller.modifyPlayer.apply(controller, validatedArgs as any);
@@ -196,11 +218,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/api/players/:playerId',
+        app.delete('/api/api/players/:playerId',
             ...(fetchMiddlewares<RequestHandler>(PlayersController)),
             ...(fetchMiddlewares<RequestHandler>(PlayersController.prototype.deletePlayer)),
 
-            function PlayersController_deletePlayer(request: any, response: any, next: any) {
+            async function PlayersController_deletePlayer(request: any, response: any, next: any) {
             const args = {
                     playerId: {"in":"path","name":"playerId","required":true,"dataType":"double"},
             };
@@ -211,7 +233,12 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new PlayersController();
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<PlayersController>(PlayersController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
 
 
               const promise = controller.deletePlayer.apply(controller, validatedArgs as any);
@@ -221,11 +248,40 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/teams/:teamId',
+        app.get('/api/api/teams',
+            ...(fetchMiddlewares<RequestHandler>(TeamsController)),
+            ...(fetchMiddlewares<RequestHandler>(TeamsController.prototype.getAllTeams)),
+
+            async function TeamsController_getAllTeams(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<TeamsController>(TeamsController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
+
+
+              const promise = controller.getAllTeams.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/api/teams/:teamId',
             ...(fetchMiddlewares<RequestHandler>(TeamsController)),
             ...(fetchMiddlewares<RequestHandler>(TeamsController.prototype.getTeam)),
 
-            function TeamsController_getTeam(request: any, response: any, next: any) {
+            async function TeamsController_getTeam(request: any, response: any, next: any) {
             const args = {
                     teamId: {"in":"path","name":"teamId","required":true,"dataType":"double"},
                     name: {"in":"query","name":"name","dataType":"string"},
@@ -237,7 +293,12 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new TeamsController();
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<TeamsController>(TeamsController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
 
 
               const promise = controller.getTeam.apply(controller, validatedArgs as any);
@@ -247,11 +308,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/teams',
+        app.post('/api/api/teams',
             ...(fetchMiddlewares<RequestHandler>(TeamsController)),
             ...(fetchMiddlewares<RequestHandler>(TeamsController.prototype.createTeam)),
 
-            function TeamsController_createTeam(request: any, response: any, next: any) {
+            async function TeamsController_createTeam(request: any, response: any, next: any) {
             const args = {
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"TeamCreationParams"},
             };
@@ -262,7 +323,12 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new TeamsController();
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<TeamsController>(TeamsController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
 
 
               const promise = controller.createTeam.apply(controller, validatedArgs as any);
@@ -272,11 +338,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/users/:userId',
+        app.get('/api/api/users/:userId',
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
             ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.getUser)),
 
-            function UsersController_getUser(request: any, response: any, next: any) {
+            async function UsersController_getUser(request: any, response: any, next: any) {
             const args = {
                     userId: {"in":"path","name":"userId","required":true,"dataType":"double"},
                     name: {"in":"query","name":"name","dataType":"string"},
@@ -288,7 +354,12 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new UsersController();
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UsersController>(UsersController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
 
 
               const promise = controller.getUser.apply(controller, validatedArgs as any);
@@ -298,11 +369,11 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/users',
+        app.post('/api/api/users',
             ...(fetchMiddlewares<RequestHandler>(UsersController)),
             ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.createUser)),
 
-            function UsersController_createUser(request: any, response: any, next: any) {
+            async function UsersController_createUser(request: any, response: any, next: any) {
             const args = {
                     requestBody: {"in":"body","name":"requestBody","required":true,"ref":"UserCreationParams"},
             };
@@ -313,7 +384,12 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new UsersController();
+                const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
+
+                const controller: any = await container.get<UsersController>(UsersController);
+                if (typeof controller['setStatus'] === 'function') {
+                controller.setStatus(undefined);
+                }
 
 
               const promise = controller.createUser.apply(controller, validatedArgs as any);

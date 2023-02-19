@@ -1,9 +1,11 @@
 import TeamModel, { Team, TeamDoc } from "./teams.model";
 import TeamNotFoundException from "../exceptions/TeamNotFoundException";
+import {injectable} from "inversify";
 
 // A post request should not contain an id.
 export type TeamCreationParams = Pick<Team, "name" | "season">;
 
+@injectable()
 export class TeamsService {
   public async create(params: TeamCreationParams): Promise<Team> {
     return new Promise<Team>(async (resolve, reject) => {
@@ -32,6 +34,14 @@ export class TeamsService {
       }
 
       resolve(team as Team);
+    });
+  }
+
+  public async getAll(): Promise<Team[]> {
+    return new Promise<Team[]>(async (resolve, reject) => {
+      var teams = await TeamModel.find({}).exec();
+
+      resolve(teams);
     });
   }
 

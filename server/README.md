@@ -150,3 +150,6 @@ or
 * [Rest API with Express TypeScript and Swagger](https://rsbh.dev/blogs/rest-api-with-express-typescript)
 * [Rest API Express TypeScript Docker](https://rsbh.dev/blogs/rest-api-express-typescript-docker)
 * [Swagger Node TypeScript with TSOA](https://medium.com/willsonic/swagger-nodejs-typescript-tsoa-15a3f10fabaf)
+* [TypeScript Dependency Injection](https://levelup.gitconnected.com/dependency-injection-in-typescript-2f66912d143c)
+* [Inversify IOC](https://inversify.io)
+* [Simplifying Dependency Injection](https://engineering.monstar-lab.com/en/post/2019/10/02/simplifying-dependency-injection-and-ioc-concepts-with-typescript/)

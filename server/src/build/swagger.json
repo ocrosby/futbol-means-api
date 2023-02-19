@@ -191,7 +191,7 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/players/{playerId}": {
+		"/api/players/{playerId}": {
 			"get": {
 				"operationId": "GetPlayer",
 				"responses": {
@@ -248,7 +248,7 @@
 				]
 			}
 		},
-		"/players": {
+		"/api/players": {
 			"get": {
 				"operationId": "GetAllPlayers",
 				"responses": {
@@ -310,7 +310,49 @@
 				}
 			}
 		},
-		"/teams/{teamId}": {
+		"/api/teams": {
+			"get": {
+				"operationId": "GetAllTeams",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Team"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateTeam",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TeamCreationParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/teams/{teamId}": {
 			"get": {
 				"operationId": "GetTeam",
 				"responses": {
@@ -347,29 +389,7 @@
 				]
 			}
 		},
-		"/teams": {
-			"post": {
-				"operationId": "CreateTeam",
-				"responses": {
-					"201": {
-						"description": "Created"
-					}
-				},
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/TeamCreationParams"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/users/{userId}": {
+		"/api/users/{userId}": {
 			"get": {
 				"operationId": "GetUser",
 				"responses": {
@@ -406,7 +426,7 @@
 				]
 			}
 		},
-		"/users": {
+		"/api/users": {
 			"post": {
 				"operationId": "CreateUser",
 				"responses": {

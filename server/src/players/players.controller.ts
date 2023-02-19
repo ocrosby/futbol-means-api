@@ -1,3 +1,5 @@
+import { inject, injectable } from "inversify";
+
 import {
   Body,
   Controller,
@@ -15,19 +17,30 @@ import {
 import {Player, PlayerDoc} from "./players.model";
 import {PlayerCreationParams, PlayersService} from "./players.service";
 
-@Route('players')
+@Route('api/players')
+@injectable()
 export class PlayersController extends Controller {
+  protected playersService: PlayersService;
+
+  constructor(
+    @inject(PlayersService) playersService: PlayersService
+  ) {
+    super();
+
+    this.playersService = playersService;
+  }
+
   @Get("{playerId}")
   public async getPlayer(
     @Path() playerId: number,
     @Query() name?: string
   ): Promise<Player> {
-    return await new PlayersService().get(playerId);
+    return await this.playersService.get(playerId);
   }
 
   @Get("/")
   public async getAllPlayers(): Promise<Player[]> {
-    return await new PlayersService().getAll();
+    return await this.playersService.getAll();
   }
 
   @SuccessResponse("201", "Created") // Custom success response
@@ -36,7 +49,7 @@ export class PlayersController extends Controller {
     @Body() requestBody: PlayerCreationParams
   ): Promise<void> {
     this.setStatus(201); // set return status 201
-    await new PlayersService().create(requestBody)
+    await this.playersService.create(requestBody)
     return;
   }
 
@@ -45,7 +58,7 @@ export class PlayersController extends Controller {
     @Body() requestBody: PlayerDoc
   ): Promise<void> {
     this.setStatus(200);
-    await new PlayersService().update(requestBody)
+    await this.playersService.update(requestBody)
     return;
   }
 
