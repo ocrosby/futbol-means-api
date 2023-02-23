@@ -57,6 +57,29 @@ npm run docker:build
 npm test
 ```
 
+## Dependencies
+
+* body-parser - Node.js body parsing middleware
+* dotenv - Loads environment variables from .env file
+* envalid - Envalid is a small library for validating and accessing environment variables in Node.js programs
+* express - Fast, unopinionated, minimalist web framework for Node.js
+* inversify - A powerful and lightweight inversion of control container for JavaScript & Node.js apps powered by TypeScript.
+* inversify-binding-decorators - An utility that allows developers to declare InversifyJS bindings using ES2016 decorators:
+* mongoose - elegant mongodb object modeling for node.js
+* reflect-metadata - Polyfill for Metadata Reflection API
+* swagger-ui-express - Swagger UI Express
+* tsoa - OpenAPI-compliant REST APIs using TypeScript and Node
+
+## Development Dependencies
+
+* concurrently
+* eslint
+* nodemon
+* npm-run-all
+* rimraf
+* ts-node
+* typescript
+
 ## Directory Structure
 The directory structure of the application emphasizes an architectural approach based on a "separation of concerns":
 

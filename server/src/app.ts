@@ -1,51 +1,51 @@
-import express, {json, urlencoded, Application, Response, Request, NextFunction} from 'express';
-import * as mongoose from 'mongoose';
-import * as bodyParser from 'body-parser';
-import errorMiddleware from "./middleware/error.middleware";
-import { RegisterRoutes } from "./build/routes";
-import swaggerUi from "swagger-ui-express";
+import express, {json, urlencoded, Application, Response, Request, NextFunction} from 'express'
+import * as mongoose from 'mongoose'
+import * as bodyParser from 'body-parser'
+import errorMiddleware from './middleware/error.middleware'
+import { RegisterRoutes } from './build/routes'
+import swaggerUi from 'swagger-ui-express'
 
 class App {
-  public app: Application;
-  public port: number;
+  public app: Application
+  public port: number
 
-  constructor(port: number) {
+  constructor (port: number) {
     this.app = express()
-    this.port = port;
+    this.port = port
 
-    this.initializeContainer();
-    this.connectToTheDatabase();
-    this.initializeMiddlewares();
-    this.initializeErrorHandling();
+    this.initializeContainer()
+    this.connectToTheDatabase()
+    this.initializeMiddlewares()
+    this.initializeErrorHandling()
 
-    RegisterRoutes(this.app);
+    RegisterRoutes(this.app)
   }
 
-  private initializeContainer() {
+  private initializeContainer (): void {
     // Todo: Setup IOC container.
   }
 
-  private initializeMiddlewares() {
-    this.app.use(json());
-    this.app.use(bodyParser.json());
+  private initializeMiddlewares (): void {
+    this.app.use(json())
+    this.app.use(bodyParser.json())
     this.app.use(
       urlencoded({
         extended: true
       })
-    );
+    )
 
-    this.app.use("/docs", swaggerUi.serve, async (_req: Request, res: Response, _next: NextFunction) => {
+    this.app.use('/docs', swaggerUi.serve, async (_req: Request, res: Response, _next: NextFunction) => {
       return res.send(
         swaggerUi.generateHTML(await import("./build/swagger.json"))
       );
     });
   }
 
-  private initializeErrorHandling() {
-    this.app.use(errorMiddleware);
+  private initializeErrorHandling (): void {
+    this.app.use(errorMiddleware)
   }
 
-  private connectToTheDatabase() {
+  private connectToTheDatabase (): void {
     const {
       MONGO_USER,
       MONGO_PASSWORD,
@@ -63,7 +63,7 @@ class App {
     });
   }
 
-  public listen() {
+  public listen (): void {
     this.app.listen(this.port, () => {
       console.log(`App listening on port ${this.port}`);
     });
