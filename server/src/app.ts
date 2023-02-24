@@ -73,6 +73,7 @@ class App {
   }
 
   public listen (): void {
+    console.log(`Starting the API on port ${this.port} ...`)
     this.app.listen(this.port, () => {
       console.log(`App listening on port ${this.port}`)
     })
