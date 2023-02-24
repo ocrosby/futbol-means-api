@@ -19,8 +19,8 @@
     "build": "npm-run-all compile copy install:dist",
     "dev": "concurrently \"nodemon --config nodemon.json\" \"nodemon -x tsoa spec-and-routes\"",
     "start": "npm run build && node dist/server.js",
-    "mongo:start": "docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo",
-    "mongo:stop": "docker stop mongo_dev && docker container rm mongo_dev"
+    "mstart": "docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo",
+    "mstop": "docker stop mongo_dev && docker container rm mongo_dev"
   },
   "repository": {
     "type": "git",
