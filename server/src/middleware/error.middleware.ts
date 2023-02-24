@@ -1,16 +1,17 @@
 
-import { NextFunction, Request, Response } from 'express';
-import HttpException from '../exceptions/HttpException';
+import { type NextFunction, type Request, type Response } from 'express'
+import type HttpException from '../exceptions/HttpException'
 
-function errorMiddleware(error: HttpException, request: Request, response: Response, _next: NextFunction) {
-  const status = error.status || 500;
-  const message = error.message || 'Something went wrong';
+function errorMiddleware (error: HttpException, request: Request, response: Response, _next: NextFunction): void {
+  const status: number = Number.isNaN(error.status) ? 500 : error.status
+  const message: string = (error.message == null) ? error.message : 'Something went wrong'
+
   response
     .status(status)
     .send({
       status,
-      message,
-    });
+      message
+    })
 }
 
-export default errorMiddleware;
+export default errorMiddleware

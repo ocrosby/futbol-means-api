@@ -11,5 +11,6 @@
         "project": ["./tsconfig.json"]
     },
     "rules": {
+      "@typescript-eslint/restrict-template-expressions": "error"
     }
 }

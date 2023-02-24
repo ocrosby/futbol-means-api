@@ -1,9 +1,10 @@
-import express, {json, urlencoded, Application, Response, Request, NextFunction} from 'express'
+import express, { json, urlencoded, type Application, type Response, type Request, type NextFunction } from 'express'
 import * as mongoose from 'mongoose'
 import * as bodyParser from 'body-parser'
 import errorMiddleware from './middleware/error.middleware'
-import { RegisterRoutes } from './build/routes'
 import swaggerUi from 'swagger-ui-express'
+
+import { RegisterRoutes } from './build/routes'
 
 class App {
   public app: Application
@@ -34,11 +35,11 @@ class App {
       })
     )
 
-    this.app.use('/docs', swaggerUi.serve, async (_req: Request, res: Response, _next: NextFunction) => {
+    this.app.use('/docs', swaggerUi.serve, (_req: Request, res: Response, _next: NextFunction) => {
       return res.send(
-        swaggerUi.generateHTML(await import("./build/swagger.json"))
-      );
-    });
+        swaggerUi.generateHTML(import('./build/swagger.json'))
+      )
+    })
   }
 
   private initializeErrorHandling (): void {
@@ -52,22 +53,25 @@ class App {
       MONGO_HOST,
       MONGO_PORT,
       MONGO_DB
-    } = process.env;
-    const uri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
+    } = process.env
 
-    console.log(`Connecting to "${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}" ...`);
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    const uri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
 
-    mongoose.set('strictQuery', false);
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    console.log(`Connecting to "${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}" ...`)
+
+    mongoose.set('strictQuery', false)
     mongoose.connect(uri, () => {
-      console.log('Connected to MongoDB');
-    });
+      console.log('Connected to MongoDB')
+    })
   }
 
   public listen (): void {
     this.app.listen(this.port, () => {
-      console.log(`App listening on port ${this.port}`);
-    });
+      console.log(`App listening on port ${this.port}`)
+    })
   }
 }
 
-export default App;
+export default App

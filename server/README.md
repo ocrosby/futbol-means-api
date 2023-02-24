@@ -2,7 +2,7 @@
 
 ## Build from source
 
-0. Installing TypeScript globally
+0. Installing DFev globally
     ```sh
     npm install -g typescript
     tsc --version

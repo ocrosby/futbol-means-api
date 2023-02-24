@@ -1,16 +1,16 @@
-import "reflect-metadata";
-import * as dotenv from 'dotenv';
+import 'reflect-metadata'
+import * as dotenv from 'dotenv'
 
-dotenv.config();
+import App from './app'
 
-import App from "./app";
+import { validateEnv } from './utils/validateEnv'
 
-import { validateEnv } from './utils/validateEnv';
+dotenv.config()
 
-const port: number = Number(process.env.port) || 8000;
+const port: number = Number.isNaN(process.env.port) ? 8000 : Number(process.env.port)
 
-validateEnv();
+validateEnv()
 
-const app = new App(port);
+const app = new App(port)
 
-app.listen();
+app.listen()

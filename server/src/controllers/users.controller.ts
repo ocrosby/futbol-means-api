@@ -1,4 +1,4 @@
-import { inject, injectable } from "inversify";
+import { inject, injectable } from 'inversify'
 
 // src/users/usersController.ts
 import {
@@ -9,39 +9,38 @@ import {
   Post,
   Query,
   Route,
-  SuccessResponse,
-} from "tsoa";
-import { User } from "../models/users.model";
-import { UsersService, UserCreationParams } from "../services/users.service";
+  SuccessResponse
+} from 'tsoa'
+import { type User } from '../models/users.model'
+import { UsersService, UserCreationParams } from '../services/users.service'
 
-@Route("api/users")
+@Route('api/users')
 @injectable()
 export class UsersController extends Controller {
-  protected usersService: UsersService;
+  protected usersService: UsersService
 
-  constructor(
-    @inject(UsersService) usersService: UsersService
+  constructor (
+  @inject(UsersService) usersService: UsersService
   ) {
-    super();
+    super()
 
-    this.usersService = usersService;
+    this.usersService = usersService
   }
 
-  @Get("{userId}")
-  public async getUser(
+  @Get('{userId}')
+  public async getUser (
     @Path() userId: number,
-    @Query() name?: string
+      @Query() name?: string
   ): Promise<User> {
-    return await this.usersService.get(userId, name);
+    return this.usersService.get(userId, name)
   }
 
-  @SuccessResponse("201", "Created") // Custom success response
+  @SuccessResponse('201', 'Created') // Custom success response
   @Post()
-  public async createUser(
+  public async createUser (
     @Body() requestBody: UserCreationParams
-  ): Promise<void> {
-    this.setStatus(201); // set return status 201
-    await this.usersService.create(requestBody);
-    return;
+  ): Promise<User> {
+    this.setStatus(201) // set return status 201
+    return this.usersService.create(requestBody)
   }
 }

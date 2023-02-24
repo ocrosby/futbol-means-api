@@ -15,6 +15,7 @@ build-clean:
 clean: build-clean
 
 install:
+  npm install -g --silent eslint
 	npm install -g --silent npm@latest
 	npm install --silent tsoa typescript
 	npm install --silent
