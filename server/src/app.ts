@@ -48,15 +48,20 @@ class App {
 
   private connectToTheDatabase (): void {
     const {
-      MONGO_USER,
-      MONGO_PASSWORD,
+      // MONGO_USER,
+      // MONGO_PASSWORD,
       MONGO_HOST,
       MONGO_PORT,
       MONGO_DB
     } = process.env
 
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const uri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
+    // const uri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
+
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    const uri: string = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
+
+    console.log(`Mongo Connection String: "${uri}"`)
 
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     console.log(`Connecting to "${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}" ...`)

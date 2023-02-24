@@ -14,10 +14,13 @@
     "tsoa:build": "npm-run-all tsoa:spec tsoa:routes",
     "tsc": "tsc",
     "compile": "npm-run-all clean lint tsoa:build tsc",
-    "build": "npm-run-all compile && cp .env package.json dist",
+    "copy": "cp .env package*.json dist/",
+    "install:dist": "cd dist/ && npm install --production",
+    "build": "npm-run-all compile copy install:dist",
     "dev": "concurrently \"nodemon --config nodemon.json\" \"nodemon -x tsoa spec-and-routes\"",
-    "start": "npm run compile && node dist/server.js",
-    "mongo": "docker run -d --name mongo_dev -p 27018:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo"
+    "start": "npm run build && node dist/server.js",
+    "mongo:start": "docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo",
+    "mongo:stop": "docker stop mongo_dev && docker container rm mongo_dev"
   },
   "repository": {
     "type": "git",
