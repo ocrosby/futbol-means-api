@@ -1,10 +1,17 @@
-import express, { json, urlencoded, type Application, type Response, type Request, type NextFunction } from 'express'
+import express, { type Application, type Response, type Request, type NextFunction } from 'express'
+import path from 'path'
+import cors from 'cors'
+import helmet from 'helmet'
+import passport from 'passport'
+import { Strategy as LocalStrategy } from 'passport-local'
 import * as mongoose from 'mongoose'
-import * as bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
 import errorMiddleware from './middleware/error.middleware'
 import swaggerUi from 'swagger-ui-express'
 
 import { RegisterRoutes } from './build/routes'
+
+import { UserModel } from './models/users.model'
 
 class App {
   public app: Application
@@ -15,9 +22,11 @@ class App {
     this.port = port
 
     this.initializeContainer()
-    this.connectToTheDatabase()
     this.initializeMiddlewares()
     this.initializeErrorHandling()
+
+    this.connectToTheDatabase()
+    this.initializePassportLocal()
 
     RegisterRoutes(this.app)
   }
@@ -26,14 +35,22 @@ class App {
     // Todo: Setup IOC container.
   }
 
+  private initializePassportLocal(): void {
+    // use static authenticate method of the model in LocalStrategy.
+    passport.use(new LocalStrategy(UserModel.authenticate()))
+
+    // use static serialize and deserialize of the model for passport session support
+    passport.serializeUser(UserModel.serializeUser())
+    passport.deserializeUser(UserModel.deserializeUser())
+  }
+
   private initializeMiddlewares (): void {
-    this.app.use(json())
-    this.app.use(bodyParser.json())
-    this.app.use(
-      urlencoded({
-        extended: true
-      })
-    )
+    this.app.use(helmet());
+    this.app.use(cors())
+    this.app.use(cookieParser())
+    this.app.use(express.json())
+    this.app.use(express.urlencoded({ extended: true } ))
+    this.app.use(express.static(path.join(__dirname, 'public')))
 
     this.app.use('/docs', swaggerUi.serve, (_req: Request, res: Response, _next: NextFunction) => {
       return res.send(

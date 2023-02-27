@@ -1,21 +1,14 @@
 import { injectable } from 'inversify'
 
-import { type User } from '../models/users.model'
-
-// A post request should no tcontain an id.
-export type UserCreationParams = Pick<User, 'email' | 'name'>
+import User, { type UserInput, type UserDocument } from '../models/users.model'
 
 @injectable()
 export class UsersService {
-  public get (id: number, name?: string): User {
-    return {
-      id,
-      email: 'jane@doe.com',
-      name: name ?? 'Jane Doe'
-    }
+  public async get(id: number, name?: string): UserDocument {
+    return await User.findById(id)
   }
 
-  public create (userCreationParams: UserCreationParams): User {
+  public create(userCreationParams: UserInput): User {
     return {
       id: Math.floor(Math.random() * 10000), // Random
       name: userCreationParams.name,

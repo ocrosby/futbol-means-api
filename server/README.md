@@ -1,39 +1,52 @@
 # Means API
 
-## Build from source
+## Setup
 
-0. Installing DFev globally
-    ```sh
-    npm install -g typescript
-    tsc --version
-    ```
+### Installing TypeScript globally
 
-1. Clone the repo
+```sh
+npm install -g typescript
+tsc --version
+```
+   
+### Installing Eslint globally
 
-    ```sh
-    git clone https://github.com/ocrosby/futbol-means.git
-    cd futbol-means
-    ```
+```sh
+npm install -g eslint
+```
 
-2. Install dependencies
+### Clone the repo
 
-    ```sh
-    npm install
-    ```
+```sh
+git clone https://github.com/ocrosby/futbol-means.git
+cd futbol-means
+```
 
-3. Build the production server
+### Install dependencies
 
-    ```sh
-    npm build
-    ```
+```sh
+npm install
+```
 
-4. Run the server
+### Build the production server
 
-    ```sh
-    npm start
-    ```
+```sh
+npm build
+```
 
-## Building Docker image locally
+### Run the server
+
+```sh
+npm start
+```
+
+## Docker
+
+Note: I always forget this but the docker port mapping rules start with the port on the
+      local machine (on the left) followed by a ':' then the port within the container
+      (on the right).
+
+### Build the API Docker image locally
 
 ```sh
 docker build -t means-api .
@@ -45,11 +58,6 @@ docker build -t means-api .
 docker images
 ```
 
-or
-
-```sh
-npm run docker:build
-```
 
 ## Run tests
 
@@ -59,16 +67,19 @@ npm test
 
 ## Dependencies
 
-* body-parser - Node.js body parsing middleware
-* dotenv - Loads environment variables from .env file
-* envalid - Envalid is a small library for validating and accessing environment variables in Node.js programs
 * express - Fast, unopinionated, minimalist web framework for Node.js
+* dotenv - Zero-dependency module that loads environment avariables from a .env file into process.env
+* cors - Express middleware to enable CORS with various options
+* helmet - Express middleware to secure your apps by setting various HTTP headers, which mitigate common attack vectors
+* envalid - Envalid is a small library for validating and accessing environment variables in Node.js programs
 * inversify - A powerful and lightweight inversion of control container for JavaScript & Node.js apps powered by TypeScript.
 * inversify-binding-decorators - An utility that allows developers to declare InversifyJS bindings using ES2016 decorators:
 * mongoose - elegant mongodb object modeling for node.js
 * reflect-metadata - Polyfill for Metadata Reflection API
 * swagger-ui-express - Swagger UI Express
 * tsoa - OpenAPI-compliant REST APIs using TypeScript and Node
+
+
 
 ## Development Dependencies
 
@@ -79,6 +90,20 @@ npm test
 * rimraf
 * ts-node
 * typescript
+* ts-node-dev - restarts a target Node.js process when any of the required files change
+
+## Development
+
+The dev run script now uses ts-node-dev which has the following parameters
+
+* --respawn: Keep watching for changes after the script has exited.
+* --pretty: Use pretty diagnostic formatter ( TS_NODE_PRETTY )
+* --transpile-only: Use TypeScript's faster transpileModule (TS_NODE_TRANSPILE_ONLY) 
+* src/server.ts: This is the application's entry file.
+
+Simply run the dev script to launch the project:
+
+> npm run dev
 
 ## Directory Structure
 The directory structure of the application emphasizes an architectural approach based on a "separation of concerns":
