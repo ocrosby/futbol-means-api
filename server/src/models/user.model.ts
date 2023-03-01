@@ -1,19 +1,15 @@
-import mongoose, { Schema, Document } from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 import bcrypt from 'bcrypt'
 import passportLocalMongoose from 'passport-local-mongoose';
 import {HookNextFunction} from "../utils/interfaces";
 
-export interface IUser extends Document {
+export interface User extends mongoose.Document {
   email: string;
   firstName: string;
   lastName: string;
   password: string;
-  // fullName: string;
-  // reverseName: string;
-  createdAt: Date;
-  updatedAt: Date;
-  // comparePassword(candidatePassword: string): Promise<boolean>;
 }
+
 
 const userSchema: Schema = new Schema({
   email: {
@@ -34,19 +30,19 @@ const userSchema: Schema = new Schema({
 userSchema.index({ email: 1 });
 
 // Virtual method
-userSchema.virtual('fullName').get(function (this: IUser) {
+userSchema.virtual('fullName').get(function (this: User) {
   return `${this.firstName} ${this.lastName}`
 });
 
 // Virtual method
-userSchema.virtual('reverseName').get(function (this: IUser) {
+userSchema.virtual('reverseName').get(function (this: User) {
   return `${this.lastName}, ${this.firstName}`
 });
 
 // When the user registers
 userSchema.pre(
   'save',
-  async function (this: IUser, next: HookNextFunction) {
+  async function (this: User, next: HookNextFunction) {
     // only hash the password if it has been modified (or is new)
     if (!this.isModified('password')) {
       return next()
@@ -66,12 +62,14 @@ userSchema.methods.comparePassword = async function (
   candidatePassword: string
 ): Promise<boolean> {
   // So we don't have to pass this into the interface method
-  const user = this as IUser;
+  const user = this as User
 
   return bcrypt.compare(candidatePassword, user.password).catch((_err) => false)
 }
 
 userSchema.plugin(passportLocalMongoose)
 
+export const UserModel = mongoose.model<User>('User', userSchema);
+
 // Export the model and return your IUser interface
-export default mongoose.model<UserInput>('User', userSchema);
+export default UserModel;

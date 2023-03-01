@@ -11,7 +11,8 @@ import {
   Route,
   SuccessResponse
 } from 'tsoa'
-import { type User } from '../models/users.model'
+
+import { User } from '../models/user.model'
 import { UsersService, UserCreationParams } from '../services/users.service'
 
 @Route('api/users')
@@ -32,7 +33,7 @@ export class UsersController extends Controller {
     @Path() userId: number,
       @Query() name?: string
   ): Promise<User> {
-    return this.usersService.get(userId, name)
+    return this.usersService.get(userId)
   }
 
   @SuccessResponse('201', 'Created') // Custom success response
@@ -41,6 +42,6 @@ export class UsersController extends Controller {
     @Body() requestBody: UserCreationParams
   ): Promise<User> {
     this.setStatus(201) // set return status 201
-    return this.usersService.create(requestBody)
+    return this.usersService.create(requestBody, requestBody.password)
   }
 }

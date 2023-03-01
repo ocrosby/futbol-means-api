@@ -11,7 +11,7 @@ import swaggerUi from 'swagger-ui-express'
 
 import { RegisterRoutes } from './build/routes'
 
-import { UserModel } from './models/users.model'
+import { UserModel } from './models/user.model'
 
 class App {
   public app: Application
@@ -36,6 +36,9 @@ class App {
   }
 
   private initializePassportLocal(): void {
+    this.app.use(passport.initialize())
+    this.app.use(passport.session())
+
     // use static authenticate method of the model in LocalStrategy.
     passport.use(new LocalStrategy(UserModel.authenticate()))
 

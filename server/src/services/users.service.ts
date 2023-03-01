@@ -1,18 +1,26 @@
 import { injectable } from 'inversify'
+import { User, UserModel } from '../models/user.model'
 
-import User, { type UserInput, type UserDocument } from '../models/users.model'
+// A post request should not contain unneeded parameters
+export type UserCreationParams = Pick<User, "email" | "firstName" | "lastName" | "password">
 
 @injectable()
 export class UsersService {
-  public async get(id: number, name?: string): UserDocument {
-    return await User.findById(id)
+  public async get(id: number): Promise<User> {
+    return await UserModel.findById(id) as User
   }
 
-  public create(userCreationParams: UserInput): User {
-    return {
-      id: Math.floor(Math.random() * 10000), // Random
-      name: userCreationParams.name,
-      email: userCreationParams.email
-    }
+  public create(userCreationParams: UserCreationParams, password: string): Promise<User> {
+    return new Promise<User>((resolve, reject) => {
+      let newUser = new UserModel(userCreationParams)
+
+      UserModel.register(newUser, password, (err: any, account: User) => {
+        if (err) {
+          reject(err)
+        }
+
+        resolve(account)
+      })
+    })
   }
 }
