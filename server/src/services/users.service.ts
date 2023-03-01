@@ -12,7 +12,7 @@ export class UsersService {
 
   public create(userCreationParams: UserCreationParams, password: string): Promise<User> {
     return new Promise<User>((resolve, reject) => {
-      let newUser = new UserModel(userCreationParams)
+      const newUser = new UserModel(userCreationParams)
 
       UserModel.register(newUser, password, (err: any, account: User) => {
         if (err) {

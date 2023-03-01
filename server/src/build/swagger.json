@@ -6,45 +6,65 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"User": {
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"Team": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"Pick_Team.name-or-season-or-owner_": {
 				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"email": {
-						"type": "string"
-					},
 					"name": {
 						"type": "string"
+					},
+					"season": {
+						"type": "string"
+					},
+					"owner": {
+						"$ref": "#/components/schemas/Team"
 					}
 				},
 				"required": [
-					"id",
-					"email",
-					"name"
+					"name",
+					"season",
+					"owner"
 				],
 				"type": "object",
-				"additionalProperties": false
+				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
-			"Pick_User.email-or-name_": {
+			"TeamCreationParams": {
+				"$ref": "#/components/schemas/Pick_Team.name-or-season-or-owner_"
+			},
+			"User": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"Pick_User.email-or-firstName-or-lastName-or-password_": {
 				"properties": {
 					"email": {
 						"type": "string"
 					},
-					"name": {
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"password": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"email",
-					"name"
+					"firstName",
+					"lastName",
+					"password"
 				],
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"UserCreationParams": {
-				"$ref": "#/components/schemas/Pick_User.email-or-name_"
+				"$ref": "#/components/schemas/Pick_User.email-or-firstName-or-lastName-or-password_"
 			}
 		},
 		"securitySchemes": {}
@@ -62,6 +82,131 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/": {
+			"get": {
+				"operationId": "Index",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"msg": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"msg"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/msg": {
+			"get": {
+				"operationId": "Msg",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"msg": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"msg"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/teams": {
+			"get": {
+				"operationId": "GetTeams",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Team"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateTeam",
+				"responses": {
+					"201": {
+						"description": "Created"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/TeamCreationParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/teams/{teamId}": {
+			"get": {
+				"operationId": "GetTeam",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Team"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "teamId",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
 		"/api/users/{userId}": {
 			"get": {
 				"operationId": "GetUser",
