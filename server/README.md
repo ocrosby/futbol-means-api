@@ -201,3 +201,7 @@ or
 * [TypeScript Dependency Injection](https://levelup.gitconnected.com/dependency-injection-in-typescript-2f66912d143c)
 * [Inversify IOC](https://inversify.io)
 * [Simplifying Dependency Injection](https://engineering.monstar-lab.com/en/post/2019/10/02/simplifying-dependency-injection-and-ioc-concepts-with-typescript/)
+* [Express.js Backend with TypeScript](https://itnext.io/express-js-backend-with-typescript-swagger-ui-and-docker-compose-f77143860bc8)
+* [Getting Started with TSOA](https://tsoa-community.github.io/docs/getting-started.html)
+* [ESLint Rules](https://eslint.org/docs/latest/use/configure/rules)
+* [TypeScript with Mongoose and Node Express](https://medium.com/swlh/typescript-with-mongoose-and-node-express-24073d51d2ee)
