@@ -10,7 +10,7 @@ import {
   SuccessResponse
 } from 'tsoa'
 
-import { type TeamDoc } from '../interfaces/team.interface'
+import { Team } from "../models/team.model"
 import { TeamsService, TeamCreationParams } from "../services/teams.service"
 
 @Route('api/teams')
@@ -27,14 +27,14 @@ export class TeamsController extends Controller {
   }
 
   @Get('/')
-  public async getTeams(): Promise<TeamDoc[]> {
+  public async getTeams(): Promise<Team[]> {
     return this.teamsService.getAll()
   }
 
   @Get('{teamId}')
   public async getTeam (
     @Path() teamId: number
-  ): Promise<TeamDoc> {
+  ): Promise<Team> {
     return this.teamsService.getById(teamId)
   }
 
