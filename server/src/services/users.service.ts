@@ -1,10 +1,10 @@
-import { injectable } from 'inversify'
 import { User, UserModel } from '../models/user.model'
+import { provideSingleton } from "../utils/provideSingleton";
 
 // A post request should not contain unneeded parameters
 export type UserCreationParams = Pick<User, "email" | "firstName" | "lastName" | "password">
 
-@injectable()
+@provideSingleton(UsersService)
 export class UsersService {
   public async get(id: number): Promise<User> {
     return await UserModel.findById(id) as User

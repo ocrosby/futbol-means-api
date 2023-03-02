@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify'
+import { inject } from 'inversify'
 
 import {
   Body,
@@ -12,9 +12,10 @@ import {
 
 import { Team } from "../models/team.model"
 import { TeamsService, TeamCreationParams } from "../services/teams.service"
+import {provideSingleton} from "../utils/provideSingleton";
 
 @Route('api/teams')
-@injectable()
+@provideSingleton(TeamsController)
 export class TeamsController extends Controller {
   protected teamsService: TeamsService
 

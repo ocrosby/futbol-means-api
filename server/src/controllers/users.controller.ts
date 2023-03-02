@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify'
+import { inject } from 'inversify'
 
 // src/users/usersController.ts
 import {
@@ -14,9 +14,10 @@ import {
 
 import { User } from '../models/user.model'
 import { UsersService, UserCreationParams } from '../services/users.service'
+import {provideSingleton} from "../utils/provideSingleton";
 
 @Route('api/users')
-@injectable()
+@provideSingleton(UsersController)
 export class UsersController extends Controller {
   protected usersService: UsersService
 
