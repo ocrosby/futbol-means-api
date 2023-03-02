@@ -82,60 +82,6 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/index": {
-			"get": {
-				"operationId": "Index",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"msg": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"msg"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/index/msg": {
-			"get": {
-				"operationId": "Msg",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"msg": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"msg"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
 		"/logger": {
 			"get": {
 				"operationId": "Index",

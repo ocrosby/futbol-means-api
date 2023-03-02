@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import express, { type Application, type Response, type Request, type NextFunction } from 'express'
+import express, { type Application } from 'express'
 import session from 'express-session'
 import path from 'path'
 import cors from 'cors'
@@ -55,11 +55,13 @@ class App {
   private initializeDocs(): void {
     Logger.info('Initializing Swagger docs ...')
 
-    this.app.use('/docs', swaggerUi.serve, (_req: Request, res: Response, _next: NextFunction) => {
-      return res.send(
-        swaggerUi.generateHTML(import('./build/swagger.json'))
-      )
-    })
+    const swaggerDocument = import('./build/swagger.json')
+
+    const options = {
+      explorer: true
+    }
+
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
   }
 
   private initializeSession(): void {
