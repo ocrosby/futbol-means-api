@@ -1,8 +1,6 @@
 import { Controller, Get, Route } from 'tsoa'
-import {provideSingleton} from "../utils/provideSingleton";
 
-@Route('api/index')
-@provideSingleton(IndexController)
+@Route('index')
 export class IndexController extends Controller {
   @Get('/')
   public async index() {

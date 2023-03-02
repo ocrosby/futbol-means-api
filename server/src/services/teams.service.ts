@@ -1,11 +1,9 @@
 import { Team, TeamModel } from "../models/team.model"
-import { provideSingleton } from "../utils/provideSingleton";
 
 
 // A post request should not contain unneeded parameters
 export type TeamCreationParams = Pick<Team, "name" | "season" | "owner">
 
-@provideSingleton(TeamsService)
 export class TeamsService {
   public async getAll(): Promise<Team[]> {
     return TeamModel.find({});

@@ -10,7 +10,6 @@
   },
   "routes": {
     "basePath": "/api",
-    "routesDir": "src/build",
-    "iocModule": "src/ioc"
+    "routesDir": "src/build"
   }
 }

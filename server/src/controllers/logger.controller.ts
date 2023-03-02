@@ -1,10 +1,8 @@
 import { Controller, Get, Route } from 'tsoa'
 
 import Logger from '../utils/logger'
-import {provideSingleton} from "../utils/provideSingleton";
 
-@Route('api/logger')
-@provideSingleton(LoggerController)
+@Route('logger')
 export class LoggerController extends Controller {
   @Get('/')
   public async index() {

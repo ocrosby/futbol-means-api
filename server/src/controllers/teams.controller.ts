@@ -1,5 +1,3 @@
-import { inject } from 'inversify'
-
 import {
   Body,
   Controller,
@@ -12,31 +10,19 @@ import {
 
 import { Team } from "../models/team.model"
 import { TeamsService, TeamCreationParams } from "../services/teams.service"
-import {provideSingleton} from "../utils/provideSingleton";
 
-@Route('api/teams')
-@provideSingleton(TeamsController)
+@Route('teams')
 export class TeamsController extends Controller {
-  protected teamsService: TeamsService
-
-  constructor (
-    @inject(TeamsService) teamsService: TeamsService
-  ) {
-    super()
-
-    this.teamsService = teamsService
-  }
-
   @Get('/')
   public async getTeams(): Promise<Team[]> {
-    return this.teamsService.getAll()
+    return new TeamsService().getAll()
   }
 
   @Get('{teamId}')
   public async getTeam (
     @Path() teamId: number
   ): Promise<Team> {
-    return this.teamsService.getById(teamId)
+    return new TeamsService().getById(teamId)
   }
 
   @SuccessResponse('201', 'Created') // Custom success response
@@ -44,6 +30,6 @@ export class TeamsController extends Controller {
   public async createTeam (
     @Body() requestBody: TeamCreationParams
   ) {
-    await this.teamsService.create(requestBody)
+    await new TeamsService().create(requestBody)
   }
 }

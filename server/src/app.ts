@@ -27,7 +27,6 @@ class App {
     this.app = express()
     this.port = port
 
-    this.initializeContainer()
     this.initializeSession()
     this.initializeMiddlewares()
     this.initializeDocs()
@@ -37,11 +36,6 @@ class App {
     this.initializePassportLocal()
 
     RegisterRoutes(this.app)
-  }
-
-  private initializeContainer (): void {
-    Logger.info('Initializing the IOC container ...')
-    // Todo: Setup IOC container.
   }
 
   private initializePassportLocal(): void {
