@@ -3,7 +3,6 @@ import path from 'path'
 import cors from 'cors'
 import helmet from 'helmet'
 import passport from 'passport'
-import { Strategy as LocalStrategy } from 'passport-local'
 import * as mongoose from 'mongoose'
 import cookieParser from 'cookie-parser'
 import errorMiddleware from './middleware/error.middleware'
@@ -40,11 +39,11 @@ class App {
     this.app.use(passport.session())
 
     // use static authenticate method of the model in LocalStrategy.
-    passport.use(new LocalStrategy(UserModel.authenticate()))
+    passport.use(UserModel.createStrategy())
 
     // use static serialize and deserialize of the model for passport session support
-    passport.serializeUser(UserModel.serializeUser())
-    passport.deserializeUser(UserModel.deserializeUser())
+    passport.serializeUser(UserModel.serializeUser)
+    passport.deserializeUser(UserModel.deserializeUser)
   }
 
   private initializeMiddlewares (): void {

@@ -27,6 +27,8 @@ const userSchema: Schema = new Schema({
   }
 });
 
+userSchema.plugin(passportLocalMongoose)
+
 userSchema.index({ email: 1 });
 
 // Virtual method
@@ -66,8 +68,6 @@ userSchema.methods.comparePassword = async function (
 
   return bcrypt.compare(candidatePassword, user.password).catch((_err) => false)
 }
-
-userSchema.plugin(passportLocalMongoose)
 
 export const UserModel = mongoose.model<User>('User', userSchema);
 
