@@ -94,6 +94,23 @@ npm test
 
 ## Development
 
+I've opted to adopt Gulp as my npm run scripts have starting to become complex.
+
+
+Installing the TSD utility globally
+
+> npm install tsd -g
+
+Querying type definitions
+
+> tsd query gulp
+
+
+
+Installing the Gulp CLI globally
+
+> npm install --global gulp-cli
+
 The dev run script now uses ts-node-dev which has the following parameters
 
 * --respawn: Keep watching for changes after the script has exited.
@@ -193,6 +210,9 @@ or
 
 ## References
 
+* [Definitely Typed tsd](https://github.com/DefinitelyTyped/tsd)
+* [Gulp Quick Start](https://gulpjs.com/docs/en/getting-started/quick-start)
+* [Gulp Typescript](https://www.typescriptlang.org/docs/handbook/gulp.html)
 * [Another Example](https://github.com/GeekyAnts/express-typescript)
 * [Typescript Expres Tutorial](https://wanago.io/2018/12/03/typescript-express-tutorial-routing-controllers-middleware/)
 * [Rest API with Express TypeScript and Swagger](https://rsbh.dev/blogs/rest-api-with-express-typescript)

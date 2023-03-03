@@ -1,12 +1,23 @@
 import { Team, TeamModel } from "../models/team.model"
 
+import Logger from '../utils/logger'
 
 // A post request should not contain unneeded parameters
 export type TeamCreationParams = Pick<Team, "name" | "season" | "owner">
 
 export class TeamsService {
   public async getAll(): Promise<Team[]> {
-    return TeamModel.find({});
+    Logger.debug('Retrieving teams ...')
+
+    try {
+      const teams = await TeamModel.find({});
+
+      return teams;
+    } catch (e) {
+      Logger.error(e)
+    }
+
+    return []
   }
 
   public async getById(id: number): Promise<Team> {

@@ -62,6 +62,8 @@ class App {
     }
 
     this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
+
+    Logger.info(`Swagger http://localhost:${this.port}/api-docs`)
   }
 
   private initializeSession(): void {
@@ -106,13 +108,15 @@ class App {
     Logger.info('Connecting to MongoDB ...')
 
     const {
+      MONGO_USER,
+      MONGO_PASSWORD,
       MONGO_HOST,
       MONGO_PORT,
       MONGO_DB
     } = process.env
 
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const uri: string = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
+    const uri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
 
     Logger.debug(`Mongo Connection String: "${uri}"`)
 
