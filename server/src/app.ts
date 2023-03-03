@@ -1,136 +1,152 @@
-import express, {Request, Response} from 'express';
-import path from 'path';
-import User from './models/user.model'
+import 'reflect-metadata'
+import express, { type Application } from 'express'
 import session from 'express-session'
-import errorMiddleware from './middleware/error.middleware'
-import morganMiddleware from './middleware/morgan.middleware'
-import expressHealthcheck from 'express-healthcheck'
-import helmet from 'helmet'
-import cookieParser from 'cookie-parser'
+import path from 'path'
 import cors from 'cors'
+import helmet from 'helmet'
 import passport from 'passport'
-import swaggerUi from 'swagger-ui-express'
-import {RegisterRoutes} from './build/routes'
-
 import * as mongoose from 'mongoose'
-import * as mongoutil from './utils/mongoose'
-import Logger from './utils/logger';
+import cookieParser from 'cookie-parser'
+import errorMiddleware from './middleware/error.middleware'
+import swaggerUi from 'swagger-ui-express'
 
-import swaggerDocument from './build/swagger.json'
+import Logger from './utils/logger'
 
-const {
-  API_LOCAL_PORT
-} = process.env
+import { RegisterRoutes } from './build/routes'
 
-const swaggerOptions = { explorer: false }
+import { UserModel } from './models/user.model'
+import morganMiddleware from "./middleware/morgan.middleware";
 
-const sessionOptions = {
-  secret: 'keyboard cat',
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    secure: false
+class App {
+  public app: Application
+  public port: number
+
+  constructor (port: number) {
+    Logger.info('Starting the API ...')
+
+    this.app = express()
+    this.port = port
+
+    this.initializeSession()
+    this.initializeMiddlewares()
+    this.initializeDocs()
+    this.initializeErrorHandling()
+
+    this.connectToTheDatabase()
+    this.initializePassportLocal()
+
+    RegisterRoutes(this.app)
   }
-}
 
-// Variables
-const app = express()
+  private initializePassportLocal(): void {
+    Logger.info('Initializing passport local ...')
 
-if (app.get('env') === 'production') {
-  app.set('trust proxy', 1) // trust first proxy
-  sessionOptions.cookie.secure = true // serve secure cookies
-}
+    this.app.use(passport.initialize())
+    this.app.use(passport.session())
 
-// Basic middleware
-app.use(express.json())
-app.use(errorMiddleware)
-app.use(morganMiddleware)
-app.use(helmet())
-app.use(cors())
-app.use(cookieParser())
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
+    // use static authenticate method of the model in LocalStrategy.
+    passport.use(UserModel.createStrategy())
 
-app.use(session(sessionOptions))
+    // use static serialize and deserialize of the model for passport session support
+    passport.serializeUser(UserModel.serializeUser)
+    passport.deserializeUser(UserModel.deserializeUser)
+  }
 
-app.use(passport.initialize())
-app.use(passport.session());
+  private initializeDocs(): void {
+    Logger.info('Initializing Swagger docs ...')
 
-// use static authenticate method of the model in LocalStrategy
-passport.use(User.createStrategy())
+    const swaggerDocument = import('./build/swagger.json')
 
-// use static serialize and deserialize of the model for passport session support
-passport.serializeUser(User.serializeUser())
-passport.deserializeUser(User.deserializeUser())
-
-
-// Initialize swagger docs
-Logger.info(`Serving Swagger docs at http://localhost:8000/api-docs`)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
-
-mongoose.set('strictQuery', false)
-
-const databaseUri = mongoutil.generateDatabaseUri();
-
-Logger.debug(`Mongo Connection String: "${databaseUri}"`)
-
-mongoose.connect(databaseUri, mongoutil.options)
-  .then(() => {
-    // ready to use
-    Logger.info('Connected to MongoDB')
-  }, (err: any) => {
-    // handle initial connection error
-    Logger.error(err)
-  })
-
-RegisterRoutes(app)
-
-// Set up the health check route
-app.use('/healthcheck', expressHealthcheck({
-  healthy: () => {
-    return {
-      everything: 'is ok',
-      uptime: process.uptime()
+    const options = {
+      explorer: true
     }
-  },
-  test: (callback: any) => {
-    // This function will be executed to establish the health of the application.
-    if (mongoutil.isConnected()) {
-      callback()
-    } else {
-      callback({
-        state: 'unhealthy',
-        uptime: process.uptime(),
-        mongooseReadyState: mongoutil.getReadyStateMessage()
+
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
+
+    Logger.info(`Swagger http://localhost:${this.port}/api-docs`)
+  }
+
+  private initializeSession(): void {
+    Logger.info('Initializing the express session ...')
+
+    const sessionOptions = {
+      secret: 'keyboard cat',
+      resave: true,
+      saveUninitialized: true,
+      cookie: {
+        secure: false
+      }
+    }
+
+    if (this.app.get('env') === 'production') {
+      this.app.set('trust proxy', 1) // trust first proxy
+      sessionOptions.cookie.secure = true // serve secure cookies
+    }
+
+    this.app.use(session(sessionOptions))
+  }
+
+  private initializeMiddlewares (): void {
+    Logger.info('Initializing middleware ...')
+
+    this.app.use(morganMiddleware)
+    this.app.use(helmet())
+    this.app.use(cors())
+    this.app.use(cookieParser())
+    this.app.use(express.json())
+    this.app.use(express.urlencoded({ extended: true } ))
+    this.app.use(express.static(path.join(__dirname, 'public')))
+  }
+
+  private initializeErrorHandling (): void {
+    Logger.info('Initializing error handling ...')
+
+    this.app.use(errorMiddleware)
+  }
+
+  private connectToTheDatabase (): void {
+    const {
+      MONGO_USER,
+      MONGO_PASSWORD,
+      MONGO_HOST,
+      MONGO_PORT,
+      MONGO_DB
+    } = process.env
+
+    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+    const uri: string = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
+    const options: mongoose.ConnectOptions = {
+      autoIndex: false, // don't build indexes
+      maxPoolSize: 10, // Maintain up to 10 socket connections
+      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+      family: 4, // Use IPv4, skip trying IPv6
+      authSource: "admin",
+      user: MONGO_USER,
+      pass: MONGO_PASSWORD
+    }
+
+    Logger.debug(`Connecting to MongoDB "${uri}" ...`)
+
+    mongoose.set('strictQuery', false)
+
+    mongoose.connect(uri, options)
+      .then(() => {
+        Logger.info('Successfully connected to MongoDB!')
+      },
+      err => {
+        Logger.error(err)
+        Logger.info(`Make sure MongoDB is up and running at ${MONGO_HOST}:${MONGO_PORT}.`)
       })
-    }
   }
-}))
 
-Logger.info(`View health check at http://localhost:${API_LOCAL_PORT}/healthcheck`)
+  public listen (): void {
+    Logger.info(`Starting the API on port ${this.port} ...`)
 
+    this.app.listen(this.port, () => {
+      Logger.info(`App listening on port ${this.port}`)
+    })
+  }
+}
 
-// Serve static files
-
-app.use(express.static(path.join(__dirname, 'public')))
-
-// Set up the PUG template engine.
-
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
-app.get('/', (req: Request, res: Response) => {
-  return res.redirect('/home');
-})
-
-app.get('/home', (req: Request, res: Response) => {
-  res.render('index', {
-    subject: 'Pug template engine',
-    name: 'our template',
-    link: 'https://google.com'
-  })
-})
-
-Logger.info(`View PUG interface at http://localhost:${API_LOCAL_PORT}`)
-
-export default app
+export default App

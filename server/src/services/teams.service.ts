@@ -1,99 +1,39 @@
-import { ITeam, ITeamDocument } from "../models/team.model"
-
-import { IPatchOperation } from "../interfaces/patch.interface";
-
-import Team from '../models/team.model'
-
+import { Team, TeamModel } from "../models/team.model"
 import Logger from '../utils/logger'
-import jsonpatch from "jsonpatch";
 
 // A post request should not contain unneeded parameters
-export type TeamCreationParams = Pick<ITeamDocument, "name" | "season" | "owner">
+export type TeamCreationParams = Pick<Team, "name" | "season" | "owner">
 
-async function get(id: string): Promise<ITeamDocument | null> {
-  return Team.findOne({_id: id})
-}
+export class TeamsService {
+  public async getAll(): Promise<Team[]> {
+    Logger.debug('Retrieving teams ...')
 
-async function exists(name: string, season: string): Promise<boolean> {
-  Logger.debug(`Checking to see if the team "${name}" exists with season "${season}"`)
-  const team = await Team.findOne({ name: name, season: season })
-  const found = !!team
+    const teams = await TeamModel.find({})
 
-  if (found) {
-    Logger.debug('Found it.')
-  } else {
-    Logger.debug('Could not find it.')
+    Logger.debug(`Successfully retrieved ${teams.length}.`)
+
+    return teams
   }
 
-  return found
-}
+  public async getById(id: number): Promise<Team> {
+    Logger.debug(`Retrieving a team by identifier ${id} ...`)
 
-async function getAll(): Promise<ITeamDocument[]> {
-  Logger.debug('Retrieving teams ...')
+    const team = await TeamModel.findById(id)
 
-  return await Team.find({})
-}
-
-async function addOne(teamCreationParams: ITeam): Promise<ITeamDocument> {
-  const name = teamCreationParams.name;
-  const season = teamCreationParams.season;
-
-  Logger.debug('Adding a new team')
-
-  const found = await exists(name, season);
-
-  if (found) {
-    Promise.reject(`A team "${name}" already exits for season "${season}"!`)
+    return team as Team
   }
 
-  const newTeam = new Team(teamCreationParams);
+  public async create(teamCreationParams: TeamCreationParams): Promise<Team> {
+    const newTeam = new TeamModel(teamCreationParams)
 
-  try {
-    await newTeam.save();
+    await newTeam.save()
 
-    return newTeam;
-  } catch (err) {
-    return Promise.reject(err);
-  }
-}
-
-async function updateOne(id: string, data: ITeam): Promise<ITeamDocument | null> {
-  Logger.debug('Updating a team')
-
-  const result = await Team.replaceOne({_id: id}, { upsert: true })
-  return result.matchedCount ? await get(id) : await get(result.upsertedId.toString());
-}
-
-async function _delete(id: string): Promise<void> {
-  Logger.debug('Deleting a team')
-
-  await Team.deleteOne({ _id: id })
-
-  return Promise.resolve()
-}
-
-async function patch(id: string, patches: IPatchOperation[]): Promise<void> {
-  Logger.debug('Patching a team')
-
-  const doc = await Team.findOne({ _id: id });
-
-  if (!doc) {
-    return Promise.reject(`Could not find a team with id ${id} when attempting patch a team!`)
+    return newTeam
   }
 
-  const patchedDoc = jsonpatch.apply_patch(doc, patches)
+  public async delete(id: number): Promise<void> {
+    await TeamModel.deleteOne({_id: id})
 
-  patchedDoc.save()
-
-  return Promise.resolve()
+    return Promise.resolve();
+  }
 }
-
-export default {
-  get,
-  getAll,
-  addOne,
-  updateOne,
-  patch,
-  delete: _delete,
-  exists
-} as const;
