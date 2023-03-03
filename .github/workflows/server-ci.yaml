@@ -25,8 +25,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Run lint
+        run: npx gulp lint
+
       - name: Run tests
-        run: npm test
+        run: npx gulp test
 
       - name: Report Coverage
         uses: coverallsapp/github-action@master
@@ -35,5 +38,3 @@ jobs:
           path-to-lcov: "./server/coverage/lcov.info"
           github-token: ${{ secrets.github_token }}
 
-      - name: Run lint
-        run: npm run lint
