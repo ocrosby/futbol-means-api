@@ -1,3 +1,5 @@
+.DS_Store
+server/build/routes.ts
 server/src/swagger.json
 .env
 coverage

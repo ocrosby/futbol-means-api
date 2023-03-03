@@ -1,4 +1,7 @@
 
+.DEFAULT_GOAL := dist
+
+
 all:
 
 
@@ -11,16 +14,20 @@ build-clean:
 
 clean: build-clean
 
-dist: clean
-	rm -rf dist
+install:
+  npm install -g --silent eslint
 	npm install -g --silent npm@latest
 	npm install --silent tsoa typescript
+	npm install --silent
+
+transpile: clean install
 	npx tsoa spec-and-routes
 	npx tsc
-	cp -rf config dist/
-	cp package.json dist/
 	cp tsoa.json dist/
-	cp -rf src/presentation-layer dist/
+	cp src/build/swagger.json dist/build/
+
+dist: clean transpile
+	cp package.json dist/
 	cd dist/ && npm install --production --silent && cd ..
 
 build:

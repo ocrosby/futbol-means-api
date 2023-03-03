@@ -1,0 +1,15 @@
+{
+  "exec": "ts-node src/server.ts",
+  "watch": ["src"],
+  "ext": "ts",
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "verbose": true,
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "src/build/routes.ts",
+    "node_modules/**/node_modules"
+  ]
+}

@@ -1,0 +1,35 @@
+import {
+  Body,
+  Controller,
+  Get,
+  Path,
+  Post,
+  Route,
+  SuccessResponse
+} from 'tsoa'
+
+import { Team } from "../models/team.model"
+import { TeamsService, TeamCreationParams } from "../services/teams.service"
+
+@Route('teams')
+export class TeamsController extends Controller {
+  @Get('/')
+  public async getTeams(): Promise<Team[]> {
+    return new TeamsService().getAll()
+  }
+
+  @Get('{teamId}')
+  public async getTeam (
+    @Path() teamId: number
+  ): Promise<Team> {
+    return new TeamsService().getById(teamId)
+  }
+
+  @SuccessResponse('201', 'Created') // Custom success response
+  @Post()
+  public async createTeam (
+    @Body() requestBody: TeamCreationParams
+  ) {
+    await new TeamsService().create(requestBody)
+  }
+}
