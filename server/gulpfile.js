@@ -5,8 +5,9 @@ const { src, series, dest, watch, task, parallel } = gulp
 const shell = require('gulp-shell')
 const eslint = require('gulp-eslint')
 const clean = require('gulp-rimraf')
-const jest = require('gulp-jest').default;
+const jest = require('gulp-jest').default
 const ts = require('gulp-typescript')
+const nodemon = require('gulp-nodemon')
 const merge = require('merge-stream')
 
 task('clean-dist', () => {
@@ -72,9 +73,37 @@ task('copy-resources', () => {
   ])
 })
 
+task('dev', () => {
+  const stream = nodemon({
+    exec: 'ts-node src/server.ts',
+    ext: 'ts js',
+    verbose: true,
+    ignore: [
+      '.git',
+      'node_modules/**/node_modules',
+      'src/build/swagger.json',
+      'src/build/routes.ts'
+    ],
+    tasks: ['build'], // compile synchronously onChange
+  })
+
+  stream
+    .on('restart', () => {
+      console.log('restarted!')
+    })
+    .on('crash', () => {
+      console.error('Application has crashed!\n')
+      stream.emit('restart', 10) // restart the server in 10 seconds
+    })
+
+  return stream
+})
+
 task('build', series(['tsoa', 'copy-resources', 'transpile']))
 
 task('mstop', shell.task('docker stop mongo_dev && docker container rm mongo_dev'))
+
 task('mstart', shell.task('docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo'))
+
 
 task('default', series(['clean', 'lint', 'test', 'build', 'install']))

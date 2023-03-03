@@ -105,8 +105,6 @@ class App {
   }
 
   private connectToTheDatabase (): void {
-    Logger.info('Connecting to MongoDB ...')
-
     const {
       MONGO_USER,
       MONGO_PASSWORD,
@@ -116,14 +114,30 @@ class App {
     } = process.env
 
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const uri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
+    const uri: string = `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
+    const options: mongoose.ConnectOptions = {
+      autoIndex: false, // don't build indexes
+      maxPoolSize: 10, // Maintain up to 10 socket connections
+      serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
+      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+      family: 4, // Use IPv4, skip trying IPv6
+      authSource: "admin",
+      user: MONGO_USER,
+      pass: MONGO_PASSWORD
+    }
 
-    Logger.debug(`Mongo Connection String: "${uri}"`)
+    Logger.debug(`Connecting to MongoDB "${uri}" ...`)
 
     mongoose.set('strictQuery', false)
-    mongoose.connect(uri, () => {
-      Logger.info('Connected to MongoDB')
-    })
+
+    mongoose.connect(uri, options)
+      .then(() => {
+        Logger.info('Successfully connected to MongoDB!')
+      },
+      err => {
+        Logger.error(err)
+        Logger.info(`Make sure MongoDB is up and running at ${MONGO_HOST}:${MONGO_PORT}.`)
+      })
   }
 
   public listen (): void {

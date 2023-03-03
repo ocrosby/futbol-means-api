@@ -1,5 +1,4 @@
 import { Team, TeamModel } from "../models/team.model"
-
 import Logger from '../utils/logger'
 
 // A post request should not contain unneeded parameters
@@ -9,19 +8,19 @@ export class TeamsService {
   public async getAll(): Promise<Team[]> {
     Logger.debug('Retrieving teams ...')
 
-    try {
-      const teams = await TeamModel.find({});
+    const teams = await TeamModel.find({})
 
-      return teams;
-    } catch (e) {
-      Logger.error(e)
-    }
+    Logger.debug(`Successfully retrieved ${teams.length}.`)
 
-    return []
+    return teams
   }
 
   public async getById(id: number): Promise<Team> {
-    return await TeamModel.findById(id) as Team
+    Logger.debug(`Retrieving a team by identifier ${id} ...`)
+
+    const team = await TeamModel.findById(id)
+
+    return team as Team
   }
 
   public async create(teamCreationParams: TeamCreationParams): Promise<Team> {
