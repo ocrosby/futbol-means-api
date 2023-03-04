@@ -12,7 +12,7 @@ import {
 import { User } from '../models/user.model'
 import { UsersService, UserCreationParams } from '../services/users.service'
 
-@Route('users')
+@Route('api/users')
 export class UsersController extends Controller {
   @Get('{userId}')
   public async getUser (

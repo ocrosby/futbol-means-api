@@ -82,7 +82,7 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/logger": {
+		"/api/logger": {
 			"get": {
 				"operationId": "Index",
 				"responses": {
@@ -109,7 +109,7 @@
 				"parameters": []
 			}
 		},
-		"/teams": {
+		"/api/teams": {
 			"get": {
 				"operationId": "GetTeams",
 				"responses": {
@@ -151,7 +151,7 @@
 				}
 			}
 		},
-		"/teams/{teamId}": {
+		"/api/teams/{teamId}": {
 			"get": {
 				"operationId": "GetTeam",
 				"responses": {
@@ -180,7 +180,7 @@
 				]
 			}
 		},
-		"/users/{userId}": {
+		"/api/users/{userId}": {
 			"get": {
 				"operationId": "GetUser",
 				"responses": {
@@ -217,7 +217,7 @@
 				]
 			}
 		},
-		"/users": {
+		"/api/users": {
 			"post": {
 				"operationId": "CreateUser",
 				"responses": {

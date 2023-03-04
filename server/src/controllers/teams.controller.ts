@@ -11,7 +11,7 @@ import {
 import { Team } from "../models/team.model"
 import { TeamsService, TeamCreationParams } from "../services/teams.service"
 
-@Route('teams')
+@Route('api/teams')
 export class TeamsController extends Controller {
   @Get('/')
   public async getTeams(): Promise<Team[]> {

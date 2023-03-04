@@ -29,13 +29,14 @@ class App {
 
     this.initializeSession()
     this.initializeMiddlewares()
-    this.initializeDocs()
     this.initializeErrorHandling()
 
     this.connectToTheDatabase()
     this.initializePassportLocal()
 
     RegisterRoutes(this.app)
+
+    this.initializeDocs()
   }
 
   private initializePassportLocal(): void {
@@ -57,16 +58,7 @@ class App {
 
     const swaggerDocument = require('./build/swagger.json')
 
-    // const options = {
-    //   explorer: false,
-    //   swaggerOptions: {
-    //     url: '/swagger.json'
-    //   }
-    // }
-
-    // this.app.use('/swagger.json', express.static(__dirname + '../build/swagger.json'))
-
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }))
 
     Logger.info(`Swagger http://localhost:${this.port}/api-docs`)
   }

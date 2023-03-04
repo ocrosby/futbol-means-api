@@ -2,7 +2,7 @@ import { Controller, Get, Route } from 'tsoa'
 
 import Logger from '../utils/logger'
 
-@Route('logger')
+@Route('api/logger')
 export class LoggerController extends Controller {
   @Get('/')
   public async index() {
