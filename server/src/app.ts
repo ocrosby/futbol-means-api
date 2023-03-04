@@ -55,13 +55,18 @@ class App {
   private initializeDocs(): void {
     Logger.info('Initializing Swagger docs ...')
 
-    const swaggerDocument = import('./build/swagger.json')
+    const swaggerDocument = require('./build/swagger.json')
 
-    const options = {
-      explorer: true
-    }
+    // const options = {
+    //   explorer: false,
+    //   swaggerOptions: {
+    //     url: '/swagger.json'
+    //   }
+    // }
 
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
+    // this.app.use('/swagger.json', express.static(__dirname + '../build/swagger.json'))
+
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
     Logger.info(`Swagger http://localhost:${this.port}/api-docs`)
   }
