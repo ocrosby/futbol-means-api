@@ -10,12 +10,12 @@ export class TeamsService {
 
     const teams = await TeamModel.find({})
 
-    Logger.debug(`Successfully retrieved ${teams.length}.`)
+    Logger.debug(`Successfully retrieved ${teams.length} teams.`)
 
     return teams
   }
 
-  public async getById(id: number): Promise<Team> {
+  public async getById(id: string): Promise<Team> {
     Logger.debug(`Retrieving a team by identifier ${id} ...`)
 
     const team = await TeamModel.findById(id)
@@ -31,7 +31,7 @@ export class TeamsService {
     return newTeam
   }
 
-  public async delete(id: number): Promise<void> {
+  public async delete(id: string): Promise<void> {
     await TeamModel.deleteOne({_id: id})
 
     return Promise.resolve();

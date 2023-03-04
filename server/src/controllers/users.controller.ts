@@ -6,6 +6,7 @@ import {
   Post,
   Query,
   Route,
+  Tags,
   SuccessResponse
 } from 'tsoa'
 
@@ -13,10 +14,11 @@ import { User } from '../models/user.model'
 import { UsersService, UserCreationParams } from '../services/users.service'
 
 @Route('api/users')
+@Tags("User")
 export class UsersController extends Controller {
   @Get('{userId}')
   public async getUser (
-    @Path() userId: number,
+    @Path() userId: string,
       @Query() name?: string
   ): Promise<User> {
     return new UsersService().get(userId)

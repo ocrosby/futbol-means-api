@@ -10,6 +10,52 @@
 				"properties": {},
 				"type": "object"
 			},
+			"Event": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"KeyValuePair": {
+				"properties": {
+					"key": {
+						"type": "string"
+					},
+					"value": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"key",
+					"value"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_Event.type-or-timestamp-or-meta_": {
+				"properties": {
+					"type": {
+						"type": "string"
+					},
+					"timestamp": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"meta": {
+						"items": {
+							"$ref": "#/components/schemas/KeyValuePair"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"type",
+					"timestamp",
+					"meta"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"EventCreationParams": {
+				"$ref": "#/components/schemas/Pick_Event.type-or-timestamp-or-meta_"
+			},
 			"Team": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
@@ -82,6 +128,141 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
+		"/api/events": {
+			"get": {
+				"operationId": "GetEvents",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Event"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Event"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateEvent",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Event"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Event"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EventCreationParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/events/{eventId}": {
+			"get": {
+				"operationId": "GetEvent",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Event"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Event"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "eventId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteEvent",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Event"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "eventId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/health-check": {
+			"get": {
+				"operationId": "CheckHealth",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"msg": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"msg"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/logger": {
 			"get": {
 				"operationId": "Index",
@@ -127,6 +308,9 @@
 						}
 					}
 				},
+				"tags": [
+					"Team"
+				],
 				"security": [],
 				"parameters": []
 			},
@@ -137,6 +321,9 @@
 						"description": "Created"
 					}
 				},
+				"tags": [
+					"Team"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -166,6 +353,9 @@
 						}
 					}
 				},
+				"tags": [
+					"Team"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -173,8 +363,7 @@
 						"name": "teamId",
 						"required": true,
 						"schema": {
-							"format": "double",
-							"type": "number"
+							"type": "string"
 						}
 					}
 				]
@@ -195,6 +384,9 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -202,8 +394,7 @@
 						"name": "userId",
 						"required": true,
 						"schema": {
-							"format": "double",
-							"type": "number"
+							"type": "string"
 						}
 					},
 					{
@@ -232,6 +423,9 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -250,6 +444,20 @@
 	"servers": [
 		{
 			"url": "/"
+		}
+	],
+	"tags": [
+		{
+			"name": "User",
+			"description": "Operations about users"
+		},
+		{
+			"name": "Team",
+			"description": "Operations about teams"
+		},
+		{
+			"name": "Event",
+			"description": "Operations about events"
 		}
 	]
 }

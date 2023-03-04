@@ -4,7 +4,7 @@ import { User, UserModel } from '../models/user.model'
 export type UserCreationParams = Pick<User, "email" | "firstName" | "lastName" | "password">
 
 export class UsersService {
-  public async get(id: number): Promise<User> {
+  public async get(id: string): Promise<User> {
     return await UserModel.findById(id) as User
   }
 
