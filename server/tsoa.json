@@ -5,7 +5,6 @@
     "src/controllers/*.controller.ts"
   ],
   "spec": {
-    "basePath": "/api",
     "outputDirectory": "src/build",
     "specVersion": 3,
     "tags": [
@@ -16,6 +15,10 @@
       {
         "name": "Team",
         "description": "Operations about teams"
+      },
+      {
+        "name": "Event",
+        "description": "Operations about events"
       }
     ]
   },

@@ -5,6 +5,7 @@ import {
   Path,
   Post,
   Route,
+  Tags,
   SuccessResponse
 } from 'tsoa'
 
@@ -12,6 +13,7 @@ import { Team } from "../models/team.model"
 import { TeamsService, TeamCreationParams } from "../services/teams.service"
 
 @Route('api/teams')
+@Tags("Team")
 export class TeamsController extends Controller {
   @Get('/')
   public async getTeams(): Promise<Team[]> {
@@ -20,7 +22,7 @@ export class TeamsController extends Controller {
 
   @Get('{teamId}')
   public async getTeam (
-    @Path() teamId: number
+    @Path() teamId: string
   ): Promise<Team> {
     return new TeamsService().getById(teamId)
   }
