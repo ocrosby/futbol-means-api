@@ -58,7 +58,7 @@ class App {
 
     const swaggerDocument = require('./build/swagger.json')
 
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: true }))
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { explorer: false }))
 
     Logger.info(`Swagger http://localhost:${this.port}/api-docs`)
   }
@@ -144,6 +144,18 @@ class App {
       Logger.info(`App listening on port ${this.port}`)
     })
   }
+}
+
+export function createApp(port: any): App {
+  let numericPort = Number(port)
+
+  if (Number.isNaN(numericPort)) {
+    numericPort = 8000
+  }
+
+  const app = new App(numericPort)
+
+  return app
 }
 
 export default App

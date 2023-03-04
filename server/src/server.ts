@@ -1,11 +1,10 @@
-import { validateEnv } from "./utils/validateEnv";
+import * as dotenv from 'dotenv'
 
-import Logger from './utils/logger';
+import { createApp } from './app'
+import { validateEnv } from './utils/validateEnv'
 
-validateEnv();
+dotenv.config()
 
-import app from './app'
+validateEnv()
 
-app.listen(process.env.API_LOCAL_PORT, () => {
-  Logger.info(`listening on port ${process.env.API_LOCAL_PORT}`)}
-)
+createApp(process.env.API_LOCAL_PORT).listen()
