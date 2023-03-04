@@ -76,7 +76,7 @@ task('copy-resources', () => {
 task('dev', () => {
   const stream = nodemon({
     exec: 'ts-node src/server.ts',
-    ext: 'ts js',
+    ext: 'ts js json',
     verbose: true,
     ignore: [
       '.git',

@@ -20,7 +20,7 @@
     ]
   },
   "routes": {
-    "basePath": "/api",
+    "basePath": "/",
     "routesDir": "src/build"
   }
 }
