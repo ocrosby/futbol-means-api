@@ -1,10 +1,12 @@
 import * as dotenv from 'dotenv'
 
-import { createApp } from './app'
+import { createServer } from './app'
 import { validateEnv } from './utils/validateEnv'
 
 dotenv.config()
 
 validateEnv()
 
-createApp(process.env.API_LOCAL_PORT).listen()
+const server = createServer(true, process.env.API_LOCAL_PORT)
+
+module.exports = server.app

@@ -17,7 +17,7 @@ import { RegisterRoutes } from './build/routes'
 import { UserModel } from './models/user.model'
 import morganMiddleware from "./middleware/morgan.middleware";
 
-class App {
+export class App {
   public app: Application
   public port: number
 
@@ -146,7 +146,11 @@ class App {
   }
 }
 
-export function createApp(port: any): App {
+export function createServer(listen: boolean = false, port: string = '8000'): App {
+  if (!port) {
+    port = '8000'
+  }
+
   let numericPort = Number(port)
 
   if (Number.isNaN(numericPort)) {
@@ -154,6 +158,10 @@ export function createApp(port: any): App {
   }
 
   const app = new App(numericPort)
+
+  if (listen) {
+    app.listen()
+  }
 
   return app
 }
