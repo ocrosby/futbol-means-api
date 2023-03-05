@@ -1,10 +1,10 @@
 import mongoose, { Schema } from 'mongoose'
-import { User } from './user.model'
+import { IUserDocument } from './user.model'
 
 export interface Team extends mongoose.Document {
   name: string;
   season: string;
-  owner: User['_id'];
+  owner: IUserDocument['_id'];
 }
 
 const teamSchema: Schema = new Schema({

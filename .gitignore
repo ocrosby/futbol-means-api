@@ -1,4 +1,6 @@
 .DS_Store
+.run/
+server/.run/
 server/build/routes.ts
 server/src/swagger.json
 .env

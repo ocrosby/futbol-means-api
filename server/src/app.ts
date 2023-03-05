@@ -1,138 +1,86 @@
-import 'reflect-metadata'
-import express, { type Application } from 'express'
+import express from 'express';
+import passport from 'passport';
+
+import { User } from './models/user.model'
 import session from 'express-session'
-import path from 'path'
-import cors from 'cors'
-import helmet from 'helmet'
-import passport from 'passport'
-import * as mongoose from 'mongoose'
-import cookieParser from 'cookie-parser'
-import errorMiddleware from './middleware/error.middleware'
-import swaggerUi from 'swagger-ui-express'
-
-import Logger from './utils/logger'
-
-import { RegisterRoutes } from './build/routes'
-
-import { UserModel } from './models/user.model'
+import errorMiddleware from "./middleware/error.middleware";
 import morganMiddleware from "./middleware/morgan.middleware";
+import helmet from "helmet";
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import swaggerUi from 'swagger-ui-express'
+import {RegisterRoutes} from "./build/routes";
 
-class App {
-  public app: Application
-  public port: number
+import * as mongoose from 'mongoose'
+import Logger from "./utils/logger";
 
-  constructor (port: number) {
-    Logger.info('Starting the API ...')
+const {
+  MONGO_USER,
+  MONGO_PASSWORD,
+  MONGO_HOST,
+  MONGO_PORT,
+  MONGO_DB
+} = process.env
 
-    this.app = express()
-    this.port = port
+// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+const databaseUri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
 
-    this.initializeSession()
-    this.initializeMiddlewares()
-    this.initializeDocs()
-    this.initializeErrorHandling()
+const swaggerDocument = import('./build/swagger.json')
+const swaggerOptions = { explorer: false }
 
-    this.connectToTheDatabase()
-    this.initializePassportLocal()
-
-    RegisterRoutes(this.app)
-  }
-
-  private initializePassportLocal(): void {
-    Logger.info('Initializing passport local ...')
-
-    this.app.use(passport.initialize())
-    this.app.use(passport.session())
-
-    // use static authenticate method of the model in LocalStrategy.
-    passport.use(UserModel.createStrategy())
-
-    // use static serialize and deserialize of the model for passport session support
-    passport.serializeUser(UserModel.serializeUser)
-    passport.deserializeUser(UserModel.deserializeUser)
-  }
-
-  private initializeDocs(): void {
-    Logger.info('Initializing Swagger docs ...')
-
-    const swaggerDocument = import('./build/swagger.json')
-
-    const options = {
-      explorer: true
-    }
-
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
-
-    Logger.info(`Swagger http://localhost:${this.port}/api-docs`)
-  }
-
-  private initializeSession(): void {
-    Logger.info('Initializing the express session ...')
-
-    const sessionOptions = {
-      secret: 'keyboard cat',
-      resave: true,
-      saveUninitialized: true,
-      cookie: {
-        secure: false
-      }
-    }
-
-    if (this.app.get('env') === 'production') {
-      this.app.set('trust proxy', 1) // trust first proxy
-      sessionOptions.cookie.secure = true // serve secure cookies
-    }
-
-    this.app.use(session(sessionOptions))
-  }
-
-  private initializeMiddlewares (): void {
-    Logger.info('Initializing middleware ...')
-
-    this.app.use(morganMiddleware)
-    this.app.use(helmet())
-    this.app.use(cors())
-    this.app.use(cookieParser())
-    this.app.use(express.json())
-    this.app.use(express.urlencoded({ extended: true } ))
-    this.app.use(express.static(path.join(__dirname, 'public')))
-  }
-
-  private initializeErrorHandling (): void {
-    Logger.info('Initializing error handling ...')
-
-    this.app.use(errorMiddleware)
-  }
-
-  private connectToTheDatabase (): void {
-    Logger.info('Connecting to MongoDB ...')
-
-    const {
-      MONGO_USER,
-      MONGO_PASSWORD,
-      MONGO_HOST,
-      MONGO_PORT,
-      MONGO_DB
-    } = process.env
-
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const uri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
-
-    Logger.debug(`Mongo Connection String: "${uri}"`)
-
-    mongoose.set('strictQuery', false)
-    mongoose.connect(uri, () => {
-      Logger.info('Connected to MongoDB')
-    })
-  }
-
-  public listen (): void {
-    Logger.info(`Starting the API on port ${this.port} ...`)
-
-    this.app.listen(this.port, () => {
-      Logger.info(`App listening on port ${this.port}`)
-    })
+const sessionOptions = {
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    secure: false
   }
 }
 
-export default App
+// Variables
+const app = express()
+
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sessionOptions.cookie.secure = true // serve secure cookies
+}
+
+// Basic middleware
+app.use(express.json())
+app.use(errorMiddleware)
+app.use(morganMiddleware)
+app.use(helmet())
+app.use(cors())
+app.use(cookieParser())
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+app.use(session(sessionOptions))
+
+app.use(passport.initialize())
+app.use(passport.session());
+
+// use static authenticate method of the model in LocalStrategy
+passport.use(User.createStrategy())
+
+// use static serialize and deserialize of the model for passport session support
+passport.serializeUser(User.serializeUser)
+passport.deserializeUser(User.deserializeUser)
+
+
+// Initialize swagger docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
+
+mongoose.set('strictQuery', false)
+
+Logger.debug(`Mongo Connection String: "${databaseUri}"`)
+
+const mongooseOptions: mongoose.ConnectOptions = {}
+
+mongoose.connect(databaseUri, mongooseOptions,() => {
+  Logger.info('Connected to MongoDB')
+})
+
+RegisterRoutes(app)
+
+export default app
