@@ -9,21 +9,31 @@ import {
   SuccessResponse
 } from 'tsoa'
 
-import { Team } from "../models/team.model"
+import { ITeamDocument } from "../models/team.model"
 import { TeamsService, TeamCreationParams } from "../services/teams.service"
 
+<<<<<<< HEAD
 @Route('api/teams')
 @Tags("Team")
+=======
+@Route('teams')
+@Tags('Team')
+>>>>>>> 57a9ac5 (fix: getting swagger working)
 export class TeamsController extends Controller {
   @Get('/')
-  public async getTeams(): Promise<Team[]> {
+  public async getTeams(): Promise<ITeamDocument[]> {
     return new TeamsService().getAll()
   }
 
   @Get('{teamId}')
   public async getTeam (
+<<<<<<< HEAD
     @Path() teamId: string
   ): Promise<Team> {
+=======
+    @Path() teamId: number
+  ): Promise<ITeamDocument> {
+>>>>>>> 57a9ac5 (fix: getting swagger working)
     return new TeamsService().getById(teamId)
   }
 

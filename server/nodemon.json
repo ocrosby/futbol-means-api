@@ -8,9 +8,9 @@
   "verbose": true,
   "restartable": "rs",
   "ignore": [
-    "src/build",
-    "src/public",
-    "src/views",
-    "node_modules"
+    ".git",
+    "src/build/routes.ts",
+    "src/build/swagger.json",
+    "node_modules/**/node_modules"
   ]
 }

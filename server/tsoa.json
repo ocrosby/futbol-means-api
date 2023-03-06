@@ -15,10 +15,13 @@
       {
         "name": "Team",
         "description": "Operations about teams"
+<<<<<<< HEAD
       },
       {
         "name": "Event",
         "description": "Operations about events"
+=======
+>>>>>>> 57a9ac5 (fix: getting swagger working)
       }
     ]
   },

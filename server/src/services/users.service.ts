@@ -1,54 +1,98 @@
 import {IUser, IUserDocument} from '../models/user.model'
 
-import UserRepo from '../repos/user.repo'
 import { nullable } from "../types/nullable";
 
 import {IPatchOperation} from "../interfaces/patch.interface";
 
-function get(id: string): Promise<nullable<IUserDocument>> {
-  return UserRepo.get(id);
+import User from '../models/user.model'
+import jsonpatch from "jsonpatch";
+
+async function get(id: string): Promise<nullable<IUserDocument>> {
+  return User.findOne({_id: id})
 }
 
-function getByEmail(email: string): Promise<nullable<IUserDocument>> {
-  return UserRepo.getByEmail(email);
+async function getByEmail(email: string): Promise<nullable<IUserDocument>> {
+  return User.findOne({email: email})
 }
 
-function getAll(): Promise<IUserDocument[]> {
-  return UserRepo.getAll();
+async function getAll(): Promise<IUserDocument[]> {
+  return User.find({})
 }
 
-function addOne(user: IUser, password: string): Promise<IUserDocument> {
-  return UserRepo.add(user, password);
-}
+async function addOne(userCreationParams: IUser, password: string): Promise<IUserDocument> {
+  const document = await getByEmail(userCreationParams.email);
 
-async function updateOne(id: string, user: IUser): Promise<nullable<IUserDocument>> {
-  const persists = await UserRepo.persists(id);
-
-  if (!persists) {
-    return Promise.reject(`Could not find a user with id ${id} when attempting to update a user!`)
+  if (document) {
+    // The current email address is already present.
+    return Promise.reject(`A user with the email address "${userCreationParams.email}" already exits!`)
   }
 
-  return await UserRepo.modify(id, user);
+  const newUser = new User(userCreationParams);
+
+  try {
+    await User.register(newUser, password);
+
+    return newUser;
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+
+async function updateOne(id: string, data: IUser): Promise<nullable<IUserDocument>> {
+  // Note: replaceOne() replaces the first matching document in the colleciton that
+  // matches the filter, using the replacement document
+  //
+  // If upsert: true and no documents match the filter it creates a new document
+  // based on the replacement document
+
+  // https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceOne/
+  const modificationResult = await User.replaceOne({_id: id}, data, { upsert: true })
+
+  // replaceOne returns a resulting document containing
+  // * a boolean acknowledged as true if the operation ran with write concern or false if write concern was disabled
+  // * matchedCount containing the number of matched documents
+  // * modifiedCount containing the number of modified documents
+  // * upsertedId containing the _id for the upserted document
+
+  if (modificationResult.matchedCount) {
+    return await get(id); // The id was matched
+  }
+
+  // No documents had the specified id.
+  // Since upsert is set to true this means a new document was created.
+  const upsertedId: string = modificationResult.upsertedId.toString();
+
+  return await get(upsertedId)
+}
+
+async function exists(id: string): Promise<boolean> {
+  const user = await get(id);
+
+  if (!user) {
+    return Promise.resolve(false);
+  }
+
+  return Promise.resolve(true);
 }
 
 async function _delete(id: string): Promise<void> {
-  const persists = await UserRepo.persists(id);
+  await User.deleteOne({_id: id});
 
-  if (!persists) {
-    return Promise.reject(`Could not find a user with id ${id} when attempting to delete a user!`)
-  }
-
-  return await UserRepo.delete(id);
+  return Promise.resolve();
 }
 
 async function patch(id: string, patches: IPatchOperation[]): Promise<void> {
-  const persists = await UserRepo.persists(id);
+  const userDoc: nullable<IUserDocument> = await User.findOne({_id: id});
 
-  if (!persists) {
-    return Promise.reject(`Could not find a user with id ${id} when attempting to patch a user!`)
+  if (!userDoc) {
+    return Promise.reject(`Could not find a user with id ${id} when attempting patch a user!`)
   }
 
-  return await UserRepo.patch(id, patches);
+  const patchedDoc = jsonpatch.apply_patch(userDoc, patches)
+
+  await patchedDoc.save();
+
+  return Promise.resolve();
 }
 
 export default {
@@ -58,5 +102,6 @@ export default {
   addOne,
   updateOne,
   patch,
-  delete: _delete
+  delete: _delete,
+  exists
 } as const;
