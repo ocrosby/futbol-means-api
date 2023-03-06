@@ -70,6 +70,7 @@ passport.deserializeUser(User.deserializeUser())
 
 
 // Initialize swagger docs
+Logger.info(`Serving Swagger docs at http://localhost:8000/api-docs`)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
 
 mongoose.set('strictQuery', false)
@@ -80,6 +81,7 @@ const mongooseOptions: mongoose.ConnectOptions = {}
 
 mongoose.connect(databaseUri, mongooseOptions,() => {
   Logger.info('Connected to MongoDB')
+  // Logger.info(`The ready state is ${mongoose.connection.readyState}.`)
 })
 
 RegisterRoutes(app)

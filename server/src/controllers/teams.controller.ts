@@ -54,7 +54,7 @@ export class TeamsController extends Controller {
   ): Promise<void> {
     await TeamsService.delete(id)
 
-    return Promise.resolve()
+    return;
   }
 
   @Patch('{id}')
@@ -64,6 +64,6 @@ export class TeamsController extends Controller {
   ): Promise<void> {
     await TeamsService.patch(id, requestBody)
 
-    return Promise.resolve()
+    return;
   }
 }
