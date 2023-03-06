@@ -15,18 +15,15 @@
       {
         "name": "Team",
         "description": "Operations about teams"
-<<<<<<< HEAD
       },
       {
-        "name": "Event",
-        "description": "Operations about events"
-=======
->>>>>>> 57a9ac5 (fix: getting swagger working)
+        "name": "Health",
+        "description": "Operations about health"
       }
     ]
   },
   "routes": {
-    "basePath": "/",
+    "basePath": "/api",
     "routesDir": "src/build"
   }
 }
