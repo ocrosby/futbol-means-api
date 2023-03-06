@@ -23,7 +23,7 @@ import {IPatchOperation} from "../interfaces/patch.interface";
 export class UsersController extends Controller {
   @Get('/')
   public async getAllUsers(): Promise<IUserDocument[]> {
-    return await UserService.getAll();
+    return await UserService.getAll()
   }
 
   @Get('{userId}')
@@ -63,6 +63,8 @@ export class UsersController extends Controller {
     @Path() userId: string,
     @Body() requestBody: IPatchOperation[]
   ): Promise<void> {
-    return await UserService.patch(userId, requestBody)
+    await UserService.patch(userId, requestBody)
+
+    return Promise.resolve()
   }
 }
