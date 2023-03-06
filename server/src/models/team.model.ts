@@ -1,10 +1,16 @@
 import mongoose, { Schema } from 'mongoose'
-import { IUserDocument } from './user.model'
+// import { IUserDocument } from './user.model'
+
+// export interface ITeam {
+//   name: string;
+//   season: string;
+//   owner: IUserDocument['_id']
+// }
 
 export interface ITeam {
   name: string;
   season: string;
-  owner: IUserDocument['_id']
+  owner: string
 }
 
 export interface ITeamDocument extends ITeam, mongoose.Document {}
@@ -24,6 +30,4 @@ const teamSchema: Schema = new Schema({
   }
 })
 
-export const Team = mongoose.model<ITeamDocument>('Team', teamSchema);
-
-export default Team;
+export default mongoose.model('Team', teamSchema);

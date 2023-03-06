@@ -5,7 +5,7 @@ import { nullable } from "../types/nullable";
 import {IPatchOperation} from "../interfaces/patch.interface";
 
 import User from '../models/user.model'
-import jsonpatch from "jsonpatch";
+import jsonpatch from 'jsonpatch';
 
 async function get(id: string): Promise<nullable<IUserDocument>> {
   return User.findOne({_id: id})
@@ -78,7 +78,7 @@ async function exists(id: string): Promise<boolean> {
 async function _delete(id: string): Promise<void> {
   await User.deleteOne({_id: id});
 
-  return Promise.resolve();
+  return Promise.resolve()
 }
 
 async function patch(id: string, patches: IPatchOperation[]): Promise<void> {
