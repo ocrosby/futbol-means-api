@@ -1,16 +1,14 @@
 import { Controller, Get, Route, Tags } from 'tsoa'
 
-import {getReadyState, translateReadyState} from "../utils/mongoose";
+import * as utils from '../utils/mongoose'
 
 @Route('health-check')
 @Tags('Health')
 export class HealthController extends Controller {
   @Get('/')
   public async checkHealth(): Promise<any> {
-    const readyState: number = getReadyState();
+    this.setStatus(utils.isConnected() ? 200 : 500);
 
-    this.setStatus(readyState === 1 ? 200 : 500);
-
-    return { msg: translateReadyState(readyState) }
+    return { msg: utils.getReadyStateMessage() }
   }
 }

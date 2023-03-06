@@ -1,4 +1,4 @@
-import {translateReadyState} from "../../../src/utils/mongoose";
+import * as utils from "../../../src/utils/mongoose";
 
 describe('translateReadyState', () => {
   it('should map 0 to "disconnected"', () => {
@@ -6,7 +6,7 @@ describe('translateReadyState', () => {
     const readyState: number = 0;
 
     // Act
-    const translation = translateReadyState(readyState);
+    const translation = utils.translateReadyState(readyState);
 
     // Assert
     expect(translation).toEqual('disconnected');
@@ -18,7 +18,7 @@ describe('translateReadyState', () => {
     const readyState: number = 1;
 
     // Act
-    const translation = translateReadyState(readyState);
+    const translation = utils.translateReadyState(readyState);
 
     // Assert
     expect(translation).toEqual('connected');
@@ -29,7 +29,7 @@ describe('translateReadyState', () => {
     const readyState: number = 2;
 
     // Act
-    const translation = translateReadyState(readyState);
+    const translation = utils.translateReadyState(readyState);
 
     // Assert
     expect(translation).toEqual('connecting');
@@ -40,7 +40,7 @@ describe('translateReadyState', () => {
     const readyState: number = 3;
 
     // Act
-    const translation = translateReadyState(readyState);
+    const translation = utils.translateReadyState(readyState);
 
     // Assert
     expect(translation).toEqual('disconnecting');
@@ -51,12 +51,22 @@ describe('translateReadyState', () => {
     const readyState: number = 99;
 
     // Act
-    const translation = translateReadyState(readyState);
+    const translation = utils.translateReadyState(readyState);
 
     // Assert
     expect(translation).toEqual('unknown');
   })
+})
 
+describe('isConnected', () => {
+  it('should return true when the ready state is 1', () => {
+    // Arrange
+    jest.spyOn(utils, 'getReadyState').mockReturnValue(1)
 
+    // Act
+    const received = utils.isConnected()
 
+    // Assert
+    expect(received).toBeTruthy()
+  })
 })

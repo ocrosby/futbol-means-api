@@ -4,6 +4,16 @@ export function getReadyState(): number {
   return mongoose.connection.readyState
 }
 
+export function getReadyStateMessage(): string {
+  return translateReadyState(getReadyState());
+}
+
+export function isConnected(): boolean {
+  const readyState = getReadyState();
+
+  return readyState === 1;
+}
+
 export function translateReadyState(readyState: number): string {
   switch(readyState) {
     case 0:
