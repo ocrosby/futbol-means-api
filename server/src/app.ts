@@ -1,18 +1,20 @@
 import express from 'express';
-import passport from 'passport';
 
-import { User } from './models/user.model'
+import User from './models/user.model'
 import session from 'express-session'
-import errorMiddleware from "./middleware/error.middleware";
-import morganMiddleware from "./middleware/morgan.middleware";
-import helmet from "helmet";
+import errorMiddleware from './middleware/error.middleware'
+import morganMiddleware from './middleware/morgan.middleware'
+import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import passport from 'passport'
 import swaggerUi from 'swagger-ui-express'
-import {RegisterRoutes} from "./build/routes";
+import {RegisterRoutes} from './build/routes'
 
 import * as mongoose from 'mongoose'
-import Logger from "./utils/logger";
+import Logger from './utils/logger';
+
+import swaggerDocument from './build/swagger.json'
 
 const {
   MONGO_USER,
@@ -25,7 +27,6 @@ const {
 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
 const databaseUri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
 
-const swaggerDocument = import('./build/swagger.json')
 const swaggerOptions = { explorer: false }
 
 const sessionOptions = {
@@ -64,8 +65,8 @@ app.use(passport.session());
 passport.use(User.createStrategy())
 
 // use static serialize and deserialize of the model for passport session support
-passport.serializeUser(User.serializeUser)
-passport.deserializeUser(User.deserializeUser)
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 
 // Initialize swagger docs

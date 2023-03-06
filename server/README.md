@@ -226,7 +226,7 @@ or
 * [Getting Started with TSOA](https://tsoa-community.github.io/docs/getting-started.html)
 * [ESLint Rules](https://eslint.org/docs/latest/use/configure/rules)
 * [TypeScript with Mongoose and Node Express](https://medium.com/swlh/typescript-with-mongoose-and-node-express-24073d51d2ee)
-* [Passport-Local Mongoose](https://github.com/saintedlama/passport-local-mongoose#readme)
+* [Passport-Local Mongoose API Documentation](https://github.com/saintedlama/passport-local-mongoose#api-documentation)
 * [Put vs Patch](https://wanago.io/2020/04/27/typescript-express-put-vs-patch-mongodb-mongoose/)
 * [Patch Method for HTTP](https://www.rfc-editor.org/rfc/rfc5789)
 * [MongoDB replaceOne](https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceOne/) 

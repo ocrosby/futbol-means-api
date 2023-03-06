@@ -1,3 +1,5 @@
 src/build/routes.ts
 jest.config.ts
 gulpfile.js
+coverage
+

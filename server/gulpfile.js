@@ -33,11 +33,7 @@ task('clean', parallel(['clean-dist', 'clean-logs', 'clean-build', 'clean-covera
 
 task('lint', () => {
   return src(['**/*.js', '**/*.ts', '!node_modules/**'])
-    .pipe(eslint({
-      rules: {},
-      globals: [],
-      envs: []
-    }))
+    .pipe(eslint())
     .pipe(eslint.formatEach('compact', process.stderr))
 })
 
@@ -56,12 +52,12 @@ task('tsoa', shell.task('tsoa spec-and-routes'))
 
 task('install', shell.task('npm install --omit-dev --quiet', { cwd: 'dist'}))
 
-task('transpile', async () => {
+task('compile', async () => {
   const tsProject = ts.createProject('./tsconfig.json')
 
   return tsProject.src()
     .pipe(tsProject())
-    .pipe(dest('dist'))
+    .js.pipe(dest('dist'))
 })
 
 task('copy-resources', () => {
@@ -72,9 +68,15 @@ task('copy-resources', () => {
   ])
 })
 
-task('build', series(['tsoa', 'copy-resources', 'transpile']))
+
+
+task('build', series(['tsoa', 'copy-resources', 'compile']))
 
 task('mstop', shell.task('docker stop mongo_dev && docker container rm mongo_dev'))
 task('mstart', shell.task('docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo'))
+
+
+
+
 
 task('default', series(['clean', 'lint', 'test', 'build', 'install']))

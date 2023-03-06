@@ -9,6 +9,7 @@ import {
   Delete,
   Query,
   Route,
+  Tags,
   SuccessResponse
 } from 'tsoa'
 
@@ -18,7 +19,13 @@ import UserService from '../services/users.service'
 import {IPatchOperation} from "../interfaces/patch.interface";
 
 @Route('users')
+@Tags('User')
 export class UsersController extends Controller {
+  @Get('/')
+  public async getAllUsers(): Promise<IUserDocument[]> {
+    return await UserService.getAll();
+  }
+
   @Get('{userId}')
   public async getUser (
     @Path() userId: string,

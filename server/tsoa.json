@@ -6,7 +6,17 @@
   ],
   "spec": {
     "outputDirectory": "src/build",
-    "specVersion": 3
+    "specVersion": 3,
+    "tags": [
+      {
+        "name": "User",
+        "description": "Operations about users"
+      },
+      {
+        "name": "Team",
+        "description": "Operations about teams"
+      }
+    ]
   },
   "routes": {
     "basePath": "/api",
