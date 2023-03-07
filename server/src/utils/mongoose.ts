@@ -5,13 +5,11 @@ export function getReadyState(): number {
 }
 
 export function getReadyStateMessage(): string {
-  return translateReadyState(getReadyState());
+  return exports.translateReadyState(exports.getReadyState());
 }
 
 export function isConnected(): boolean {
-  const readyState = getReadyState();
-
-  return readyState === 1;
+  return exports.getReadyState() === 1;
 }
 
 export function translateReadyState(readyState: number): string {

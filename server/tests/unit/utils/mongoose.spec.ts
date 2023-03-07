@@ -61,12 +61,91 @@ describe('translateReadyState', () => {
 describe('isConnected', () => {
   it('should return true when the ready state is 1', () => {
     // Arrange
-    jest.spyOn(utils, 'getReadyState').mockReturnValue(1)
+    jest.spyOn(utils, 'getReadyState').mockReturnValue(1);
 
     // Act
     const received = utils.isConnected()
 
     // Assert
     expect(received).toBeTruthy()
+  })
+
+  it('should return false when the ready state is 4', () => {
+    // Arrange
+    jest.spyOn(utils, 'getReadyState').mockReturnValue(4);
+
+    // Act
+    const received = utils.isConnected()
+
+    // Assert
+    expect(received).toBeFalsy()
+  })
+})
+
+describe('getReadyStateMessage', () => {
+  it('should return "disconnected" when the ready state is 0', () => {
+    // Arrange
+    jest.spyOn(utils, 'getReadyState').mockReturnValue(0);
+
+    // Act
+    const received = utils.getReadyStateMessage()
+
+    // Assert
+    expect(received).toEqual('disconnected')
+  })
+
+  it('should return "connected" when the ready state is 1', () => {
+    // Arrange
+    jest.spyOn(utils, 'getReadyState').mockReturnValue(1);
+
+    // Act
+    const received = utils.getReadyStateMessage()
+
+    // Assert
+    expect(received).toEqual('connected')
+  })
+
+  it('should return "connecting" when the ready state is 2', () => {
+    // Arrange
+    jest.spyOn(utils, 'getReadyState').mockReturnValue(2);
+
+    // Act
+    const received = utils.getReadyStateMessage()
+
+    // Assert
+    expect(received).toEqual('connecting')
+  })
+
+  it('should return "disconnecting" when the ready state is 3', () => {
+    // Arrange
+    jest.spyOn(utils, 'getReadyState').mockReturnValue(3);
+
+    // Act
+    const received = utils.getReadyStateMessage()
+
+    // Assert
+    expect(received).toEqual('disconnecting')
+  })
+
+  it('shouold return "unknown" when the ready state is 4', () => {
+    // Arrange
+    jest.spyOn(utils, 'getReadyState').mockReturnValue(4);
+
+    // Act
+    const received = utils.getReadyStateMessage()
+
+    // Assert
+    expect(received).toEqual('unknown')
+  })
+
+  it('should return "unknown" when the ready state is 99', () => {
+    // Arrange
+    jest.spyOn(utils, 'getReadyState').mockReturnValue(99);
+
+    // Act
+    const received = utils.getReadyStateMessage()
+
+    // Assert
+    expect(received).toEqual('unknown')
   })
 })
