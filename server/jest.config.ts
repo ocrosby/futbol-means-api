@@ -15,13 +15,15 @@ const jestConfig: JestConfigWithTsJest = {
   testEnvironment: 'node',
   coverageThreshold: {
     global: {
-      branches: 2,
-      functions: 7,
-      lines: 4,
-      statements: 4,
+      branches: 21,
+      functions: 16,
+      lines: 10,
+      statements: 10,
     },
   },
-  // [...]
+  modulePathIgnorePatterns: [
+      "src/build/routes.[ts|js]"
+  ],
   transform: {
     ...tsjPreset.transform,
     // [...]
