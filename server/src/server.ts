@@ -6,8 +6,6 @@ validateEnv();
 
 import app from './app'
 
-let port: number = Number(process.env.API_LOCAL_PORT);
+const PORT: Number = Number(process.env.API_LOCAL_PORT);
 
-if (Number.isNaN(port)) port = 8000;
-
-app.listen(port);
+app.listen(PORT, () => console.log(`running on port ${PORT}`));

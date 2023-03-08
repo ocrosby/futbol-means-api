@@ -31,7 +31,9 @@ async function exists(name: string, season: string): Promise<boolean> {
 async function getAll(): Promise<ITeamDocument[]> {
   Logger.debug('Retrieving teams ...')
 
-  return Team.find({})
+  const teams = await Team.find({})
+
+  return teams;
 }
 
 async function addOne(teamCreationParams: ITeam): Promise<ITeamDocument> {
