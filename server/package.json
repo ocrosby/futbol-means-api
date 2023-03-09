@@ -9,7 +9,7 @@
     "lint": "gulp lint",
     "test": "gulp test",
     "build": "gulp build",
-    "dev": "concurrently \"nodemon --config nodemon.json\" \"nodemon -x gulp tsoa\"",
+    "dev": "gulp watch",
     "start": "node dist/server.js"
   },
   "repository": {
@@ -79,6 +79,7 @@
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
     "gulp-jest": "^4.0.4",
+    "gulp-nodemon": "^2.5.0",
     "gulp-rimraf": "^1.0.0",
     "gulp-shell": "^0.8.0",
     "gulp-typescript": "^6.0.0-alpha.1",
