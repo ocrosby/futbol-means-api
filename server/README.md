@@ -2,20 +2,6 @@
 
 ## Setup
 
-### Environment Variablres
-
-It is possible to preload environment variables using dotenv as follows
-
-> node -r dotenv/config your_script.js
-
-I think in this case the environment variables from the default .env file will be preloaded.
-
-If you need to specify a specific environment configuration you would do the following:
-
-> node -r dotenv/config your_script.js dotenv_config_path=/custom/path/to/.env dotenv_config_debug=true
-
-This should preload the environment variables from your environment file of choice prior to loading your node process.
-
 ### Installing TypeScript globally
 
 ```sh
@@ -240,7 +226,7 @@ or
 * [Getting Started with TSOA](https://tsoa-community.github.io/docs/getting-started.html)
 * [ESLint Rules](https://eslint.org/docs/latest/use/configure/rules)
 * [TypeScript with Mongoose and Node Express](https://medium.com/swlh/typescript-with-mongoose-and-node-express-24073d51d2ee)
-* [Passport-Local Mongoose API Documentation](https://github.com/saintedlama/passport-local-mongoose#api-documentation)
+* [Passport-Local Mongoose](https://github.com/saintedlama/passport-local-mongoose#readme)
 * [Put vs Patch](https://wanago.io/2020/04/27/typescript-express-put-vs-patch-mongodb-mongoose/)
 * [Patch Method for HTTP](https://www.rfc-editor.org/rfc/rfc5789)
 * [MongoDB replaceOne](https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceOne/) 

@@ -1,12 +1,14 @@
 import * as dotenv from 'dotenv'
 
-import { createServer } from './app'
-import { validateEnv } from './utils/validateEnv'
+import app from './app'
 
-dotenv.config()
+import { validateEnv } from "./utils/validateEnv";
 
-validateEnv()
+dotenv.config();
+validateEnv();
 
-const server = createServer(true, process.env.API_LOCAL_PORT)
+let port: number = Number(process.env.API_LOCAL_PORT);
 
-module.exports = server.app
+if (Number.isNaN(port)) port = 8000;
+
+app.listen(port);

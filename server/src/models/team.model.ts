@@ -1,19 +1,11 @@
 import mongoose, { Schema } from 'mongoose'
-// import { IUserDocument } from './user.model'
+import { IUserDocument } from './user.model'
 
-// export interface ITeam {
-//   name: string;
-//   season: string;
-//   owner: IUserDocument['_id']
-// }
-
-export interface ITeam {
+export interface Team extends mongoose.Document {
   name: string;
   season: string;
-  owner: string
+  owner: IUserDocument['_id'];
 }
-
-export interface ITeamDocument extends ITeam, mongoose.Document {}
 
 const teamSchema: Schema = new Schema({
   name: {
@@ -30,4 +22,4 @@ const teamSchema: Schema = new Schema({
   }
 })
 
-export default mongoose.model('Team', teamSchema);
+export const TeamModel = mongoose.model<Team>('Team', teamSchema);

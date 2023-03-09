@@ -1,8 +1,8 @@
 .DS_Store
 .run/
 server/.run/
-server/src/build/routes.ts
-server/src/build/swagger.json
+server/build/routes.ts
+server/src/swagger.json
 .env
 coverage
 .idea

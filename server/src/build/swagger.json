@@ -82,10 +82,18 @@
 			"TeamCreationParams": {
 				"$ref": "#/components/schemas/Pick_Team.name-or-season-or-owner_"
 			},
-			"User": {
+			"IUserDocument": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
-			"Pick_User.email-or-firstName-or-lastName-or-password_": {
+			"nullable_IUserDocument_": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/IUserDocument"
+					}
+				],
+				"nullable": true
+			},
+			"IUserCreationParams": {
 				"properties": {
 					"email": {
 						"type": "string"
@@ -107,10 +115,43 @@
 					"password"
 				],
 				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
+				"additionalProperties": false
 			},
-			"UserCreationParams": {
-				"$ref": "#/components/schemas/Pick_User.email-or-firstName-or-lastName-or-password_"
+			"IUser": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"firstName",
+					"lastName"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPatchOperation": {
+				"properties": {
+					"op": {
+						"type": "string"
+					},
+					"path": {
+						"type": "string"
+					},
+					"from": {
+						"type": "string"
+					},
+					"value": {}
+				},
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -378,7 +419,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/User"
+									"$ref": "#/components/schemas/nullable_IUserDocument_"
 								}
 							}
 						}
@@ -406,6 +447,93 @@
 						}
 					}
 				]
+			},
+			"put": {
+				"operationId": "UpdateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/nullable_IUserDocument_"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUser"
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"operationId": "DeleteUser",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "PatchUser",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/IPatchOperation"
+								},
+								"type": "array"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/api/users": {
@@ -417,7 +545,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/User"
+									"$ref": "#/components/schemas/IUserDocument"
 								}
 							}
 						}
@@ -433,7 +561,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/UserCreationParams"
+								"$ref": "#/components/schemas/IUserCreationParams"
 							}
 						}
 					}
