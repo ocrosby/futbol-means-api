@@ -4,7 +4,7 @@ import User from './models/user.model'
 import session from 'express-session'
 import errorMiddleware from './middleware/error.middleware'
 import morganMiddleware from './middleware/morgan.middleware'
-import expressHealthcheck from "express-healthcheck"
+import expressHealthcheck from 'express-healthcheck'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
@@ -89,7 +89,10 @@ RegisterRoutes(app)
 // Set up the health check route
 app.use('/healthcheck', expressHealthcheck({
   healthy: () => {
-    return { everything: 'is ok'}
+    return {
+      everything: 'is ok',
+      uptime: process.uptime()
+    }
   },
   test: (callback: any) => {
     // This function will be executed to establish the health of the application.
@@ -97,9 +100,13 @@ app.use('/healthcheck', expressHealthcheck({
 
     if (mongoutil.isConnected()) {
       Logger.info('Application appears te connected to MongoDB.')
+      callback()
     } else {
       Logger.error('Application is not really connected to MongoDB!')
-      callback({state: 'unhealthy'})
+      callback({
+        state: 'unhealthy',
+        uptime: process.uptime()
+      })
     }
   }
 }))
