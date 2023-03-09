@@ -2,6 +2,20 @@
 
 ## Setup
 
+### Environment Variablres
+
+It is possible to preload environment variables using dotenv as follows
+
+> node -r dotenv/config your_script.js
+
+I think in this case the environment variables from the default .env file will be preloaded.
+
+If you need to specify a specific environment configuration you would do the following:
+
+> node -r dotenv/config your_script.js dotenv_config_path=/custom/path/to/.env dotenv_config_debug=true
+
+This should preload the environment variables from your environment file of choice prior to loading your node process.
+
 ### Installing TypeScript globally
 
 ```sh

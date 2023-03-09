@@ -10,7 +10,7 @@
     "test": "gulp test",
     "build": "gulp build",
     "dev": "gulp watch",
-    "start": "node dist/server.js"
+    "start": "node -r dotenv/config dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -48,6 +48,7 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^9.0.0",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
@@ -87,6 +88,7 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "jest": "^29.4.3",
     "merge-stream": "^2.0.0",
+    "mongodb": "^5.1.0",
     "nodemon": "^2.0.20",
     "supertest": "^6.3.3",
     "ts-jest": "^29.0.5",

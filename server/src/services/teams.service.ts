@@ -31,9 +31,7 @@ async function exists(name: string, season: string): Promise<boolean> {
 async function getAll(): Promise<ITeamDocument[]> {
   Logger.debug('Retrieving teams ...')
 
-  const teams = await Team.find({})
-
-  return teams;
+  return await Team.find({})
 }
 
 async function addOne(teamCreationParams: ITeam): Promise<ITeamDocument> {
@@ -63,7 +61,7 @@ async function updateOne(id: string, data: ITeam): Promise<ITeamDocument | null>
   Logger.debug('Updating a team')
 
   const result = await Team.replaceOne({_id: id}, { upsert: true })
-  return result.matchedCount ? await get(id) : await await get(result.upsertedId.toString());
+  return result.matchedCount ? await get(id) : await get(result.upsertedId.toString());
 }
 
 async function _delete(id: string): Promise<void> {
