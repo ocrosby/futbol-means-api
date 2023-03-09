@@ -16,10 +16,6 @@
       {
         "name": "Team",
         "description": "Operations about teams"
-      },
-      {
-        "name": "Health",
-        "description": "Operations about health"
       }
     ]
   },

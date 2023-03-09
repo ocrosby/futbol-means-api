@@ -4,6 +4,7 @@ import User from './models/user.model'
 import session from 'express-session'
 import errorMiddleware from './middleware/error.middleware'
 import morganMiddleware from './middleware/morgan.middleware'
+import expressHealthcheck from "express-healthcheck"
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
@@ -12,21 +13,15 @@ import swaggerUi from 'swagger-ui-express'
 import {RegisterRoutes} from './build/routes'
 
 import * as mongoose from 'mongoose'
+import * as mongoutil from './utils/mongoose'
 import Logger from './utils/logger';
 
 import swaggerDocument from './build/swagger.json'
+import {getReadyStateMessage} from "./utils/mongoose";
 
 const {
-  MONGO_USER,
-  MONGO_PASSWORD,
-  MONGO_HOST,
-  MONGO_PORT,
-  MONGO_DB,
   API_LOCAL_PORT
 } = process.env
-
-// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-const databaseUri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
 
 const swaggerOptions = { explorer: false }
 
@@ -76,16 +71,41 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOp
 
 mongoose.set('strictQuery', false)
 
+const databaseUri = mongoutil.generateDatabaseUri();
+
 Logger.debug(`Mongo Connection String: "${databaseUri}"`)
 
-const mongooseOptions: mongoose.ConnectOptions = {}
-
-mongoose.connect(databaseUri, mongooseOptions,() => {
-  Logger.info('Connected to MongoDB')
-  // Logger.info(`The ready state is ${mongoose.connection.readyState}.`)
-})
+mongoose.connect(databaseUri, mongoutil.options)
+  .then(() => {
+    // ready to use
+    Logger.info('Connected to MongoDB')
+  }, (err: any) => {
+    // handle initial connection error
+    Logger.error(err)
+  })
 
 RegisterRoutes(app)
+
+// Set up the health check route
+app.use('/healthcheck', expressHealthcheck({
+  healthy: () => {
+    return { everything: 'is ok'}
+  },
+  test: (callback: any) => {
+    // This function will be executed to establish the health of the application.
+    Logger.info(`Ready state is ${getReadyStateMessage()}.`)
+
+    if (mongoutil.isConnected()) {
+      Logger.info('Application appears te connected to MongoDB.')
+    } else {
+      Logger.error('Application is not really connected to MongoDB!')
+      callback({state: 'unhealthy'})
+    }
+  }
+}))
+
+Logger.info(`View health check at http://localhost:${API_LOCAL_PORT}/healthcheck`)
+
 
 // Serve static files
 
