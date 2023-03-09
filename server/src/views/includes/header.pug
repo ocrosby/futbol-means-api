@@ -1,7 +1,9 @@
-mixin head(title)
-  head
-    meta(charset='utf-8')
-    title=title
+header#header
+  include _nav
 
-    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css")
-
+  //block header
+  //  .user-info
+  //    if user
+  //      include logoutForm
+  //    else
+  //      include loginForm
