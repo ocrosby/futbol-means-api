@@ -1,5 +1,5 @@
-import express from 'express';
-
+import express, {Request, Response} from 'express';
+import path from 'path';
 import User from './models/user.model'
 import session from 'express-session'
 import errorMiddleware from './middleware/error.middleware'
@@ -21,7 +21,8 @@ const {
   MONGO_PASSWORD,
   MONGO_HOST,
   MONGO_PORT,
-  MONGO_DB
+  MONGO_DB,
+  API_LOCAL_PORT
 } = process.env
 
 // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -85,5 +86,28 @@ mongoose.connect(databaseUri, mongooseOptions,() => {
 })
 
 RegisterRoutes(app)
+
+// Serve static files
+
+app.use(express.static(path.join(__dirname, 'public')))
+
+// Set up the PUG template engine.
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.get('/', (req: Request, res: Response) => {
+  return res.redirect('/home');
+})
+
+app.get('/home', (req: Request, res: Response) => {
+  res.render('index', {
+    subject: 'Pug template engine',
+    name: 'our template',
+    link: 'https://google.com'
+  })
+})
+
+Logger.info(`View PUG interface at http://localhost:${API_LOCAL_PORT}`)
 
 export default app
