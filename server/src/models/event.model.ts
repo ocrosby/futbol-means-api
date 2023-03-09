@@ -1,22 +1,22 @@
 import mongoose, { Schema } from 'mongoose'
 
-export interface KeyValuePair {
-  key: string,
-  value: string
+export interface IKeyValuePair {
+  key: string;
+  value: string;
 }
 
-export interface Event extends mongoose.Document {
+export interface IEvent {
   type: string;
-  timestamp: Date;
-  meta: KeyValuePair[];
+  meta: IKeyValuePair[];
 }
+
+export interface IEventDocument extends IEvent, mongoose.Document {}
 
 const eventSchema: Schema = new Schema({
   type: {
     type: String,
     enum: [
       'Goal',
-      'Goal Against',
       'Save',
       'Kick Off',
       'Half Time',
@@ -26,20 +26,16 @@ const eventSchema: Schema = new Schema({
       'Injury',
       'Corner Kick',
       'Free Kick',
-      'Throw In',
-      'Weather Delay',
-      'Weather Cancellation'
+      'Throw In'
     ],
-    required: true
-  },
-  timestamp: {
-    type: Date,
     required: true
   },
   meta: [{
     key: String,
     value: String
   }]
+}, {
+  timestamps: true  // Mongoose will add two properties of type Date createdAt and updatedAt
 })
 
-export const EventModel = mongoose.model<Event>('Event', eventSchema)
+export default mongoose.model('Event', eventSchema)

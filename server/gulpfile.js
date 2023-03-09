@@ -1,6 +1,10 @@
+const dotenv = require('dotenv')
+
+dotenv.config()
+
 const gulp = require('gulp')
 
-const { src, series, dest, watch, task, parallel } = gulp
+const { src, series, dest, task, parallel } = gulp
 
 const shell = require('gulp-shell')
 const eslint = require('gulp-eslint')
@@ -74,6 +78,7 @@ task('build', series(['tsoa', 'copy-resources', 'compile']))
 task('mstop', shell.task('docker stop mongo_dev && docker container rm mongo_dev'))
 task('mstart', shell.task('docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo'))
 
+task('bdd', shell.task('npx cucumber-js'))
 
 task('watch', (done) => {
   let stream = nodemon({

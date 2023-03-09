@@ -1,13 +1,11 @@
-import * as dotenv from 'dotenv'
 import { validateEnv } from "./utils/validateEnv";
 
-dotenv.config();
+import Logger from './utils/logger';
+
 validateEnv();
 
 import app from './app'
 
-let port: number = Number(process.env.API_LOCAL_PORT);
-
-if (Number.isNaN(port)) port = 8000;
-
-app.listen(port);
+app.listen(process.env.API_LOCAL_PORT, () => {
+  Logger.info(`listening on port ${process.env.API_LOCAL_PORT}`)}
+)
