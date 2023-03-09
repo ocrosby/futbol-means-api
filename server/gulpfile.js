@@ -8,6 +8,7 @@ const clean = require('gulp-rimraf')
 const jest = require('gulp-jest').default;
 const ts = require('gulp-typescript')
 const merge = require('merge-stream')
+const nodemon = require('gulp-nodemon')
 
 task('clean-dist', () => {
   return src('dist', { read: false, allowEmpty: true })
@@ -68,15 +69,30 @@ task('copy-resources', () => {
   ])
 })
 
-
-
 task('build', series(['tsoa', 'copy-resources', 'compile']))
 
 task('mstop', shell.task('docker stop mongo_dev && docker container rm mongo_dev'))
 task('mstart', shell.task('docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo'))
 
 
+task('watch', (done) => {
+  let stream = nodemon({
+    nodemon: require('nodemon'),
+    ext: 'ts json',
+    env: { 'NODE_ENV': 'development'},
+    tasks: ['tsoa'],
+    done: done
+  })
 
+  stream
+    .on('restart', () => {
+      console.log('restarted!')
+    })
+    .on('crash', () => {
+      console.error('Application has crashed!\n')
+      stream.emit('restart', 10) // restart the server in 10 seconds
+    })
+})
 
 
 task('default', series(['clean', 'lint', 'test', 'build', 'install']))
