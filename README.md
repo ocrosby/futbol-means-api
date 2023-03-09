@@ -189,6 +189,18 @@ A match has an opponent.
 
 A user must be able to setup the starting lineup.
 
+## Kafka
+
+Pulling the latest Apache Kafka image.
+
+> docker pull bitnami/kafka:latest
+
+
+Using Docker container networking, an Apache Kafka server running inside a container can easily be accessed by your application containers.
+
+Containers attached to the same network can communicate with each other using the container name as the hostname.
+
+
 ## Running Docker Compose
 
 Note: This command must be run from the repository root.
@@ -197,7 +209,14 @@ Note: This command must be run from the repository root.
 docker-compose up
 ```
 
+Step 1: Create a network
+
+> docker network create app-tier --driver bridge
+
+
+
 
 ## References
 * [Docker Notes](./docs/Docker.md)
+* [Docker Container Networking](https://docs.docker.com/engine/userguide/networking/)
 * [Node Express Typescript](https://developer.okta.com/blog/2018/11/15/node-express-typescript)
