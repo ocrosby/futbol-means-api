@@ -96,16 +96,13 @@ app.use('/healthcheck', expressHealthcheck({
   },
   test: (callback: any) => {
     // This function will be executed to establish the health of the application.
-    Logger.info(`Ready state is ${getReadyStateMessage()}.`)
-
     if (mongoutil.isConnected()) {
-      Logger.info('Application appears te connected to MongoDB.')
       callback()
     } else {
-      Logger.error('Application is not really connected to MongoDB!')
       callback({
         state: 'unhealthy',
-        uptime: process.uptime()
+        uptime: process.uptime(),
+        mongooseReadyState: mongoutil.getReadyStateMessage()
       })
     }
   }
