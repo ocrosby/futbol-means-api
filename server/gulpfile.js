@@ -5,10 +5,10 @@ const { src, series, dest, watch, task, parallel } = gulp
 const shell = require('gulp-shell')
 const eslint = require('gulp-eslint')
 const clean = require('gulp-rimraf')
-const jest = require('gulp-jest').default
+const jest = require('gulp-jest').default;
 const ts = require('gulp-typescript')
-const nodemon = require('gulp-nodemon')
 const merge = require('merge-stream')
+const nodemon = require('gulp-nodemon')
 
 task('clean-dist', () => {
   return src('dist', { read: false, allowEmpty: true })
@@ -69,19 +69,19 @@ task('copy-resources', () => {
   ])
 })
 
-<<<<<<< HEAD
-task('dev', () => {
-  const stream = nodemon({
-    exec: 'ts-node src/server.ts',
-    ext: 'ts js json',
-    verbose: true,
-    ignore: [
-      '.git',
-      'node_modules/**/node_modules',
-      'src/build/swagger.json',
-      'src/build/routes.ts'
-    ],
-    tasks: ['build'], // compile synchronously onChange
+task('build', series(['tsoa', 'copy-resources', 'compile']))
+
+task('mstop', shell.task('docker stop mongo_dev && docker container rm mongo_dev'))
+task('mstart', shell.task('docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo'))
+
+
+task('watch', (done) => {
+  let stream = nodemon({
+    nodemon: require('nodemon'),
+    ext: 'ts json',
+    env: { 'NODE_ENV': 'development'},
+    tasks: ['tsoa'],
+    done: done
   })
 
   stream
@@ -92,26 +92,7 @@ task('dev', () => {
       console.error('Application has crashed!\n')
       stream.emit('restart', 10) // restart the server in 10 seconds
     })
-
-  return stream
 })
 
-task('build', series(['tsoa', 'copy-resources', 'transpile']))
-=======
 
-
-task('build', series(['tsoa', 'copy-resources', 'compile']))
->>>>>>> 57a9ac5 (fix: getting swagger working)
-
-task('mstop', shell.task('docker stop mongo_dev && docker container rm mongo_dev'))
-
-task('mstart', shell.task('docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo'))
-
-
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 57a9ac5 (fix: getting swagger working)
 task('default', series(['clean', 'lint', 'test', 'build', 'install']))
