@@ -1,5 +1,8 @@
-footer#footer
+mixin footer(footer)
+  script(src="https://stackpath.bootstrapcdn.com/boostrap/4.2.1/js/bootstrap.min.js")
+
+footer.text-center.text-lg-start.bg-light.text-muted#footer
   block footer
-    p Slack Team Based Authentication Template
-    p: a(href='https://github.com/slackapi/template-account-binding') GitHub
-    p: a(href='https://api.slack.com') Slack API Documentation
+    section.d-flex.justify-content-center.justify-content-lg-between.p-4.border-bottom
+      p: a(href='https://github.com/slackapi/template-account-binding') GitHub
+      p: a(href='https://api.slack.com') Slack API Documentation
