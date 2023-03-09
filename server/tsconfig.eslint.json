@@ -36,7 +36,6 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true,
 
-
     /* Other Options */
     "resolveJsonModule": true,
     "sourceMap": true,
@@ -47,9 +46,10 @@
     }
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "tests/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules/**/*"
   ]
 }

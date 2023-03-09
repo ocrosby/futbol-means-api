@@ -17,13 +17,13 @@
         "description": "Operations about teams"
       },
       {
-        "name": "Event",
-        "description": "Operations about events"
+        "name": "Health",
+        "description": "Operations about health"
       }
     ]
   },
   "routes": {
-    "basePath": "/",
+    "basePath": "/api",
     "routesDir": "src/build"
   }
 }
