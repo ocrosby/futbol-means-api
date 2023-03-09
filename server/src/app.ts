@@ -17,7 +17,6 @@ import * as mongoutil from './utils/mongoose'
 import Logger from './utils/logger';
 
 import swaggerDocument from './build/swagger.json'
-import {getReadyStateMessage} from "./utils/mongoose";
 
 const {
   API_LOCAL_PORT
