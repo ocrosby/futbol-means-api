@@ -1,5 +1,9 @@
 # Means API
 
+![Test](https://github.com/ocrosby/futbol-means-api/actions/workflows/server-ci.yaml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/ocrosby/futbol-means-api/badge.svg?branch=main)](https://coveralls.io/github/ocrosby/futbol-means-api?branch=main)
+
+
 ## Setup
 
 ### Environment Variablres

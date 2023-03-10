@@ -33,10 +33,10 @@ jobs:
       - name: Run tests
         run: npm run test
 
-#      - name: Report Coverage
-#        uses: coverallsapp/github-action@master
-#        with:
-#          flag-name: "Futbol-Means Server"
-#          path-to-lcov: "./server/coverage/lcov.info"
-#          github-token: ${{ secrets.github_token }}
+      - name: Report Coverage
+        uses: coverallsapp/github-action@master
+        with:
+          flag-name: "Futbol-Means Server"
+          path-to-lcov: "./server/coverage/lcov.info"
+          github-token: ${{ secrets.github_token }}
 
