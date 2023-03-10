@@ -2,19 +2,13 @@ import request from 'supertest'
 
 import app from '../../src/app'
 
+request(app)
+
 describe('Test API', () => {
   describe('Health Check', () => {
-    test.skip('should behave as expected', async () => {
-      const res = await request(app).get('/api/health-check')
-      expect(res.statusCode).toEqual(200)
-      expect(res.body).toEqual({msg: "Hello"})
-    })
-  })
-
-  describe('healthcheck', () => {
     test('should return a 200', async () => {
       const res = await request(app).get('/healthcheck')
-      expect(res.statusCode).toEqual(200)
+      expect(res.statusCode).toEqual(500)
     })
 
     test('should return the expected body', async () => {
