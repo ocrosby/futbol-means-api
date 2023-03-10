@@ -42,7 +42,10 @@ task('lint', () => {
     .pipe(eslint.formatEach('compact', process.stderr))
 })
 
-task('test', () => {
+// builds the routes and swagger.json file
+task('tsoa', shell.task('tsoa spec-and-routes'))
+
+task('jest', () => {
   process.env.NODE_ENV = 'test'
 
   return gulp.src('tests')
@@ -52,8 +55,7 @@ task('test', () => {
     }))
 })
 
-// builds the routes and swagger.json file
-task('tsoa', shell.task('tsoa spec-and-routes'))
+task('test', series(['tsoa', 'jest']))
 
 task('install', shell.task('npm install --omit-dev --quiet', { cwd: 'dist'}))
 

@@ -1,222 +1,252 @@
-# Futbol Means
+# Means API
 
-This application was created to help deal with issues I was having gathering data
-for my daughters High School Soccer team.  In particular during matches we want to
-gather as much data as possible during the matches.  This data includes minutes
-played, player statistics, statistics for keepers and the like.
-
-It's just too difficult to keep up with this using notes so I figured
-it would be easier in an app to setup a team, add a match, start a match
-and let the app track the clock.  Easily setup the starting lineup and
-swap players in and out (while tracking the times) to automate the
-minutes played calculations so I don't have to worry about that.  I
-also figured it would be easy to tap to create an event like a goal
-for example and have the app show me the roster to select who scored
-the goal and which player/players assisted it.  Keeper saves would
-also represent an event.
-
-## Statistics
-
-Below I've detailed some of the statistics that seem pertinent to track, at least for high school Soccer.
-
-In order to do this for each match I'll need to track the following:
-
-* The number of minutes played by each player (Min)
-* The number of goals scored by each player (Goals/G) along with the times those goals occurred (was it a PK?, was it the game winner?).
-* The number of assists accrued by each player (Asst) along with the times those assists occurred.
-* Each shot a player took and when (was it on goal? did the keeper save it?)
-* How many steals a player had (and when)
-* How many PK's a player attempted (and when)
-* How many corner kicks a player took (when was it taken? and from which side?)
-* How many yellow cards a player received (and when)
-* How many red cards a player received (and when)
-
-Now each of these things boils down to an event, so the user interface for such an application will have to make
-creating events very easy to do (fewer clicks and typing the better).
-
-Each event is something where we want to store the time of occurrence relative to the game clock.
-Each event has potentially unique metadata about it.
-
-Question: What events are there?
-Answer:
-* Goal
-* Save
-* Kick Off
-* Half Time
-* End of Match
-* Foul
-* Substitution
-* Injury
-* Corner Kick
-* Free Kick
-* Throw In
-
-## Events
-
-### Goal
-The user generates a Goal event.  The application then displays the roster and asks the user who scored?
-The user selects the player from the roster that appears to have scored the goal and records the current time
-from the game clock.  The application then allows the user to award one or more players with an assist.
-
-A Goal Event has an assigned player.
-A Goal Event can have zero or more awarded assists.
-A Goal Event has a timestamp.
-
-### Save
-The user generates a Save event.  The application automatically assigns the current keeper to the event.
-
-A Save Event has an assigned player.
-A Save Event has a timestamp.
-
-### Kick Off
-The user generates a Kick Off event.  The application associates the starting lineup to the Kick Off event.
-The Kick Off Event has a timestamp.
-
-### Half Time
-The user generates a Half Time event.  The application resets the game clock.
-The Half Time event has a timestamp.
-
-### End Of Match
-The user generates an End Of Match event.  The application stops the game clock.
-The End Of Match event has a timestamp.
-
-### Foul
-The user generates a Foul event.  The application displays the roster and allows the user to specify the offending
-player.
-The Foul Event has a timestamp.
-
-### Substitution
-The user generates a substitution event.  The application displays the list of players currently on the field along
-with a list of players that are not.  The application allows the user to specify players going in and players going out.
-The Substitution Event has a timestamp.
-
-A Substitution Event has one or more players going out.
-A Substitution Event has one or more players coming in.
-A Substitution Event has a timestamp.
-
-### Injury
-The user generates an injury event.  The application displays the list of players currently on the field allowing the
-user to select the player that appears to be injured.
-
-The Injury Event has a potential player assignment.
-The Injury Event has a timestamp.
-
-### Corner Kick
-The user generates a corner kick event.  The application displays the list of players currently on the field allowing
-the user to select the player that appears to be taking the corner kick.
-
-The Corner Kick Event has a player assignment.
-The Corner Kick Event has a timestamp.
-
-### Free Kick
-The user generates a freek kick event.  The application displays the list of players currently on the field allowing
-the user to select the player that appears to be taking the free kick.
-
-The Free Kick Event has a player assignment.
-The Free Kick Event has a timestamp.
-
-### Throw In Event
-The user generates a throw in event.  The application displays the list of players currently on the field allowing
-the user to select the player that appears to be taking the throw in.
-
-The Throw in event has a player assignment.
-The Throw in event has a timestamp.
-
-### General
-
-| Header | Name         | Description                                                      |
-|--------|--------------|------------------------------------------------------------------|
-| GP     | Games Played | How many games the player has participated in during the season. |
+![Test](https://github.com/ocrosby/futbol-means-api/actions/workflows/server-ci.yaml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/ocrosby/futbol-means-api/badge.svg?branch=main)](https://coveralls.io/github/ocrosby/futbol-means-api?branch=main)
 
 
-### Field Player Statistics
+## Setup
 
-| **Header** | **Name** | **Description** |
-|---|---|---|
-| Assists | Asst | Each assist made is worth one point. An assist is awarded for an offensive pass leading directly to a goal. It is possible to award two assists for one goal (ie- a corner kick headed by an offensive player to a teammate who scores). An assist may also be awarded from an indirect penalty kick or a throw-in. When a shot is deflected (off the post or a defensive player) and an offensive player immediately knocks the rebound in for a goal, the offensive player who took the first shot should be awarded an assist. |
-| Shots Taken | Shots/Shts | A shot is an attempt that is taken with the intent of scoring and is directed toward the goal. A cross or crossing pass is not a shot. A goalkeeper who intercepts a cross is not credited with a save. Exception: A cross that the goalkeeper stops that otherwise would have entered the goal is considered a shot, and the goalkeeper is credited with a save. |
-| Shots on Goal | SOG | A shot on goal is a shot that is on net. The results of a shot on goal must be either a save by the goalkeeper or defending team or a goal by the attacking team. A shot that hits the post or crossbar without being deflected by a goalkeeper or defender and does not cross the goal line is not a shot on goal. |
-| Steals | Stls | Steals are given when a player forces an opponent turnover and gains possession of the ball. Receiving an errant pass is not a steal. |
-| Assist Per Game | A/G | The average number of assists an athlete makes per game. (Assists/Total Games Played) |
-| Points | Pts | An athlete is awarded 2 points for every goal scored and 1 point for every assist giving them their total points. |
-| Points Per Game | P/G | The average number of points an athlete has per game. (Points/Total Games Played) |
-| Penalty Kicks Made | PKG | Number of goals scored on penalty kicks. |
-| Penalty Kicks Attempted | PKA | Number of penalty kicks attempted by a player. |
-| Corner Kicks | CK | Number of kicks taken from either end of the goal line. |
-| Game Winning Goal | GWG | Player to score the goal to win the game. |
-| Yellow Card | YC | Number of formal Cautions given to a player by the referee. |
-| Red Card | RC | Player ejected form the game by the referree. |
-| Shots Per Match | S/G | The average number of shots per game. |
-| Shots On Goal Per Match | SOG/G | The average number of shots on goal per game. |
-| Shots On Goal Percentage | SOG % | The percentage of made shots on goal (Goal/SOG=SOG%). |
+### Environment Variablres
 
-### Keeper Statistics
+It is possible to preload environment variables using dotenv as follows
 
-| **Header** | **Name** | **Description** |
-|---|---|---|
-| Minutes Played | Min | Number of minutes the goal keeper plays. Generally, this number is rounded to the nearest whole minute. High school regulation time is 40 minutes per half. |
-| Overtime Minutes | OTMin | Number of minutes played in extra period. |
-| Goals Against | GA | Number of goals scored against the team while the goal keeper is playing in the goal. |
-| Goals Against Average | GAA | GAA = (GA * 90) / Min |
-| Goals Saved | Sa | A save is awarded to a goal keeper only if a shot otherwise would have gone into the goal- regardless of whether the ball is caught or deflected. A save is NOT awarded for intercepting a crossed ball. Saves made by a defensive player other than the goal keeper are "Team Saves" and are not currently tracked by MaxPreps. |
-| Opponent Shots On Goal | SOG | Number of opponent shots on goal. |
-| Opponent Penalty Kick Saves | PKS | Number of saaves on penalty kicks by opponent. |
-| Opponent Penalty Kick Attempts | PKA | Number of penalty kicks attempted by opponent. |
-| Shut Out | SO | Goal keeper receives credit for a shut out only by playing the entire contest and not allowing any goals.  If both keepers play the entire game to a final score of 0-0, both keepers should be credited with a shut out. |
-| Win | Win | The win is credited ot the goalie on the field when the winning goal was scored. |
-| Loss | Loss | The loss is credited to the goalie on the field when the opponent scored the winning goal. |
-| Tie | Tie | The tie is credited to the goalie on the field when the goal to tie was made. |
-| Saves Per Match | S/G | The average number of saves per game. |
-| Saves Percentage | Save % | The percentage of saves (Sa/SOG = Save%) |
+> node -r dotenv/config your_script.js
 
+I think in this case the environment variables from the default .env file will be preloaded.
 
-## Use Cases
+If you need to specify a specific environment configuration you would do the following:
 
-Users must be able to log in.
+> node -r dotenv/config your_script.js dotenv_config_path=/custom/path/to/.env dotenv_config_debug=true
 
-Each user must be able to create a team.
+This should preload the environment variables from your environment file of choice prior to loading your node process.
 
-Each user must be able to add a roster to the team.
+### Installing TypeScript globally
 
-Each roster consists of players.
+```sh
+npm install -g typescript
+tsc --version
+```
+   
+### Installing Eslint globally
 
-A player has a set of positions.
-
-
-Once a team is selected, the user must be able to create match.
-
-A match has an opponent.
-
-A user must be able to setup the starting lineup.
-
-## Kafka
-
-Pulling the latest Apache Kafka image.
-
-> docker pull bitnami/kafka:latest
-
-
-Using Docker container networking, an Apache Kafka server running inside a container can easily be accessed by your application containers.
-
-Containers attached to the same network can communicate with each other using the container name as the hostname.
-
-
-## Running Docker Compose
-
-Note: This command must be run from the repository root.
-
-```bash
-docker-compose up
+```sh
+npm install -g eslint
 ```
 
-Step 1: Create a network
+### Clone the repo
 
-> docker network create app-tier --driver bridge
+```sh
+git clone https://github.com/ocrosby/futbol-means.git
+cd futbol-means
+```
 
+### Install dependencies
+
+```sh
+npm install
+```
+
+### Build the production server
+
+```sh
+npm build
+```
+
+### Run the server
+
+```sh
+npm start
+```
+
+## Docker
+
+Note: I always forget this but the docker port mapping rules start with the port on the
+      local machine (on the left) followed by a ':' then the port within the container
+      (on the right).
+
+### Build the API Docker image locally
+
+```sh
+docker build -t means-api .
+```
+
+## Verifying the docker image
+
+```sh
+docker images
+```
+
+
+## Run tests
+
+```sh
+npm test
+```
+
+## Dependencies
+
+* express - Fast, unopinionated, minimalist web framework for Node.js
+* dotenv - Zero-dependency module that loads environment avariables from a .env file into process.env
+* cors - Express middleware to enable CORS with various options
+* helmet - Express middleware to secure your apps by setting various HTTP headers, which mitigate common attack vectors
+* envalid - Envalid is a small library for validating and accessing environment variables in Node.js programs
+* inversify - A powerful and lightweight inversion of control container for JavaScript & Node.js apps powered by TypeScript.
+* inversify-binding-decorators - An utility that allows developers to declare InversifyJS bindings using ES2016 decorators:
+* mongoose - elegant mongodb object modeling for node.js
+* reflect-metadata - Polyfill for Metadata Reflection API
+* swagger-ui-express - Swagger UI Express
+* tsoa - OpenAPI-compliant REST APIs using TypeScript and Node
+
+
+
+## Development Dependencies
+
+* concurrently
+* eslint
+* nodemon
+* npm-run-all
+* rimraf
+* ts-node
+* typescript
+* ts-node-dev - restarts a target Node.js process when any of the required files change
+
+## Development
+
+I've opted to adopt Gulp as my npm run scripts have starting to become complex.
+
+
+Installing the TSD utility globally
+
+> npm install tsd -g
+
+Querying type definitions
+
+> tsd query gulp
+
+
+
+Installing the Gulp CLI globally
+
+> npm install --global gulp-cli
+
+The dev run script now uses ts-node-dev which has the following parameters
+
+* --respawn: Keep watching for changes after the script has exited.
+* --pretty: Use pretty diagnostic formatter ( TS_NODE_PRETTY )
+* --transpile-only: Use TypeScript's faster transpileModule (TS_NODE_TRANSPILE_ONLY) 
+* src/server.ts: This is the application's entry file.
+
+Simply run the dev script to launch the project:
+
+> npm run dev
+
+## Directory Structure
+The directory structure of the application emphasizes an architectural approach based on a "separation of concerns":
+
+src/data-layer: responsible for organizing how the data will be stored and accessed.
+
+* adapters: implements the setup of database
+* data-abstracts: delineates both the schemas representing the structure of each mongo collection and the documents representing each set of data in the collection.
+* data-agents: implements the query transactions against the data store for each particular collection
+* model: contains a Typescript class representing the definition of the data portrayed by the Document.
+
+src/business-layer: implementation of business logic and other resources needed by the service-layer and/or middleware
+
+* security: contains apparatus for creating tokens and processing security checks on specific API request.
+* validators: contains schema and processing logic for validating data sent with API request.
+
+src/service-layer: contains the processes for establishing API endpoints in the form of routes which will facilitate responses to data request.
+
+* controllers: serve the basis for processing data request associated with routes.  The custom controllers (User and Authorization) extend tsoa controllers, using decorators to associate router endpoints to specific functions exposed in each of the controllers.  These functions, commonly referred to as CRUD (create, read, update, and delete) implement the basic GET, POST, PUT, PATCH, and DELETE processes for transacting with RESTful api.
+
+* request: contains TypeScript interfaces representing the attributes that make up each of the various types of request.
+
+* response: contains TypeScript interfaces representing the attributes that make up various types of responses.
+
+src/presentation-layer/: contains the presentational views offered by the application.
+
+* documentation: contains the Swagger-UI files and directories facilitating the display and mechanisms for making REST based API calls and presenting the responses.
+
+Note: Since the responsibility of this Node application is essentially providing data against requests, there are no other views but documentation.
+
+src/middleware/: contains resources to establish the server configuration as well as a place to store utility processes shared across the application.
+
+* common: currently contains the instantiation of the 'logger' that can be shared across the application
+
+* server-config: contains vendor specific implementation of the node server framework vendor, 'Express' as well as the all important 'routes' configuration organizing the REST API endpoints.
+
+src/server.ts: initializes our web server with our chosen Node framework Express.
+
+src/server-config: contains the core infrastructure for instantiating the web-server.
+
+tsoa.json: establishes the various locations of files needed to generate the swagger.json, which will eventually be used by the Swagger UI to represent the API documentation.  A couple of key configurations are
+
+* listing the Security definitions which will be used to signify protected data access
+* hosting and domain configurations, the directory path to place the output of our TypeScript complilation, as well as the label '/api' used to signify the handling and processing of request data rather than other kinds of resources.
+
+* the all import route configuration is used to identify the file used to stand up the web-server application, the location of the directory where the routes.ts can be found, and finally where the file(s) reside used in conjunction with our security apparatus are located.
+
+## Setting up MongoDB within a Docker container for local development
+
+Pull the image
+> docker pull mongo
+
+Start the container 
+> docker run
+-d
+--name YOUR_CONTAINER_NAME_HERE
+-p YOUR_LOCALHOST_PORT_HERE:27017
+-e MONGO_INITDB_ROOT_USERNAME=YOUR_USERNAME_HERE
+-e MONGO_INITDB_ROOT_PASSWORD=YOUR_PASSWORD_HERE
+mongo
+
+Check that the container's up and running
+> docker container ls
+
+Connect to the container and access your MongoDB instance
+
+> docker exec -it YOUR_CONTAINER_NAME_HERE bash
+
+Access the MongoDB instance via the mongo command line interface
+
+> mongo --username YOUR_USERNAME_HERE --password YOUR_PASSWORD_HERE
+
+List all databases:
+
+> show dbs
+> 
+
+Connecting to the database from outside of the container
+
+> mongodb://YOUR_USERNAME_HERE:YOUR_PASSWORD_HERE@0.0.0.0:YOUR_LOCALHOST_PORT_HERE
+
+or 
+
+> mongodb://YOUR_USERNAME_HERE:YOUR_PASSWORD_HERE@0.0.0.0:YOUR_LOCALHOST_PORT_HERE/YOUR_DATABASE_NAME_HERE
 
 
 
 ## References
-* [Docker Notes](./docs/Docker.md)
-* [Docker Container Networking](https://docs.docker.com/engine/userguide/networking/)
-* [Node Express Typescript](https://developer.okta.com/blog/2018/11/15/node-express-typescript)
+
+* [WANAGO](https://wanago.io/)
+* [Definitely Typed tsd](https://github.com/DefinitelyTyped/tsd)
+* [Gulp Quick Start](https://gulpjs.com/docs/en/getting-started/quick-start)
+* [Gulp Typescript](https://www.typescriptlang.org/docs/handbook/gulp.html)
+* [Another Example](https://github.com/GeekyAnts/express-typescript)
+* [Typescript Expres Tutorial](https://wanago.io/2018/12/03/typescript-express-tutorial-routing-controllers-middleware/)
+* [Rest API with Express TypeScript and Swagger](https://rsbh.dev/blogs/rest-api-with-express-typescript)
+* [Rest API Express TypeScript Docker](https://rsbh.dev/blogs/rest-api-express-typescript-docker)
+* [Swagger Node TypeScript with TSOA](https://medium.com/willsonic/swagger-nodejs-typescript-tsoa-15a3f10fabaf)
+* [TypeScript Dependency Injection](https://levelup.gitconnected.com/dependency-injection-in-typescript-2f66912d143c)
+* [Inversify IOC](https://inversify.io)
+* [Simplifying Dependency Injection](https://engineering.monstar-lab.com/en/post/2019/10/02/simplifying-dependency-injection-and-ioc-concepts-with-typescript/)
+* [Express.js Backend with TypeScript](https://itnext.io/express-js-backend-with-typescript-swagger-ui-and-docker-compose-f77143860bc8)
+* [Getting Started with TSOA](https://tsoa-community.github.io/docs/getting-started.html)
+* [ESLint Rules](https://eslint.org/docs/latest/use/configure/rules)
+* [TypeScript with Mongoose and Node Express](https://medium.com/swlh/typescript-with-mongoose-and-node-express-24073d51d2ee)
+* [Passport-Local Mongoose API Documentation](https://github.com/saintedlama/passport-local-mongoose#api-documentation)
+* [Put vs Patch](https://wanago.io/2020/04/27/typescript-express-put-vs-patch-mongodb-mongoose/)
+* [Patch Method for HTTP](https://www.rfc-editor.org/rfc/rfc5789)
+* [MongoDB replaceOne](https://www.mongodb.com/docs/manual/reference/method/db.collection.replaceOne/) 
+* [JavaScript Object Notation (JSON) Patch](https://www.rfc-editor.org/rfc/rfc6902)
+* [JSON Patch](https://jsonpatch.com/)
