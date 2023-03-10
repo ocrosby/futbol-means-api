@@ -1,4 +1,10 @@
-# Means API
+# Futbol-Means API
+
+While attempting to record match statistics at my daughters HS match I noticed a real need to be able to quickly record events that occur during the match.  This API is
+the beginning of my attempt to simply record in match events from a mobile friendly app.  The key is that during the match the user cannot be asked to type much or at all.
+So an associated user interface must be able to provide information to the user that he/she can simply tap to provide metadata for the generated event.   I know what you are
+thinking, and eventually I may introduce something like Apache Kafka or another eventing solution providing pub/sub but for now I'm looking at something simple that I can use 
+to interpret match statistics.
 
 ![Test](https://github.com/ocrosby/futbol-means-api/actions/workflows/server-ci.yaml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/ocrosby/futbol-means-api/badge.svg?branch=main)](https://coveralls.io/github/ocrosby/futbol-means-api?branch=main)
