@@ -5,10 +5,6 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { EventsController } from './../controllers/events.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { HealthCheckController } from './../controllers/health.controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { LoggerController } from './../controllers/logger.controller';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TeamsController } from './../controllers/teams.controller';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UsersController } from './../controllers/users.controller';
@@ -22,12 +18,12 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Event": {
+    "IEventDocument": {
         "dataType": "refAlias",
         "type": {"ref":"FlattenMaps_T_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "KeyValuePair": {
+    "IKeyValuePair": {
         "dataType": "refObject",
         "properties": {
             "key": {"dataType":"string","required":true},
@@ -36,29 +32,39 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_Event.type-or-timestamp-or-meta_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"type":{"dataType":"string","required":true},"timestamp":{"dataType":"datetime","required":true},"meta":{"dataType":"array","array":{"dataType":"refObject","ref":"KeyValuePair"},"required":true}},"validators":{}},
+    "IEvent": {
+        "dataType": "refObject",
+        "properties": {
+            "type": {"dataType":"string","required":true},
+            "meta": {"dataType":"array","array":{"dataType":"refObject","ref":"IKeyValuePair"},"required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "EventCreationParams": {
-        "dataType": "refAlias",
-        "type": {"ref":"Pick_Event.type-or-timestamp-or-meta_","validators":{}},
+    "IPatchOperation": {
+        "dataType": "refObject",
+        "properties": {
+            "op": {"dataType":"string"},
+            "path": {"dataType":"string"},
+            "from": {"dataType":"string"},
+            "value": {"dataType":"any"},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Team": {
+    "ITeamDocument": {
         "dataType": "refAlias",
         "type": {"ref":"FlattenMaps_T_","validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_Team.name-or-season-or-owner_": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"season":{"dataType":"string","required":true},"owner":{"ref":"Team","required":true}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "TeamCreationParams": {
-        "dataType": "refAlias",
-        "type": {"ref":"Pick_Team.name-or-season-or-owner_","validators":{}},
+    "ITeam": {
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "season": {"dataType":"string","required":true},
+            "owner": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IUserDocument": {
@@ -92,17 +98,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IPatchOperation": {
-        "dataType": "refObject",
-        "properties": {
-            "op": {"dataType":"string"},
-            "path": {"dataType":"string"},
-            "from": {"dataType":"string"},
-            "value": {"dataType":"any"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
 const validationService = new ValidationService(models);
 
@@ -113,7 +108,7 @@ export function RegisterRoutes(app: Router) {
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look
     //      Please look into the "controllerPathGlobs" config option described in the readme: https://github.com/lukeautry/tsoa
     // ###########################################################################################################
-        app.get('/api/events',
+        app.get('/api/api/events',
             ...(fetchMiddlewares<RequestHandler>(EventsController)),
             ...(fetchMiddlewares<RequestHandler>(EventsController.prototype.getEvents)),
 
@@ -137,13 +132,13 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/events/:eventId',
+        app.get('/api/api/events/:id',
             ...(fetchMiddlewares<RequestHandler>(EventsController)),
             ...(fetchMiddlewares<RequestHandler>(EventsController.prototype.getEvent)),
 
             function EventsController_getEvent(request: any, response: any, next: any) {
             const args = {
-                    eventId: {"in":"path","name":"eventId","required":true,"dataType":"string"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -162,13 +157,13 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/api/events',
+        app.post('/api/api/events',
             ...(fetchMiddlewares<RequestHandler>(EventsController)),
             ...(fetchMiddlewares<RequestHandler>(EventsController.prototype.createEvent)),
 
             function EventsController_createEvent(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"EventCreationParams"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"IEvent"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -187,13 +182,39 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.delete('/api/events/:eventId',
+        app.put('/api/api/events/:id',
+            ...(fetchMiddlewares<RequestHandler>(EventsController)),
+            ...(fetchMiddlewares<RequestHandler>(EventsController.prototype.updateEvent)),
+
+            function EventsController_updateEvent(request: any, response: any, next: any) {
+            const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"IEvent"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new EventsController();
+
+
+              const promise = controller.updateEvent.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.delete('/api/api/events/:id',
             ...(fetchMiddlewares<RequestHandler>(EventsController)),
             ...(fetchMiddlewares<RequestHandler>(EventsController.prototype.deleteEvent)),
 
             function EventsController_deleteEvent(request: any, response: any, next: any) {
             const args = {
-                    eventId: {"in":"path","name":"eventId","required":true,"dataType":"string"},
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -212,12 +233,14 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/health-check',
-            ...(fetchMiddlewares<RequestHandler>(HealthCheckController)),
-            ...(fetchMiddlewares<RequestHandler>(HealthCheckController.prototype.checkHealth)),
+        app.patch('/api/api/events/:id',
+            ...(fetchMiddlewares<RequestHandler>(EventsController)),
+            ...(fetchMiddlewares<RequestHandler>(EventsController.prototype.patchEvent)),
 
-            function HealthCheckController_checkHealth(request: any, response: any, next: any) {
+            function EventsController_patchEvent(request: any, response: any, next: any) {
             const args = {
+                    id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"dataType":"array","array":{"dataType":"refObject","ref":"IPatchOperation"}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -226,34 +249,10 @@ export function RegisterRoutes(app: Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new HealthCheckController();
+                const controller = new EventsController();
 
 
-              const promise = controller.checkHealth.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/api/logger',
-            ...(fetchMiddlewares<RequestHandler>(LoggerController)),
-            ...(fetchMiddlewares<RequestHandler>(LoggerController.prototype.index)),
-
-            function LoggerController_index(request: any, response: any, next: any) {
-            const args = {
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new LoggerController();
-
-
-              const promise = controller.index.apply(controller, validatedArgs as any);
+              const promise = controller.patchEvent.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -315,7 +314,7 @@ export function RegisterRoutes(app: Router) {
 
             function TeamsController_createTeam(request: any, response: any, next: any) {
             const args = {
-                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"TeamCreationParams"},
+                    requestBody: {"in":"body","name":"requestBody","required":true,"ref":"ITeam"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -329,6 +328,30 @@ export function RegisterRoutes(app: Router) {
 
               const promise = controller.createTeam.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, 201, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.get('/api/users',
+            ...(fetchMiddlewares<RequestHandler>(UsersController)),
+            ...(fetchMiddlewares<RequestHandler>(UsersController.prototype.getAllUsers)),
+
+            function UsersController_getAllUsers(request: any, response: any, next: any) {
+            const args = {
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new UsersController();
+
+
+              const promise = controller.getAllUsers.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
             }

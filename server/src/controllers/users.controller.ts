@@ -15,7 +15,7 @@ import {
 
 import { nullable } from "../types/nullable";
 import {IUser, IUserDocument, IUserCreationParams} from '../models/user.model'
-import UserService from '../services/users.service'
+import UsersService from '../services/users.service'
 import {IPatchOperation} from "../interfaces/patch.interface";
 
 @Route('users')
@@ -23,7 +23,7 @@ import {IPatchOperation} from "../interfaces/patch.interface";
 export class UsersController extends Controller {
   @Get('/')
   public async getAllUsers(): Promise<IUserDocument[]> {
-    return await UserService.getAll()
+    return await UsersService.getAll()
   }
 
   @Get('{userId}')
@@ -31,7 +31,7 @@ export class UsersController extends Controller {
     @Path() userId: string,
     @Query() name?: string
   ): Promise<nullable<IUserDocument>> {
-    return await UserService.get(userId)
+    return await UsersService.get(userId)
   }
 
   @SuccessResponse('201', 'Created') // Custom success response
@@ -40,7 +40,7 @@ export class UsersController extends Controller {
     @Body() requestBody: IUserCreationParams
   ): Promise<IUserDocument> {
     this.setStatus(201) // set return status 201
-    return await UserService.addOne(requestBody as IUser, requestBody.password)
+    return await UsersService.addOne(requestBody as IUser, requestBody.password)
   }
 
   @Put('{userId}')
@@ -48,14 +48,14 @@ export class UsersController extends Controller {
     @Path() userId: string,
     @Body() requestBody: IUser
   ): Promise<nullable<IUserDocument>> {
-    return await UserService.updateOne(userId, requestBody)
+    return await UsersService.updateOne(userId, requestBody)
   }
 
   @Delete('{userId}')
   public async deleteUser (
     @Path() userId: string
   ): Promise<void> {
-    return await UserService.delete(userId)
+    return await UsersService.delete(userId)
   }
 
   @Patch('{userId}')
@@ -63,7 +63,7 @@ export class UsersController extends Controller {
     @Path() userId: string,
     @Body() requestBody: IPatchOperation[]
   ): Promise<void> {
-    await UserService.patch(userId, requestBody)
+    await UsersService.patch(userId, requestBody)
 
     return Promise.resolve()
   }

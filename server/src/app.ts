@@ -1,9 +1,10 @@
-import express from 'express';
-
+import express, {Request, Response} from 'express';
+import path from 'path';
 import User from './models/user.model'
 import session from 'express-session'
 import errorMiddleware from './middleware/error.middleware'
 import morganMiddleware from './middleware/morgan.middleware'
+import expressHealthcheck from 'express-healthcheck'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
@@ -12,20 +13,14 @@ import swaggerUi from 'swagger-ui-express'
 import {RegisterRoutes} from './build/routes'
 
 import * as mongoose from 'mongoose'
+import * as mongoutil from './utils/mongoose'
 import Logger from './utils/logger';
 
 import swaggerDocument from './build/swagger.json'
 
 const {
-  MONGO_USER,
-  MONGO_PASSWORD,
-  MONGO_HOST,
-  MONGO_PORT,
-  MONGO_DB
+  API_LOCAL_PORT
 } = process.env
-
-// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-const databaseUri: string = `mongodb://${MONGO_USER}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`
 
 const swaggerOptions = { explorer: false }
 
@@ -70,18 +65,72 @@ passport.deserializeUser(User.deserializeUser())
 
 
 // Initialize swagger docs
+Logger.info(`Serving Swagger docs at http://localhost:8000/api-docs`)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
 
 mongoose.set('strictQuery', false)
 
+const databaseUri = mongoutil.generateDatabaseUri();
+
 Logger.debug(`Mongo Connection String: "${databaseUri}"`)
 
-const mongooseOptions: mongoose.ConnectOptions = {}
-
-mongoose.connect(databaseUri, mongooseOptions,() => {
-  Logger.info('Connected to MongoDB')
-})
+mongoose.connect(databaseUri, mongoutil.options)
+  .then(() => {
+    // ready to use
+    Logger.info('Connected to MongoDB')
+  }, (err: any) => {
+    // handle initial connection error
+    Logger.error(err)
+  })
 
 RegisterRoutes(app)
+
+// Set up the health check route
+app.use('/healthcheck', expressHealthcheck({
+  healthy: () => {
+    return {
+      everything: 'is ok',
+      uptime: process.uptime()
+    }
+  },
+  test: (callback: any) => {
+    // This function will be executed to establish the health of the application.
+    if (mongoutil.isConnected()) {
+      callback()
+    } else {
+      callback({
+        state: 'unhealthy',
+        uptime: process.uptime(),
+        mongooseReadyState: mongoutil.getReadyStateMessage()
+      })
+    }
+  }
+}))
+
+Logger.info(`View health check at http://localhost:${API_LOCAL_PORT}/healthcheck`)
+
+
+// Serve static files
+
+app.use(express.static(path.join(__dirname, 'public')))
+
+// Set up the PUG template engine.
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.get('/', (req: Request, res: Response) => {
+  return res.redirect('/home');
+})
+
+app.get('/home', (req: Request, res: Response) => {
+  res.render('index', {
+    subject: 'Pug template engine',
+    name: 'our template',
+    link: 'https://google.com'
+  })
+})
+
+Logger.info(`View PUG interface at http://localhost:${API_LOCAL_PORT}`)
 
 export default app

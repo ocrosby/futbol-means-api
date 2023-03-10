@@ -10,10 +10,10 @@
 				"properties": {},
 				"type": "object"
 			},
-			"Event": {
+			"IEventDocument": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
-			"KeyValuePair": {
+			"IKeyValuePair": {
 				"properties": {
 					"key": {
 						"type": "string"
@@ -29,37 +29,45 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_Event.type-or-timestamp-or-meta_": {
+			"IEvent": {
 				"properties": {
 					"type": {
 						"type": "string"
 					},
-					"timestamp": {
-						"type": "string",
-						"format": "date-time"
-					},
 					"meta": {
 						"items": {
-							"$ref": "#/components/schemas/KeyValuePair"
+							"$ref": "#/components/schemas/IKeyValuePair"
 						},
 						"type": "array"
 					}
 				},
 				"required": [
 					"type",
-					"timestamp",
 					"meta"
 				],
 				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
+				"additionalProperties": false
 			},
-			"EventCreationParams": {
-				"$ref": "#/components/schemas/Pick_Event.type-or-timestamp-or-meta_"
+			"IPatchOperation": {
+				"properties": {
+					"op": {
+						"type": "string"
+					},
+					"path": {
+						"type": "string"
+					},
+					"from": {
+						"type": "string"
+					},
+					"value": {}
+				},
+				"type": "object",
+				"additionalProperties": false
 			},
-			"Team": {
+			"ITeamDocument": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
 			},
-			"Pick_Team.name-or-season-or-owner_": {
+			"ITeam": {
 				"properties": {
 					"name": {
 						"type": "string"
@@ -68,7 +76,7 @@
 						"type": "string"
 					},
 					"owner": {
-						"$ref": "#/components/schemas/Team"
+						"type": "string"
 					}
 				},
 				"required": [
@@ -77,10 +85,7 @@
 					"owner"
 				],
 				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"TeamCreationParams": {
-				"$ref": "#/components/schemas/Pick_Team.name-or-season-or-owner_"
+				"additionalProperties": false
 			},
 			"IUserDocument": {
 				"$ref": "#/components/schemas/FlattenMaps_T_"
@@ -136,22 +141,6 @@
 				],
 				"type": "object",
 				"additionalProperties": false
-			},
-			"IPatchOperation": {
-				"properties": {
-					"op": {
-						"type": "string"
-					},
-					"path": {
-						"type": "string"
-					},
-					"from": {
-						"type": "string"
-					},
-					"value": {}
-				},
-				"type": "object",
-				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -179,7 +168,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/Event"
+										"$ref": "#/components/schemas/IEventDocument"
 									},
 									"type": "array"
 								}
@@ -201,7 +190,12 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Event"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IEventDocument"
+										}
+									],
+									"nullable": true
 								}
 							}
 						}
@@ -217,14 +211,14 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/EventCreationParams"
+								"$ref": "#/components/schemas/IEvent"
 							}
 						}
 					}
 				}
 			}
 		},
-		"/api/events/{eventId}": {
+		"/api/events/{id}": {
 			"get": {
 				"operationId": "GetEvent",
 				"responses": {
@@ -233,7 +227,12 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Event"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IEventDocument"
+										}
+									],
+									"nullable": true
 								}
 							}
 						}
@@ -246,13 +245,57 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "eventId",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
 						}
 					}
 				]
+			},
+			"put": {
+				"operationId": "UpdateEvent",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IEventDocument"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Event"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IEvent"
+							}
+						}
+					}
+				}
 			},
 			"delete": {
 				"operationId": "DeleteEvent",
@@ -268,70 +311,51 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "eventId",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
 						}
 					}
 				]
-			}
-		},
-		"/api/health-check": {
-			"get": {
-				"operationId": "CheckHealth",
+			},
+			"patch": {
+				"operationId": "PatchEvent",
 				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"msg": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"msg"
-									],
-									"type": "object"
-								}
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"Event"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"items": {
+									"$ref": "#/components/schemas/IPatchOperation"
+								},
+								"type": "array"
 							}
 						}
 					}
-				},
-				"security": [],
-				"parameters": []
+				}
 			}
 		},
-		"/api/logger": {
-			"get": {
-				"operationId": "Index",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"msg": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"msg"
-									],
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/teams": {
+		"/teams": {
 			"get": {
 				"operationId": "GetTeams",
 				"responses": {
@@ -341,7 +365,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/Team"
+										"$ref": "#/components/schemas/ITeamDocument"
 									},
 									"type": "array"
 								}
@@ -359,7 +383,14 @@
 				"operationId": "CreateTeam",
 				"responses": {
 					"201": {
-						"description": "Created"
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ITeamDocument"
+								}
+							}
+						}
 					}
 				},
 				"tags": [
@@ -372,14 +403,14 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/TeamCreationParams"
+								"$ref": "#/components/schemas/ITeam"
 							}
 						}
 					}
 				}
 			}
 		},
-		"/api/teams/{teamId}": {
+		"/teams/{teamId}": {
 			"get": {
 				"operationId": "GetTeam",
 				"responses": {
@@ -388,7 +419,12 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Team"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/ITeamDocument"
+										}
+									],
+									"nullable": true
 								}
 							}
 						}
@@ -410,7 +446,62 @@
 				]
 			}
 		},
-		"/api/users/{userId}": {
+		"/users": {
+			"get": {
+				"operationId": "GetAllUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IUserDocument"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateUser",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUserDocument"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUserCreationParams"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/{userId}": {
 			"get": {
 				"operationId": "GetUser",
 				"responses": {
@@ -494,6 +585,9 @@
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -513,6 +607,9 @@
 						"description": "No content"
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [],
 				"parameters": [
 					{
@@ -538,38 +635,6 @@
 					}
 				}
 			}
-		},
-		"/api/users": {
-			"post": {
-				"operationId": "CreateUser",
-				"responses": {
-					"201": {
-						"description": "Created",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IUserDocument"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"User"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IUserCreationParams"
-							}
-						}
-					}
-				}
-			}
 		}
 	},
 	"servers": [
@@ -587,8 +652,8 @@
 			"description": "Operations about teams"
 		},
 		{
-			"name": "Event",
-			"description": "Operations about events"
+			"name": "Health",
+			"description": "Operations about health"
 		}
 	]
 }

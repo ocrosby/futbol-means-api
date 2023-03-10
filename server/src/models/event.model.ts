@@ -38,4 +38,6 @@ const eventSchema: Schema = new Schema({
   timestamps: true  // Mongoose will add two properties of type Date createdAt and updatedAt
 })
 
-export default mongoose.model('Event', eventSchema)
+const Event = mongoose.model('Event', eventSchema)
+
+export default Event
