@@ -1,39 +1,88 @@
-import { Event, EventModel } from '../models/event.model'
+import { IEvent, IEventDocument } from "../models/event.model";
+
+import { IPatchOperation } from "../interfaces/patch.interface"
+
+import Event from '../models/event.model'
+
 import Logger from '../utils/logger'
+import jsonpatch from "jsonpatch"
 
-// A post request should not contain unneded parameters
-export type EventCreationParams = Pick<Event, "type" | "timestamp" | "meta">
+async function get(id: string): Promise<IEventDocument | null> {
+  return Event.findOne({_id: id})
+}
 
-export class EventService {
-  public async create(eventCreationParams: EventCreationParams): Promise<Event> {
-    const newEvent = new EventModel(eventCreationParams);
+async function getAll(): Promise<IEventDocument[]> {
+  Logger.debug('Retrieving events ...')
 
-    await newEvent.save()
+  return await Event.find({})
+}
 
-    return newEvent
+async function exists(id: string): Promise<boolean> {
+  Logger.debug(`Checking to see if an event "${id}" exists.`)
+
+  const event = await Event.findOne({ _id: id })
+  const found = !!event
+
+  if (found) {
+    Logger.debug('Found it.')
+  } else {
+    Logger.debug('Could not find it.')
   }
 
-  public async getAll(): Promise<Event[]> {
-    Logger.debug('Retrieving events ...')
+  return found
+}
 
-    const events = await EventModel.find({})
+async function addOne(eventCreationParams: IEvent): Promise<IEventDocument> {
+  Logger.debug('Adding a new event')
 
-    Logger.debug(`Successfully retrieved ${events.length} events.`)
+  const newEvent = new Event(eventCreationParams);
 
-    return events;
-  }
+  try {
+    await newEvent.save();
 
-  public async getById(id: string): Promise<Event> {
-    Logger.debug(`Retrieving an event by identifier ${id} ...`)
-
-    const event = await EventModel.findById(id)
-
-    return event as Event
-  }
-
-  public async delete(id: string): Promise<void> {
-    await EventModel.deleteOne({_id: id})
-
-    return Promise.resolve()
+    return newEvent;
+  } catch (err) {
+    return Promise.reject(err);
   }
 }
+
+async function updateOne(id: string, data: IEvent): Promise<IEvent | null> {
+  Logger.debug('Updating an event')
+
+  const result = await Event.replaceOne({ _id: id }, { upsert: true })
+  return result.matchedCount ? await get(id) : await get(result.upsertedId.toString())
+}
+
+async function _delete(id: string): Promise<void> {
+  Logger.debug('Deleting an event')
+
+  await Event.deleteOne({ _id: id })
+
+  return Promise.resolve()
+}
+
+async function patch(id: string, patches: IPatchOperation[]): Promise<void> {
+  Logger.debug('Patching an event')
+
+  const doc = await Event.findOne({ _id: id });
+
+  if (!doc) {
+    return Promise.reject(`Could not find an event with id ${id} when attempting patch an event!`)
+  }
+
+  const patchedDoc = jsonpatch.apply_patch(doc, patches)
+
+  patchedDoc.save()
+
+  return Promise.resolve()
+}
+
+export default {
+  get,
+  getAll,
+  addOne,
+  updateOne,
+  patch,
+  delete: _delete,
+  exists
+} as const;
