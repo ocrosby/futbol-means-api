@@ -99,5 +99,6 @@ task('watch', (done) => {
     })
 })
 
+task('check', series(['lint', 'test']))
 
 task('default', series(['clean', 'lint', 'test', 'build', 'install']))

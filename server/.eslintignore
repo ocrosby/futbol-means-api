@@ -2,4 +2,6 @@ src/build/routes.ts
 jest.config.ts
 gulpfile.js
 coverage
-
+/node_modules
+dist
+features
