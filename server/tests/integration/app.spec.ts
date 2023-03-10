@@ -11,11 +11,16 @@ describe('Test API', () => {
     })
   })
 
-  describe('Logger', () => {
-    test.skip('should behave as expected', async () => {
-      const res = await request(app).get('/api/logger')
+  describe('healthcheck', () => {
+    test('should return a 200', async () => {
+      const res = await request(app).get('/healthcheck')
       expect(res.statusCode).toEqual(200)
-      expect(res.body).toEqual({msg: "Hello World!"})
+    })
+
+    test('should return the expected body', async () => {
+      const res = await request(app).get('/healthcheck')
+      expect(res.body.state).toEqual("unhealthy")
+      expect(res.body.mongooseReadyState).toEqual('disconnected')
     })
   })
 
