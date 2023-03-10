@@ -76,7 +76,7 @@ task('copy-resources', () => {
 task('build', series(['tsoa', 'copy-resources', 'compile']))
 
 task('mstop', shell.task('docker stop mongo_dev && docker container rm mongo_dev'))
-task('mstart', shell.task('docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password mongo'))
+task('mstart', shell.task('docker run -d --name mongo_dev -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=example mongo'))
 
 task('bdd', shell.task('npx cucumber-js'))
 
