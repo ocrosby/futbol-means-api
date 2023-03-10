@@ -46,7 +46,7 @@ async function addOne(eventCreationParams: IEvent): Promise<IEventDocument> {
   }
 }
 
-async function updateOne(id: string, data: IEvent): Promise<IEvent | null> {
+async function updateOne(id: string, data: IEvent): Promise<IEventDocument | null> {
   Logger.debug('Updating an event')
 
   const result = await Event.replaceOne({ _id: id }, { upsert: true })
