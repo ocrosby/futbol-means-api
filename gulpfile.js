@@ -43,7 +43,10 @@ task('lint', () => {
 })
 
 // builds the routes and swagger.json file
-task('tsoa', shell.task('tsoa spec-and-routes'))
+task('tsoa', shell.task([
+  'tsoa spec --basePath /api',
+  'tsoa routes --basePath /api'
+]))
 
 task('jest', () => {
   process.env.NODE_ENV = 'test'
@@ -79,7 +82,6 @@ task('build', series(['tsoa', 'copy-resources', 'compile']))
 
 task('mstop', shell.task('docker stop mongo_dev && docker container rm mongo_dev'))
 task('mstart', shell.task([
-  'docker stop mongo_dev && docker container rm mongo_dev',
   'docker run -d --name mongo_dev -v ~/data/db:/data/db -p 27017:27017 -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=example mongo'
 ]))
 
